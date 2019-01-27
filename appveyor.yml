@@ -1,0 +1,21 @@
+version: '1.0.0.{build}'
+image: ubuntu
+services:
+- docker
+environment:
+  DOCKER_USER:
+    secure: Lwz+amG722xWRiGu0ev6MGVxQFhokC6PiVBtnO1fzQI=
+  DOCKER_PASS:
+    secure: con8TCKYa9l0kpjh0FareQ==
+init:
+  - ps: docker version
+
+build_script:
+  # create image
+  - ps: docker build -t "mizekar-ui-ideas" .
+
+deploy_script:
+  # tag image and push to docker hub
+  - ps: docker login -u="$env:DOCKER_USER" -p="$env:DOCKER_PASS"
+  - ps: docker tag mizekar-ui-ideas  mizekar/mizekar-ui-ideas:latest
+  - ps: docker push mizekar/mizekar-ui-ideas:latest
