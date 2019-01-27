@@ -12,10 +12,10 @@ init:
 
 build_script:
   # create image
-  - ps: docker build -t "mizekar-ui-ideas" .
+  - ps: docker build -t "mizekar-ui-ideas-management" .
 
 deploy_script:
   # tag image and push to docker hub
   - ps: docker login -u="$env:DOCKER_USER" -p="$env:DOCKER_PASS"
-  - ps: docker tag mizekar-ui-ideas  mizekar/mizekar-ui-ideas:latest
-  - ps: docker push mizekar/mizekar-ui-ideas:latest
+  - ps: docker tag mizekar-ui-ideas-management  mizekar/mizekar-ui-ideas-management:latest
+  - ps: docker push mizekar/mizekar-ui-ideas-management:latest
