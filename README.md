@@ -1,0 +1,1 @@
+# mizekar ideas management
