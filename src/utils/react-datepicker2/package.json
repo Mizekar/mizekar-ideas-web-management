@@ -1,0 +1,103 @@
+{
+  "_from": "react-datepicker2",
+  "_id": "react-datepicker2@1.0.0-alpha3",
+  "_inBundle": false,
+  "_integrity": "sha512-JYDX8kP1V13/leYNxRTGDO4ijsOsfn+QgC4dqxNe0G8obKJ1XFuDgwjHEkT+U9WwCzaytMgQBEMUG1DMvQdAJQ==",
+  "_location": "/react-datepicker2",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "react-datepicker2",
+    "name": "react-datepicker2",
+    "escapedName": "react-datepicker2",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-datepicker2/-/react-datepicker2-1.0.0-alpha3.tgz",
+  "_shasum": "df1dd1531ddd442a18b94539e1012f1dceafb36d",
+  "_spec": "react-datepicker2",
+  "_where": "D:\\react\\soojePanel",
+  "author": {
+    "name": "mohammadreza berneti",
+    "url": "mberneti"
+  },
+  "bugs": {
+    "url": "https://github.com/mberneti/react-datepicker2/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "moment-jalaali": "^0.6.1",
+    "rc-trigger": "^1.9.1",
+    "react-onclickoutside": "^5.9.0",
+    "react-tether": "^0.5.6"
+  },
+  "deprecated": false,
+  "description": "react datepicker component. (include persian jalaali calendar)",
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-jest": "^19.0.0",
+    "babel-loader": "^6.4.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-es2016": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "babel-runtime": "^6.23.0",
+    "coveralls": "^2.12.0",
+    "enzyme": "^2.8.0",
+    "highlight.js": "^9.10.0",
+    "html-webpack-plugin": "^2.28.0",
+    "install": "^0.8.7",
+    "jest": "^19.0.2",
+    "jscoverage": "^0.6.0",
+    "moment": "^2.18.1",
+    "nodeunit": "^0.11.0",
+    "path": "^0.12.7",
+    "react": "^15.4.2",
+    "react-addons-test-utils": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-syntax-highlight": "^0.0.5",
+    "react-test-renderer": "^15.4.2",
+    "webpack": "^2.3.1",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "homepage": "https://github.com/mberneti/react-datepicker2#readme",
+  "keywords": [
+    "react",
+    "react-datepicker",
+    "react-datepicker2",
+    "react-jalaali-datepicker",
+    "jalaali-datepicker",
+    "jalaali",
+    "datepicker",
+    "component",
+    "react component",
+    "react-component"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "react-datepicker2",
+  "peerDependencies": {
+    "react": "^0.14.0 || ^15.0.0",
+    "react-dom": "^0.14.0 || ^15.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mberneti/react-datepicker2.git"
+  },
+  "scripts": {
+    "build": "webpack --config webpack.config.prod.js",
+    "start": "webpack --config webpack.config.docs.js && webpack-dev-server --config webpack.config.dev.js",
+    "test": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+  },
+  "style": "dist/react-datepicker2.min.css",
+  "version": "1.0.0-alpha3"
+}
