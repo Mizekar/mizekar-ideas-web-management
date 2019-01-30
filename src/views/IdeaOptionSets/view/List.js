@@ -127,26 +127,26 @@ export default class List extends Component {
                         <Row className="row-list-header">
                             <Col xs="12" sm="6" className="col-list">عنوان ویژگی</Col>
                             <Col xs="12" sm="2" className="col-list">اولویت نمایش</Col>
-                            <Col xs="12" sm="2" className="col-list">وضعیت انتشار</Col>
+                            <Col xs="12" sm="2" className="col-list">چند انتخابی</Col>
                             <Col xs="12" sm="2" className="col-list">عملیات</Col>
                         </Row>
                         {
                             this.state.items.map((data) => {
                                 return (
                                     <Row className="row-list" key={data.id}>
-                                        <Col xs="12" sm="6" className="col-list">{data.name}</Col>
+                                        <Col xs="12" sm="6" className="col-list">{data.title}</Col>
                                         <Col xs="12" sm="2" className="col-list">{data.displayOrder}</Col>
                                         <Col xs="12" sm="2" className="col-list">
-                                            {data.isPublished &&
-                                            <Button className="btn btn-square btn-outline-success disabled" disabled="">منتشر شده</Button>
+                                            {
+                                                data.isMultiSelect && <i className="fa fa-check"></i>
                                             }
-                                            {!data.isPublished &&
-                                            <Button className="btn btn-square btn-outline-secondary disabled" disabled="">عدم انتشار</Button>
+                                            {
+                                                !data.isMultiSelect && <i className="fa fa-times"></i>
                                             }
                                         </Col>
                                         <Col xs="12" sm="2" className="col-list">
                                             <Button className="btn-square btn btn-info ml-2"
-                                                    href={"#/categories/edit/" + data.id}>
+                                                    href={"#/ideaOptionSets/edit/" + data.id}>
                                                 <i className="fa fa-pencil"></i> ویرایش
                                             </Button>
                                             <Button

@@ -272,6 +272,12 @@ legend
     font-size: 25px;
     align-items: center;
     display: flex;
+    padding:0.375rem 0.75rem;
+
+}
+.remove-items i
+{
+    cursor: pointer;
 }
 .app-header
 {
@@ -326,6 +332,28 @@ legend
     background: #5E6575 !important;
     color:#fff !important;
     border:1px solid #5E6575 !important;
+}
+.btn-add
+{
+    color:#000 !important;
+    padding: 0 !important;
+    border:none !important;
+}
+.btn-add:hover
+{
+    background: none !important;
+    border:none !important;
+}
+.sidebar .sidebar-minimizer
+{
+    flex:0 0 65px!important;
+}
+.invalid-item
+{
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #f86c6b;
 }
 /*
 a{

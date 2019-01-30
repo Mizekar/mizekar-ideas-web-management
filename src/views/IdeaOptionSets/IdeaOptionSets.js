@@ -10,7 +10,7 @@ class IdeaOptionSets extends Component {
 
         let params = this.props.match.params;
 
-        //alert(params.act)
+
 
         this.state = {
             act: params.act !== undefined ? params.act : '',

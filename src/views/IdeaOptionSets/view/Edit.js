@@ -8,11 +8,23 @@ import {
     Label,
     Row
 } from "reactstrap";
-import {Field, Form, Formik} from "formik";
+import {Field, FieldArray, Form, Formik, getIn} from "formik";
 import * as Yup from "yup";
 import {get, put} from "../../../utils/apiMainRequest";
 import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
+
+const ErrorMessage = ({name}) => (
+    <Field
+        name={name}
+        className="invalid-feedback"
+        render={({form}) => {
+            const error = getIn(form.errors, name);
+            const touch = getIn(form.touched, name);
+            return touch && error ? <div className="invalid-item">{error}</div> : null;
+        }}
+    />
+);
 
 class Edit extends Component {
     constructor(props) {
@@ -22,7 +34,8 @@ class Edit extends Component {
             message: '',
             btnDisabled: false,
             id: props.id,
-            loadData: false
+            loadData: false,
+            items: []
 
         }
 
@@ -33,16 +46,21 @@ class Edit extends Component {
     }
 
     async getById() {
-        let response = await get("ideas/Categories/" + this.state.id, {});
+        let response = await get("ideas/optionsets/details/" + this.state.id, {});
 
+        //console.log(response)
+
+        let items = await get("ideas/optionsets/"+ this.state.id+"/items", {});
+
+        console.log(items)
         this.setState({
-            name: response.name,
+            title: response.title,
             description: response.description,
             displayOrder: response.displayOrder,
-            isPublished: response.isPublished,
+            isMultiSelect: response.isMultiSelect,
+            isRequired: response.isRequired,
             loadData: true,
         })
-
     }
 
     async formSubmit(payload) {
@@ -76,8 +94,8 @@ class Edit extends Component {
                     <Col xs="12">
                         <Breadcrumb>
                             <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
-                            <BreadcrumbItem tag="a" href="#/categories">دسته بندی ها</BreadcrumbItem>
-                            <BreadcrumbItem active>ویرایش کردن دسته بندی</BreadcrumbItem>
+                            <BreadcrumbItem tag="a" href="#/ideaOptionSets">ویژگی سوژه ها</BreadcrumbItem>
+                            <BreadcrumbItem active>ویرایش کردن ویژگی جدید</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
                 </Row>
@@ -85,11 +103,11 @@ class Edit extends Component {
                 <Row>
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
-                            <h1 className="list-title">ویرایش کردن دسته بندی</h1>
-                            <a href="#/categories">
+                            <h1 className="list-title">ویرایش کردن ویژگی</h1>
+                            <a href="#/ideaOptionSets">
                                 <i className="fa fa-list"></i>
                                 &nbsp;
-                                لیست دسته بندی ها
+                                لیست ویژگی سوژه ها
                             </a>
                         </div>
 
@@ -111,41 +129,59 @@ class Edit extends Component {
                 {this.state.loadData &&
                 <Row className="mt-4">
                     <Col xs="12">
-                        <Card className="p-4">
-                            <CardBody>
-                                <Formik
-                                    initialValues={{
-                                        name: this.state.name,
-                                        description: this.state.description,
-                                        displayOrder: this.state.displayOrder,
-                                        isPublished: this.state.isPublished
-                                    }}
-                                    validationSchema={Yup.object().shape({
-                                        displayOrder: Yup.number()
-                                            .required('تکمیل اولویت نمایش الزامی است')
-                                            .typeError("مقدار وارد شده باید به صورت اعداد صحیح باشد.")
-                                    })}
-                                    onSubmit={(values) => {
-                                        this.formSubmit(values);
-                                    }}>
-                                    {({values, errors, touched}) => (
-                                        <Form>
 
+                        <Formik
+                            initialValues={{
+                                title: this.state.title,
+                                description: this.state.description,
+                                displayOrder: this.state.displayOrder,
+                                isMultiSelect: this.state.isMultiSelect,
+                                isRequired: this.state.isRequired,
+                                items: [{title: '', displayOrder: '', weight: '', isDisabled: false}]
+
+
+                            }}
+                            validationSchema={Yup.object().shape({
+                                displayOrder: Yup.number()
+                                    .required('تکمیل اولویت نمایش الزامی است')
+                                    .typeError("مقدار وارد شده باید به صورت اعداد صحیح باشد."),
+                                items: Yup.array()
+                                    .of(
+                                        Yup.object().shape({
+                                            displayOrder: Yup.number()
+                                                .typeError("تکمیل اولویت الزامی و باید به صورت عددی باشد.")
+                                                .required('تکمیل اولویت نمایش الزامی است'),
+
+                                            weight: Yup.number()
+                                                .required('تکمیل وزن آیتم الزامی است')
+                                                .typeError("تکمیل وزن الزامی و باید به صورت عددی باشد."),
+                                        })
+                                    )
+                                    .required('وارد کردن آیتم برای ویژگی الزامی است.') // these constraints are shown if and only if inner constraints are satisfied
+                                    .min(2, 'وارد کردن حداقل 2 آیتم برای ویژگی الزامی است.'),
+                            })}
+                            onSubmit={(values, {resetForm}) => {
+                                this.formSubmit(values, resetForm);
+                            }}>
+                            {({errors, touched, values}) => (
+                                <Form>
+                                    <Card className="p-4">
+                                        <CardBody>
                                             <FormGroup row>
-                                                <label>عنوان دسته بندی</label>
+                                                <label>عنوان ویژگی</label>
                                                 <Input
-                                                    name="name"
+                                                    name="title"
                                                     type="text"
                                                     placeholder=""
                                                     tag={Field}
-                                                    invalid={errors.name && touched.name}
+                                                    invalid={errors.title && touched.title}
                                                 />
 
-                                                <FormFeedback>{errors.name}</FormFeedback>
+                                                <FormFeedback>{errors.title}</FormFeedback>
                                             </FormGroup>
                                             <FormGroup row>
 
-                                                <label>توضیح دسته بندی</label>
+                                                <label>توضیح ویژگی</label>
                                                 <Input
                                                     name="description"
                                                     type="textarea"
@@ -171,41 +207,149 @@ class Edit extends Component {
 
                                                 <FormFeedback>{errors.displayOrder}</FormFeedback>
                                             </FormGroup>
-                                            <FormGroup check>
+                                            <FormGroup check className="mr-2 mt-3">
                                                 <Label check>
                                                     <Input
                                                         type="checkbox"
-                                                        name="isPublished"
-                                                        defaultChecked={this.state.isPublished}
-                                                        value={true}
+                                                        name="isMultiSelect"
+                                                        defaultChecked={false}
                                                         tag={Field}
                                                     />
-                                                    منتشر شود
+                                                    چند انتخابی
                                                 </Label>
                                             </FormGroup>
-                                            <Row className="mt-4">
-                                                <Button color="warning" type="submit"
-                                                        disabled={this.state.btnDisabled}
-                                                        className="px-4">
-                                                    ثبت ویرایش دسته بندی
-                                                </Button>
-                                                {this.state.btnDisabled && <div className="loading-box">
-                                                    <Loading/>
-                                                    <span className="loading-box-text">
+                                            <FormGroup check className="mr-2 mt-3">
+                                                <Label check>
+                                                    <Input
+                                                        type="checkbox"
+                                                        name="isRequired"
+                                                        defaultChecked={false}
+                                                        tag={Field}
+                                                    />
+                                                    اجباری
+                                                </Label>
+                                            </FormGroup>
+
+
+                                        </CardBody>
+                                    </Card>
+                                    <FormGroup tag="fieldset">
+                                        <legend>آیتم های ویژگی</legend>
+                                    </FormGroup>
+                                    {/*{
+                                        Object.keys(this.state.items).map((key) => {
+                                            return this.state.items[key]
+                                        })
+                                    }*/}
+                                    <FieldArray
+                                        name="items"
+                                        render={(arrayHelpers) => (
+                                            <div>
+                                                {values.items.map((data, index) => (
+                                                    <Card className="p-0 mb-2">
+                                                        <CardBody>
+                                                            <Row className="align-items-start">
+                                                                <Col sm="4">
+                                                                    <Input
+                                                                        type="text"
+                                                                        tag={Field}
+                                                                        name={`items[${index}].title`}
+                                                                        placeholder="عنوان آیتم"
+                                                                    />
+                                                                </Col>
+                                                                <Col sm="3">
+
+                                                                    <Input
+                                                                        type="number"
+                                                                        name={`items[${index}].displayOrder`}
+                                                                        tag={Field}
+                                                                        placeholder="اولویت نمایش"
+                                                                        /*invalid={errors.displayOrder && touched.displayOrder}*/
+                                                                    />
+                                                                    <ErrorMessage
+                                                                        name={`items[${index}].displayOrder`}/>
+
+                                                                </Col>
+                                                                <Col sm="3">
+                                                                    <Input
+                                                                        type="number"
+                                                                        tag={Field}
+                                                                        name={`items[${index}].weight`}
+                                                                        placeholder="وزن آیتم"
+                                                                    />
+                                                                    <ErrorMessage
+                                                                        name={`items[${index}].weight`}/>
+                                                                </Col>
+                                                                <Col sm="1">
+
+                                                                    <FormGroup check className="p-2">
+                                                                        <Label check>
+                                                                            <Input
+                                                                                type="checkbox"
+                                                                                tag={Field}
+                                                                                name={`items[${index}].isDisabled`}
+                                                                            />
+                                                                            غیر فعال
+                                                                        </Label>
+                                                                    </FormGroup>
+                                                                </Col>
+                                                                <Col sm="1" className="remove-items">
+
+                                                                    <i className="fa fa-times-circle-o"
+                                                                       onClick={() => arrayHelpers.remove(index)}>
+
+                                                                    </i>
+
+
+                                                                </Col>
+                                                            </Row>
+                                                        </CardBody>
+                                                    </Card>
+
+                                                ))}
+                                                {typeof errors.items === 'string' ?
+                                                    <div className="invalid-item">{errors.items}</div> : null}
+                                                <Row className="mt-4 mb-4">
+                                                    <Col xs="12">
+                                                        <a className="btn btn-transparent btn-add"
+                                                           onClick={() => arrayHelpers.push({
+                                                               title: '',
+                                                               displayOrder: '',
+                                                               weight: '',
+                                                               isDisabled: false
+                                                           })}>
+                                                            <i className="fa fa-plus"></i> اضافه کردن آیتم جدید
+                                                        </a>
+                                                    </Col>
+                                                </Row>
+
+                                            </div>
+                                        )}
+                                    />
+
+                                    {/* {let FriendArrayErrors = errors =>
+                                    typeof errors.friends === 'string' ? <div>{errors.friends}</div> : null;}*/}
+
+                                    <Row className="mt-4 mb-4 mr-1">
+
+                                        <Button color="warning" type="submit" disabled={this.state.btnDisabled}
+                                                className="px-4">
+                                            ثبت ویرایش ویژگی
+                                        </Button>
+                                        {this.state.btnDisabled && <div className="loading-box">
+                                            <Loading/>
+                                            <span className="loading-box-text">
                                                         در حال ارسال اطلاعات. لطفا منتظر بمانید...
-                                                    </span>
+                                                </span>
 
-                                                </div>
-                                                }
-
-                                            </Row>
+                                        </div>
+                                        }
 
 
-                                        </Form>
-                                    )}
-                                </Formik>
-                            </CardBody>
-                        </Card>
+                                    </Row>
+                                </Form>
+                            )}
+                        </Formik>
                     </Col>
                 </Row>
                 }
