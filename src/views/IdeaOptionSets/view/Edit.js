@@ -10,9 +10,10 @@ import {
 } from "reactstrap";
 import {Field, FieldArray, Form, Formik, getIn} from "formik";
 import * as Yup from "yup";
-import {get, put} from "../../../utils/apiMainRequest";
+import {get, post, put, remove} from "../../../utils/apiMainRequest";
 import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
+import {confirmAlert} from "react-confirm-alert";
 
 const ErrorMessage = ({name}) => (
     <Field
@@ -50,7 +51,7 @@ class Edit extends Component {
 
         //console.log(response)
 
-        let items = await get("ideas/optionsets/"+ this.state.id+"/items", {});
+        let items = await get("ideas/optionsets/" + this.state.id + "/items", {});
 
         console.log(items)
         this.setState({
@@ -59,6 +60,7 @@ class Edit extends Component {
             displayOrder: response.displayOrder,
             isMultiSelect: response.isMultiSelect,
             isRequired: response.isRequired,
+            items:items,
             loadData: true,
         })
     }
@@ -69,9 +71,44 @@ class Edit extends Component {
             btnDisabled: true
         })
 
-        let response = await put("ideas/Categories/" + this.state.id, payload);
+        console.log(payload);
+
+        let response = await put("ideas/optionsets/" + this.state.id, {
+            title: payload.title,
+            description: payload.description,
+            displayOrder: payload.displayOrder,
+            isMultiSelect: payload.isMultiSelect,
+            isRequired: payload.isRequired
+        });
 
         if (typeof response === 'string') {
+
+            await Promise.all(payload.items.map(async(data) => {
+                if(data.id)
+                {
+                    await put("ideas/optionsets/item/"+data.id, {
+                        ideaOptionSetId: this.state.id,
+                        title: data.title,
+                        displayOrder: data.displayOrder,
+                        weight: data.weight,
+                        isDisabled: data.isDisabled
+                    });
+                }
+                else
+                {
+                    await post("ideas/optionsets/item", {
+                        ideaOptionSetId: this.state.id,
+                        title: data.title,
+                        displayOrder: data.displayOrder,
+                        weight: data.weight,
+                        isDisabled: data.isDisabled
+                    });
+                }
+                //console.log(data)
+
+            }))
+
+
             this.setState({
                 message: <ModalAlert type="success" message="ثبت ویرایش دسته بندی با موفقیت انجام شد."
                                      title="هشدار سیستم"
@@ -79,6 +116,36 @@ class Edit extends Component {
                 btnDisabled: false
             })
 
+        }
+
+
+    }
+    confirmDelete(id,index,arrayHelpers) {
+        confirmAlert({
+            customUI: ({onClose}) => {
+                return (
+                    <div className='confirm-box'>
+                        <h4>تایید حذف!</h4>
+                        <p>آیا نسبت به حذف این آیتم مطمئنید؟</p>
+                        <Button className="btn btn-square btn-primary ml-2" onClick={onClose}>نه</Button>
+                        <Button className="btn btn-square btn-info ml-2" onClick={() => {
+                            this.handleClickDelete(id,index,arrayHelpers)
+                            onClose()
+                        }}>بله آیتم را حذف کن!
+                        </Button>
+                    </div>
+                )
+            }
+        })
+    }
+
+    async handleClickDelete(id,index,arrayHelpers) {
+
+
+        let response = await remove("ideas/optionsets/item/" + id);
+
+        if (typeof response === 'string') {
+            arrayHelpers.remove(index)
         }
 
 
@@ -137,9 +204,7 @@ class Edit extends Component {
                                 displayOrder: this.state.displayOrder,
                                 isMultiSelect: this.state.isMultiSelect,
                                 isRequired: this.state.isRequired,
-                                items: [{title: '', displayOrder: '', weight: '', isDisabled: false}]
-
-
+                                items:this.state.items
                             }}
                             validationSchema={Yup.object().shape({
                                 displayOrder: Yup.number()
@@ -212,7 +277,7 @@ class Edit extends Component {
                                                     <Input
                                                         type="checkbox"
                                                         name="isMultiSelect"
-                                                        defaultChecked={false}
+                                                        defaultChecked={this.state.isMultiSelect}
                                                         tag={Field}
                                                     />
                                                     چند انتخابی
@@ -223,7 +288,7 @@ class Edit extends Component {
                                                     <Input
                                                         type="checkbox"
                                                         name="isRequired"
-                                                        defaultChecked={false}
+                                                        defaultChecked={this.state.isRequired}
                                                         tag={Field}
                                                     />
                                                     اجباری
@@ -249,6 +314,11 @@ class Edit extends Component {
                                                     <Card className="p-0 mb-2">
                                                         <CardBody>
                                                             <Row className="align-items-start">
+                                                                <Input
+                                                                    type="hidden"
+                                                                    name={`items[${index}].id`}
+                                                                    tag={Field}
+                                                                />
                                                                 <Col sm="4">
                                                                     <Input
                                                                         type="text"
@@ -288,6 +358,7 @@ class Edit extends Component {
                                                                                 type="checkbox"
                                                                                 tag={Field}
                                                                                 name={`items[${index}].isDisabled`}
+                                                                                defaultChecked={data.isDisabled}
                                                                             />
                                                                             غیر فعال
                                                                         </Label>
@@ -296,7 +367,7 @@ class Edit extends Component {
                                                                 <Col sm="1" className="remove-items">
 
                                                                     <i className="fa fa-times-circle-o"
-                                                                       onClick={() => arrayHelpers.remove(index)}>
+                                                                       onClick={() => this.confirmDelete(data.id,index,arrayHelpers) }>
 
                                                                     </i>
 
