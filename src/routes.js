@@ -6,6 +6,8 @@ const Categories = React.lazy(() => import('./views/Categories/'));
 const IdeaStatuses = React.lazy(() => import('./views/IdeaStatuses/'));
 const Announcement = React.lazy(() => import('./views/Announcement/'));
 const IdeaOptionSets = React.lazy(() => import('./views/IdeaOptionSets/'));
+const RelationType = React.lazy(() => import('./views/RelationType/'));
+const Ideas = React.lazy(() => import('./views/Ideas/'));
 
 
 const routes = [
@@ -15,6 +17,8 @@ const routes = [
     {path: '/ideaStatuses/:act?/:id?', name: 'IdeaStatuses', component: IdeaStatuses },
     {path: '/announcement/:act?/:id?', name: 'Announcement', component: Announcement },
     {path: '/ideaOptionSets/:act?/:id?', name: 'IdeaOptionSets', component: IdeaOptionSets },
+    {path: '/relationType/:act?/:id?', name: 'RelationType', component: RelationType },
+    {path: '/ideas/:act?/:id?', name: 'Ideas', component: Ideas },
 ];
 
 export default routes;

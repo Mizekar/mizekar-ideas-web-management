@@ -21,9 +21,19 @@ export default {
             icon: 'fa fa-bullhorn',
         },
         {
-            name: 'ویژگی سوژه ها',
-            url: '/ideaOptionSets',
-            icon: 'fa fa-list-alt',
-        },
+        name: 'ویژگی سوژه ها',
+        url: '/ideaOptionSets',
+        icon: 'fa fa-list-alt',
+      },
+      {
+        name: 'انواع ارتباطات',
+        url: '/relationType',
+        icon: 'fa fa-link',
+      },
+      {
+        name: 'سوژه ها',
+        url: '/ideas',
+        icon: 'fa fa-plus',
+      },
     ],
 };
