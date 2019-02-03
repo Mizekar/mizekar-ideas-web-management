@@ -126,7 +126,7 @@ class Upload extends Component {
                                     }}
                                     validationSchema={Yup.object().shape({})}
                                     onSubmit={(values) => {
-                                        console.log(values);
+                                        //console.log(values);
                                         this.formSubmit(values);
                                     }}>
                                     {({values, errors, touched,setFieldValue}) => (

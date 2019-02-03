@@ -60,7 +60,7 @@ class Edit extends Component {
             displayOrder: response.displayOrder,
             isMultiSelect: response.isMultiSelect,
             isRequired: response.isRequired,
-            items:items,
+            items: items,
             loadData: true,
         })
     }
@@ -83,19 +83,16 @@ class Edit extends Component {
 
         if (typeof response === 'string') {
 
-            await Promise.all(payload.items.map(async(data) => {
-                if(data.id)
-                {
-                    await put("ideas/optionsets/item/"+data.id, {
+            await Promise.all(payload.items.map(async (data) => {
+                if (data.id) {
+                    await put("ideas/optionsets/item/" + data.id, {
                         ideaOptionSetId: this.state.id,
                         title: data.title,
                         displayOrder: data.displayOrder,
                         weight: data.weight,
                         isDisabled: data.isDisabled
                     });
-                }
-                else
-                {
+                } else {
                     await post("ideas/optionsets/item", {
                         ideaOptionSetId: this.state.id,
                         title: data.title,
@@ -120,7 +117,8 @@ class Edit extends Component {
 
 
     }
-    confirmDelete(id,index,arrayHelpers) {
+
+    confirmDelete(id, index, arrayHelpers) {
         confirmAlert({
             customUI: ({onClose}) => {
                 return (
@@ -129,7 +127,7 @@ class Edit extends Component {
                         <p>آیا نسبت به حذف این آیتم مطمئنید؟</p>
                         <Button className="btn btn-square btn-primary ml-2" onClick={onClose}>نه</Button>
                         <Button className="btn btn-square btn-info ml-2" onClick={() => {
-                            this.handleClickDelete(id,index,arrayHelpers)
+                            this.handleClickDelete(id, index, arrayHelpers)
                             onClose()
                         }}>بله آیتم را حذف کن!
                         </Button>
@@ -139,12 +137,15 @@ class Edit extends Component {
         })
     }
 
-    async handleClickDelete(id,index,arrayHelpers) {
+    async handleClickDelete(id, index, arrayHelpers) {
+
+        let response = '';
+        if (id) {
+            response = await remove("ideas/optionsets/item/" + id);
+        }
 
 
-        let response = await remove("ideas/optionsets/item/" + id);
-
-        if (typeof response === 'string') {
+        if (typeof response === 'string' || !id) {
             arrayHelpers.remove(index)
         }
 
@@ -204,7 +205,7 @@ class Edit extends Component {
                                 displayOrder: this.state.displayOrder,
                                 isMultiSelect: this.state.isMultiSelect,
                                 isRequired: this.state.isRequired,
-                                items:this.state.items
+                                items: this.state.items
                             }}
                             validationSchema={Yup.object().shape({
                                 displayOrder: Yup.number()
@@ -367,11 +368,9 @@ class Edit extends Component {
                                                                 <Col sm="1" className="remove-items">
 
                                                                     <i className="fa fa-times-circle-o"
-                                                                       onClick={() => this.confirmDelete(data.id,index,arrayHelpers) }>
+                                                                       onClick={() => this.confirmDelete(data.id, index, arrayHelpers)}>
 
                                                                     </i>
-
-
                                                                 </Col>
                                                             </Row>
                                                         </CardBody>

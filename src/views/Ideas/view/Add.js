@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {
     Breadcrumb,
     BreadcrumbItem, Button, Card,
-    CardBody, CardText, CardTitle,
+    CardBody,
     Col, FormFeedback,
     FormGroup, Input,
     Label, Nav, NavItem, NavLink,
@@ -17,12 +17,6 @@ import {get, post} from "../../../utils/apiMainRequest";
 import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
 import Select from 'react-select';
-
-const options = [
-    {value: 'chocolate', label: 'Chocolate'},
-    {value: 'strawberry', label: 'Strawberry'},
-    {value: 'vanilla', label: 'Vanilla'}
-];
 
 class Add extends Component {
     constructor(props) {
@@ -43,6 +37,8 @@ class Add extends Component {
             countries: [],
             selectedState: null,
             states: [],
+            selectedProvince: null,
+            provinces: [],
             selectedCity: null,
             cities: [],
             selectedVillage: null,
@@ -51,7 +47,7 @@ class Add extends Component {
             optionSetsItem: [],
             errorOptionSets: [],
             optionSetValue: [],
-            initialValueOptionSets:[]
+            initialValueOptionSets: []
         };
 
     }
@@ -61,6 +57,7 @@ class Add extends Component {
         this.getIdeaStatuses();
         this.getAnnouncement();
         this.getIdeaOptionSets();
+        this.getCountries();
 
     }
 
@@ -146,9 +143,96 @@ class Add extends Component {
             optionSetsItem: items,
             errorOptionSets: errorOptionSets,
             optionSetValue: initialValueOptionSets,
-            initialValueOptionSets:initialValueOptionSets
+            initialValueOptionSets: initialValueOptionSets
         })
     }
+
+    async getCountries() {
+        let response = await get("locations/Countries", {
+            pageNumber: 1,
+            pageSize: 1000
+        });
+
+        let countries = response.items.map((data) => {
+            return {value: data.id, label: data.title}
+        })
+
+        //console.log(response);
+
+        this.setState({
+            countries: countries
+        })
+    }
+
+    async getStatesByCountry(countryId) {
+        let response = await get("locations/States/country/" + countryId, {
+            pageNumber: 1,
+            pageSize: 1000
+        });
+
+        let states = response.items.map((data) => {
+            return {value: data.id, label: data.title}
+        })
+        this.setState({
+            selectedState: null,
+            states: states,
+            selectedProvince: null,
+            provinces: [],
+            selectedCity: null,
+            cities: [],
+            selectedVillage: null,
+            villages: [],
+        })
+    }
+    async getProvincesByState(stateId) {
+        let response = await get("locations/Provinces/state/" + stateId, {
+            pageNumber: 1,
+            pageSize: 1000
+        });
+
+        let provinces = response.items.map((data) => {
+            return {value: data.id, label: data.title}
+        })
+        this.setState({
+            selectedProvince: null,
+            provinces: provinces,
+            selectedCity: null,
+            cities: [],
+            selectedVillage: null,
+            villages: [],
+        })
+    }
+    async getCitiesByProvince(provinceId) {
+        let response = await get("locations/Cities/province/" + provinceId, {
+            pageNumber: 1,
+            pageSize: 1000
+        });
+
+        let cities = response.items.map((data) => {
+            return {value: data.id, label: data.title}
+        })
+        this.setState({
+            selectedCity: null,
+            cities: cities,
+            selectedVillage: null,
+            villages: [],
+        })
+    }
+    async getVillagesByCity(cityId) {
+        let response = await get("locations/Villages/city/" + cityId, {
+            pageNumber: 1,
+            pageSize: 1000
+        });
+
+        let villages = response.items.map((data) => {
+            return {value: data.id, label: data.title}
+        })
+        this.setState({
+            selectedVillage: null,
+            villages: villages,
+        })
+    }
+
 
     toggle(tab) {
         if (this.state.activeTab !== tab) {
@@ -201,7 +285,6 @@ class Add extends Component {
         payload.optionItemIds = optionItemIds
 
 
-
         let response = await post("ideas", payload);
 
         if (typeof response === 'string') {
@@ -209,7 +292,7 @@ class Add extends Component {
                 message: <ModalAlert type="success" message="ثبت سوژه با موفقیت انجام شد." title="هشدار سیستم"
                                      icon="fa fa-check-square-o"/>,
                 btnDisabled: false,
-                optionSetValue:this.state.initialValueOptionSets
+                optionSetValue: this.state.initialValueOptionSets
             })
             reset()
 
@@ -230,17 +313,14 @@ class Add extends Component {
         } else {
             optionSetValue[optionId][0] = (itemId)
         }
-        if(optionSetValue[optionId].length==0)
-        {
-            errorOptionSets[optionId]=true
-        }
-        else
-        {
-            errorOptionSets[optionId]=false
+        if (optionSetValue[optionId].length == 0) {
+            errorOptionSets[optionId] = true
+        } else {
+            errorOptionSets[optionId] = false
         }
         this.setState({
             optionSetValue: optionSetValue,
-            errorOptionSets:errorOptionSets
+            errorOptionSets: errorOptionSets
         })
     }
 
@@ -287,6 +367,7 @@ class Add extends Component {
                                 announcementId: '',
                                 countryId: '',
                                 stateId: '',
+                                provinceId: '',
                                 cityId: '',
                                 villageId: '',
                                 isPublished: true,
@@ -443,7 +524,8 @@ class Add extends Component {
                                                                 isMulti={false}
                                                                 onChange={(selectedOption) => {
                                                                     this.setState({selectedCountry: selectedOption});
-                                                                    setFieldValue("countryId", selectedOption.value)
+                                                                    setFieldValue("countryId", selectedOption.value);
+                                                                    this.getStatesByCountry(selectedOption.value)
                                                                 }}
                                                                 options={this.state.countries}
                                                                 tag={Field}
@@ -461,9 +543,29 @@ class Add extends Component {
                                                                 isMulti={false}
                                                                 onChange={(selectedOption) => {
                                                                     this.setState({selectedState: selectedOption});
-                                                                    setFieldValue("stateId", selectedOption.value)
+                                                                    setFieldValue("stateId", selectedOption.value);
+                                                                    this.getProvincesByState(selectedOption.value)
                                                                 }}
                                                                 options={this.state.states}
+                                                                tag={Field}
+                                                                placeholder="انتخاب کنید..."
+                                                            />
+
+
+                                                        </FormGroup>
+                                                        <FormGroup row>
+
+                                                            <label>شهرستان</label>
+                                                            <Select
+                                                                name="provinceId"
+                                                                value={this.state.selectedProvince}
+                                                                isMulti={false}
+                                                                onChange={(selectedOption) => {
+                                                                    this.setState({selectedProvince: selectedOption});
+                                                                    setFieldValue("provinceId", selectedOption.value);
+                                                                    this.getCitiesByProvince(selectedOption.value)
+                                                                }}
+                                                                options={this.state.provinces}
                                                                 tag={Field}
                                                                 placeholder="انتخاب کنید..."
                                                             />
@@ -479,7 +581,8 @@ class Add extends Component {
                                                                 isMulti={false}
                                                                 onChange={(selectedOption) => {
                                                                     this.setState({selectedCity: selectedOption});
-                                                                    setFieldValue("cityId", selectedOption.value)
+                                                                    setFieldValue("cityId", selectedOption.value);
+                                                                    this.getVillagesByCity(selectedOption.value)
                                                                 }}
                                                                 options={this.state.cities}
                                                                 tag={Field}
@@ -490,7 +593,7 @@ class Add extends Component {
                                                         </FormGroup>
                                                         <FormGroup row>
 
-                                                            <label>روستا-محله</label>
+                                                            <label>روستا</label>
                                                             <Select
                                                                 name="villageId"
                                                                 value={this.state.selectedVillage}

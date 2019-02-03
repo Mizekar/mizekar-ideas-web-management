@@ -37,7 +37,7 @@ export default class List extends Component {
             pageNumber: this.state.pageNumber,
             pageSize: this.state.pageSize
         });
-        //console.log(response)
+        //console.log(response.items)
 
         let totalCount = response.totalCount;
         let pageSize = response.pageSize;
@@ -127,20 +127,20 @@ export default class List extends Component {
 
                     {this.state.items.length > 0 &&
                     <Col xs="12">
-                        <Row className="row-list-header">
+                        {/*<Row className="row-list-header">
                             <Col xs="12" sm="4" className="col-list">عنوان سوژه</Col>
                             <Col xs="12" sm="1" className="col-list">تاریخ شروع</Col>
                             <Col xs="12" sm="1" className="col-list">تاریخ پایان</Col>
                             <Col xs="12" sm="2" className="col-list">وضعیت انتشار</Col>
                             <Col xs="12" sm="1" className="col-list">ویژه</Col>
                             <Col xs="12" sm="3" className="col-list">عملیات</Col>
-                        </Row>
+                        </Row>*/}
                         {
                             this.state.items.map((data) => {
 
                                 return (
                                     <Row className="row-list" key={data.id}>
-                                        <Col xs="12" sm="4" className="col-list">{data.title}</Col>
+                                        <Col xs="12" sm="4" className="col-list">{data.subject}</Col>
                                         <Col xs="12" sm="1"
                                              className="col-list"></Col>
                                         <Col xs="12" sm="1"
@@ -168,10 +168,10 @@ export default class List extends Component {
                                                     href={"#/ideas/edit/" + data.id}>
                                                 <i className="fa fa-pencil"></i> ویرایش
                                             </Button>
-                                            <Button className="btn-square btn btn-primary ml-2"
+                                           {/* <Button className="btn-square btn btn-primary ml-2"
                                                     href={"#/ideas/upload/" + data.id}>
                                                 <i className="fa fa-picture-o"></i> آپلود تصویر
-                                            </Button>
+                                            </Button>*/}
                                             <Button
                                                 className="btn-square btn btn-danger ml-1"
                                                 onClick={() => this.confirmDelete(data.id)}
@@ -190,7 +190,7 @@ export default class List extends Component {
                     {
                         !this.state.loading && this.state.items.length === 0 &&
                         <Col xs="12">
-                            <div className="emptyList">هیچ سوژهی وارد نشده است!</div>
+                            <div className="emptyList">هیچ سوژه ای وارد نشده است!</div>
                         </Col>
                     }
                 </Row>
