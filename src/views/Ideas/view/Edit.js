@@ -340,7 +340,7 @@ class Edit extends Component {
             pageSize: 1000
         });
 
-        console.log(response)
+        //console.log(response)
 
         let selectedRelation = response.items.map((data) => {
             return {label: data.relationType, value: data.relationTypeId}
@@ -350,7 +350,7 @@ class Edit extends Component {
                 id: data.id,
                 relationTypeId: data.relationTypeId,
                 displayOrder: data.displayOrder,
-                fullName: data.telephone,
+                fullName: data.fullName,
                 telephone: data.telephone,
                 mobile: data.mobile,
                 email: data.email,
@@ -415,12 +415,13 @@ class Edit extends Component {
         //console.log(relations)
 
         await Promise.all(relations.map(async (data) => {
+            //console.log(data);
             if (data.id) {
                 await put("ideas/relations/" + data.id, {
                     ideaId: this.state.id,
                     relationTypeId: data.relationTypeId,
                     displayOrder: data.displayOrder,
-                    fullName: data.telephone,
+                    fullName: data.fullName,
                     telephone: data.telephone,
                     mobile: data.mobile,
                     email: data.email,
@@ -431,7 +432,7 @@ class Edit extends Component {
                     ideaId: this.state.id,
                     relationTypeId: data.relationTypeId,
                     displayOrder: data.displayOrder,
-                    fullName: data.telephone,
+                    fullName: data.fullName,
                     telephone: data.telephone,
                     mobile: data.mobile,
                     email: data.email,

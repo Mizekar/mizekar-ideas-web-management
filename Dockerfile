@@ -4,6 +4,7 @@ RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 COPY package.json /usr/src/app/package.json
+RUN rm -rf node_modules
 RUN npm install
 COPY . /usr/src/app
 
@@ -14,7 +15,7 @@ COPY rdp-fix/index.js node_modules/react-datepicker2/dist/index.js
 COPY rdp-fix/DatePicker.js node_modules/react-datepicker2/src/components/DatePicker.js
 RUN rm -rf rdp-fix
 
-#RUN npm install react-scripts@1.1.1 -g --silent
+RUN npm install react-scripts@1.1.1 -g --silent
 RUN npm run build
 
 # Stage 2 - the production environment
