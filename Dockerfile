@@ -15,7 +15,7 @@ COPY rdp-fix/index.js node_modules/react-datepicker2/dist/index.js
 COPY rdp-fix/DatePicker.js node_modules/react-datepicker2/src/components/DatePicker.js
 RUN rm -rf rdp-fix
 
-#RUN npm install react-scripts@2.1.1 -g --silent
+RUN npm install react-scripts@latest -g --silent
 RUN npm run build
 
 # Stage 2 - the production environment
