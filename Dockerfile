@@ -1,5 +1,5 @@
 # build environment
-FROM node@latest as builder
+FROM node:latest as builder
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
