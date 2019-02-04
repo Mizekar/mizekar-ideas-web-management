@@ -1,5 +1,5 @@
 # build environment
-FROM node:11.5.0 as builder
+FROM node:11.9.0 as builder
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
@@ -16,7 +16,7 @@ COPY rdp-fix/index.js node_modules/react-datepicker2/dist/index.js
 COPY rdp-fix/DatePicker.js node_modules/react-datepicker2/src/components/DatePicker.js
 RUN rm -rf rdp-fix
 
-RUN npm install react-scripts@latest -g --silent
+RUN npm install react-scripts@2.1.3 -g --silent
 RUN npm run build
 
 # Stage 2 - the production environment
