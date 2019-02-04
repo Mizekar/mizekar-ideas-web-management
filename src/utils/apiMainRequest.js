@@ -27,12 +27,13 @@ export async function post(url,payload) {
     }
 }
 
-export async function upload(url,payload) {
+export async function upload(url,payload,callbackProgress) {
 
     try {
         let response = await axios.post(`${API_URL}/${url}`, payload, {
             onUploadProgress: (p) => {
-                console.log( Math.round(p.loaded * 100 / p.total));
+              //console.log( Math.round(p.loaded * 100 / p.total));
+              callbackProgress(Math.round(p.loaded * 100 / p.total))
             },
             headers: {
                 "Content-Type": "multipart/form-data",
