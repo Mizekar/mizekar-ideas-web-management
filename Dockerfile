@@ -8,6 +8,7 @@ RUN rm -rf node_modules
 RUN npm install
 COPY . /usr/src/app
 
+
 #rdp2 bug fixed
 RUN rm -rf node_modules/react-datepicker2/dist/index.js
 RUN rm -rf node_modules/react-datepicker2/src/components/DatePicker.js
