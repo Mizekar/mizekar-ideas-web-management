@@ -19,6 +19,7 @@ import Loading from "../../../utils/loading";
 import Select from 'react-select';
 import {confirmAlert} from "react-confirm-alert";
 
+
 const ErrorMessage = ({name}) => (
     <Field
         name={name}
@@ -63,7 +64,8 @@ class Edit extends Component {
             optionSetValue: [],
             initialValueOptionSets: [],
             relationTypes: [],
-            relations: []
+            relations: [],
+            selectedRelationTypeId: []
         };
 
     }
@@ -74,7 +76,7 @@ class Edit extends Component {
         this.getAnnouncement();
         this.getCountries();
         this.getRelationTypes();
-        //this.getIdeaRelations();
+        this.getIdeaRelations();
         await this.getIdeaOptionSets();
         await this.getById();
     }
@@ -82,7 +84,7 @@ class Edit extends Component {
     async getById() {
         let response = await get("ideas/details/" + this.state.id, {});
 
-        console.log(response)
+        //console.log(response)
 
         let selectedCategories = response.categories.map((data) => {
             return {value: data.id, label: data.name}
@@ -120,6 +122,7 @@ class Edit extends Component {
             categoriesValue: response.categories.map((data) => {
                 return data.id
             }),
+            media: response.media,
             selectedIdeaStatuses: response.statusId ? this.state.ideaStatuses.filter(item => item.value == response.statusId) : '',
             statusId: response.statusId,
             announcementId: response.announcementId,
@@ -332,15 +335,32 @@ class Edit extends Component {
     }
 
     async getIdeaRelations() {
-        let response = await get("ideas/relations/" + this.state.id, {
+        let response = await get("ideas/relations/idea/" + this.state.id, {
             pageNumber: 1,
             pageSize: 1000
         });
 
         console.log(response)
 
+        let selectedRelation = response.items.map((data) => {
+            return {label: data.relationType, value: data.relationTypeId}
+        })
+        let relations = response.items.map((data) => {
+            return {
+                id: data.id,
+                relationTypeId: data.relationTypeId,
+                displayOrder: data.displayOrder,
+                fullName: data.telephone,
+                telephone: data.telephone,
+                mobile: data.mobile,
+                email: data.email,
+                description: data.description,
+            }
+        })
+
         this.setState({
-            relations: response.items
+            relations: relations,
+            selectedRelationTypeId: selectedRelation
         })
     }
 
@@ -390,7 +410,7 @@ class Edit extends Component {
 
         let response = await put("ideas/" + this.state.id, payload);
         payload.relations = relations
-        payload.medias=medias
+        payload.medias = medias
 
         //console.log(relations)
 
@@ -425,7 +445,7 @@ class Edit extends Component {
         await Promise.all(medias.map(async (item) => {
             let data = new FormData();
             data.append('formFile', item);
-            await upload("ideas/"+this.state.id+"/Media/Upload",data)
+            await upload("ideas/" + this.state.id + "/Media/Upload", data)
 
         }))
 
@@ -568,7 +588,7 @@ class Edit extends Component {
                                 villageId: '',
                                 isPublished: this.state.isPublished,
                                 relations: this.state.relations,
-                                medias:[]
+                                medias: []
                             }}
                             validationSchema={Yup.object().shape({
                                 statusId: Yup.string()
@@ -1000,10 +1020,12 @@ class Edit extends Component {
                                                                             <label>نوع ارتباط</label>
                                                                             <Select
                                                                                 name={`relations[${index}].relationTypeId`}
-                                                                                //value={this.state.selectedAnnouncement}
+                                                                                value={this.state.selectedRelationTypeId[index]}
                                                                                 isMulti={false}
                                                                                 onChange={(selectedOption) => {
-                                                                                    this.setState({selectedAnnouncement: selectedOption});
+                                                                                    let selectedRelationTypeId = this.state.selectedRelationTypeId
+                                                                                    selectedRelationTypeId[index] = selectedOption
+                                                                                    this.setState({selectedRelationTypeId: selectedOption});
                                                                                     setFieldValue(`relations[${index}].relationTypeId`, selectedOption.value)
                                                                                 }}
                                                                                 options={this.state.relationTypes}
@@ -1138,15 +1160,14 @@ class Edit extends Component {
                                 </Form>
                             )}
                         </Formik>
-                        <
-                        /Col>
+                    </Col>
                 </Row>
-                    }
+                }
 
-                    </div>
-                    );
-                    }
+            </div>
+        );
+    }
 
-                    }
+}
 
-                    export default Edit;
+export default Edit;
