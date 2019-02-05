@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Col, Row} from "reactstrap";
-import moment from "moment-jalaali";
+//import moment from "moment-jalaali";
 
 export default class MyList extends React.Component {
     constructor(props) {
