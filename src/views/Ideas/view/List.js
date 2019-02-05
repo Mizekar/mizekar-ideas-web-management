@@ -140,11 +140,7 @@ export default class List extends Component {
 
                                 return (
                                     <Row className="row-list" key={data.id}>
-                                        <Col xs="12" sm="4" className="col-list">{data.subject}</Col>
-                                        <Col xs="12" sm="1"
-                                             className="col-list"></Col>
-                                        <Col xs="12" sm="1"
-                                             className="col-list"></Col>
+                                        <Col xs="12" sm="7" className="col-list">{data.subject}</Col>
                                         <Col xs="12" sm="2" className="col-list">
                                             {data.isPublished &&
                                             <Button className="btn btn-square btn-outline-success " disabled={true}>منتشر
@@ -155,23 +151,15 @@ export default class List extends Component {
                                                 انتشار</Button>
                                             }
                                         </Col>
-                                        <Col xs="12" sm="1" className="col-list">
-                                            {data.isSpecial &&
-                                            <i className="fa fa-star goldenrod"></i>
-                                            }
-                                            {!data.isSpecial &&
-                                            <i className="fa fa-star-o"></i>
-                                            }
-                                        </Col>
                                         <Col xs="12" sm="3" className="col-list">
+                                            <Button className="btn-square btn btn-light ml-2"
+                                                    href={"#/ideas/detail/" + data.id}>
+                                                <i className="fa fa-list-alt"></i> جزئیات
+                                            </Button>
                                             <Button className="btn-square btn btn-info ml-2"
                                                     href={"#/ideas/edit/" + data.id}>
                                                 <i className="fa fa-pencil"></i> ویرایش
                                             </Button>
-                                           {/* <Button className="btn-square btn btn-primary ml-2"
-                                                    href={"#/ideas/upload/" + data.id}>
-                                                <i className="fa fa-picture-o"></i> آپلود تصویر
-                                            </Button>*/}
                                             <Button
                                                 className="btn-square btn btn-danger ml-1"
                                                 onClick={() => this.confirmDelete(data.id)}

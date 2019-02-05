@@ -99,6 +99,7 @@ class Edit extends Component {
             let data = response.selectedOptions[i];
             optionSetValue[data.ideaOptionSetId].push(data.id);
         }
+
         //console.log(optionSetValue);
 
         if (response.countryId) {
@@ -1203,7 +1204,7 @@ class Edit extends Component {
                                     <Row className="mb-2 pr-3">
                                         <Button color="warning" type="submit" disabled={this.state.btnDisabled}
                                                 className="px-4">
-                                            ثبت سوژه
+                                            ثبت ویرایش سوژه
                                         </Button>
                                         {this.state.btnDisabled && <div className="loading-box">
                                             <Loading/>

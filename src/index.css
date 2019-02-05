@@ -376,9 +376,17 @@ legend {
     background: none !important;
     border: none !important;
     border-bottom: 4px solid #FFCB2C !important;
+    color:#000 !important;
 
 }
-
+.nav-tabs .nav-link
+{
+    color:#9db0c2 !important;
+}
+.nav-link
+{
+    padding: 0.5rem 2rem !important;
+}
 .nav-tabs .nav-link:hover {
     border-color: rgb(234, 240, 246) !important;
 }
@@ -507,7 +515,14 @@ legend {
 {
     font-size: 2rem;
 }
-
+.card
+{
+    border-radius: 0px !important;
+}
+.label-detail
+{
+    color:#9db0c2;
+}
 
 /*
 a{
