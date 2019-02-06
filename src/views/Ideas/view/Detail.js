@@ -24,15 +24,19 @@ class Detail extends Component {
     }
 
     async componentWillMount() {
+        this.getIdeaRelations();
+        this.getIdeaStatuses();
         await this.getById();
+
     }
 
     async getById() {
+
+        //get option set items for idea
         let responseOption = await get("ideas/optionsets", {
             pageNumber: 1,
             pageSize: 1000
         });
-
         let optionSetValue = []
 
         for (let i = 0; i < responseOption.items.length; i++) {
@@ -40,15 +44,18 @@ class Detail extends Component {
             optionSetValue[data.id] = []
         }
 
+        //get idea detail info
         let response = await get("ideas/details/" + this.state.id, {});
-        //console.log(optionSetValue)
-        console.log(response)
+        //console.log(response)
+        //console.log(response)
         for (let i = 0; i < response.selectedOptions.length; i++) {
             let data = response.selectedOptions[i];
             optionSetValue[data.ideaOptionSetId].push(
-                    data.title
+                data.title
             );
         }
+
+        console.log(response)
 
         this.setState(
             {
@@ -57,10 +64,65 @@ class Detail extends Component {
                 summary: response.summary,
                 details: response.details,
                 selectedOptions: responseOption.items,
-                optionSetValue:optionSetValue
+                optionSetValue: optionSetValue,
+                categories: response.categories,
+                statusId:response.statusId
 
             }
         )
+    }
+    async getIdeaStatuses() {
+        let response = await get("ideas/status", {
+            pageNumber: 1,
+            pageSize: 1000
+        });
+
+        this.setState({
+            ideaStatuses: response.items
+        })
+    }
+
+    async getIdeaRelations() {
+        let response = await get("ideas/relations/idea/" + this.state.id, {
+            pageNumber: 1,
+            pageSize: 1000
+        });
+
+        //console.log(response)
+
+        let ideaRelations = []
+        let relationTypeId = []
+        for (let i = 0; i < response.items.length; i++) {
+            let data = response.items[i];
+            let index=relationTypeId.indexOf(data.relationTypeId)
+            if(index==-1)
+            {
+                relationTypeId.push(data.relationTypeId)
+                index=relationTypeId.indexOf(data.relationTypeId)
+            }
+
+            if (ideaRelations[index] === undefined) {
+                ideaRelations[index] = {
+                    id: data.relationTypeId,
+                    title: data.relationType,
+                    items: []
+                }
+            }
+            ideaRelations[index].items.push(
+                {
+                    id: data.id,
+                    fullName: data.fullName,
+                    telephone: data.telephone,
+                    mobile: data.mobile,
+                    email: data.email,
+                    description: data.description,
+                }
+            )
+        }
+
+        this.setState({
+            relations: ideaRelations,
+        })
     }
 
     toggle(tab) {
@@ -72,6 +134,7 @@ class Detail extends Component {
     }
 
     render() {
+
         return (
 
             <div className="animated fadeIn">
@@ -84,8 +147,37 @@ class Detail extends Component {
                         </Breadcrumb>
                     </Col>
                 </Row>
+                <Card className="mt-2">
+                    <CardBody className="p-0">
+                        <Row className="p-3 m-0">
+                            <Col xs="12" md="10">
+                                {
+                                    this.state.loadData && this.state.ideaStatuses.map(data=>{
+                                        let className="btn-white"
+                                        if(data.id==this.state.statusId)
+                                        {
+                                            className="btn-cyan"
+                                        }
+                                        //alert(className)
 
-                <div className="mt-2">
+                                        return(
+                                            <Button className={"btn ml-2 "+className} key={data.id}>
+                                                {data.name}
+                                            </Button>
+                                        )
+                                    })
+                                }
+                            </Col>
+                            <Col xs="12" md="2" className="action-detail">
+                                <a href={"#/ideas/edit/"+this.state.id} className="btn btn-white ml-4">ویرایش</a>
+                                <a className="trash-detail"><i className="fa fa-trash"></i> </a>
+                            </Col>
+                        </Row>
+
+                    </CardBody>
+
+                </Card>
+                <div className="mt-3">
                     <Nav tabs>
                         <NavItem>
                             <NavLink
@@ -166,6 +258,23 @@ class Detail extends Component {
                             <Card>
                                 <CardBody className="p-0">
                                     <Row className="p-3 m-0 b-b-1">
+                                        <Col xs="12" sm="2" md="1" className="label-detail">دسته بندی :</Col>
+                                        <Col xs="12" sm="10" md="11">
+                                            {
+                                                this.state.loadData && this.state.categories.map((data, index) => {
+                                                    return (
+                                                        <div key={index}>{data.name}</div>
+                                                    )
+                                                })
+                                            }
+                                        </Col>
+                                    </Row>
+                                </CardBody>
+
+                            </Card>
+                            <Card>
+                                <CardBody className="p-0">
+                                    <Row className="p-3 m-0 b-b-1">
                                         <Col xs="12" sm="2" md="1" className="label-detail">فراخوان :</Col>
                                         <Col xs="12" sm="10" md="11">{this.state.announcement}</Col>
                                     </Row>
@@ -193,8 +302,9 @@ class Detail extends Component {
                                                 <Row className="p-3 m-0 b-b-1" key={data.id}>
                                                     <Col xs="12" sm="12" md="4"
                                                          className="label-detail">{data.title}</Col>
-                                                    <Col xs="12" sm="12" md="8">{this.state.optionSetValue[data.id].map((data,index)=>{
-                                                        return(
+                                                    <Col xs="12" sm="12"
+                                                         md="8">{this.state.optionSetValue[data.id].map((data, index) => {
+                                                        return (
                                                             <div key={index}>{data}</div>
                                                         )
 
@@ -211,6 +321,51 @@ class Detail extends Component {
                         <TabPane tabId="3">
                         </TabPane>
                         <TabPane tabId="4">
+                            {
+                                this.state.loadData && this.state.relations.map((data) => {
+                                    return (
+                                        <Card key={data.id}>
+                                            <CardBody className="p-0">
+                                                <Row className="p-3 m-0 b-b-1">
+                                                    <Col xs="12" className="label-relation">{data.title}</Col>
+                                                </Row>
+                                                {data.items.map(item=>{
+                                                    return (
+                                                        <Row className="p-3 m-0 b-b-1" key={item.id}>
+                                                            <Col xs="12" md="3" >
+                                                                <div className="avatar-yellow float-right ml-2" ></div>
+                                                                <div className="float-right">
+                                                                    <div>{item.fullName}</div>
+                                                                    <div className="file-size-text">{item.email}</div>
+                                                                </div>
+                                                            </Col>
+                                                            <Col xs="12" md="7">
+                                                                <div className="description-relation">
+                                                                    {item.description}
+                                                                </div>
+
+                                                            </Col>
+                                                            <Col xs="12" md="2">
+                                                                <div className="contact-relation mb-2">
+                                                                    <i className="fa fa-phone"></i>
+                                                                    {item.telephone}
+                                                                </div>
+                                                                <div className="contact-relation mb-1">
+                                                                    <i className="fa fa-mobile"></i>
+                                                                    {item.mobile}
+                                                                </div>
+
+                                                            </Col>
+                                                        </Row>
+                                                    )
+                                                })}
+
+                                            </CardBody>
+
+                                        </Card>
+                                    )
+                                })
+                            }
                         </TabPane>
                         <TabPane tabId="5">
                         </TabPane>

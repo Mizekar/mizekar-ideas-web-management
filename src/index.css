@@ -12,6 +12,7 @@
 
 body {
     font-family: 'Vazir' !important;
+    color:#202124;
 
 }
 
@@ -30,6 +31,10 @@ body {
 .default-breadcrumb {
     margin-right: -45px !important;
     margin-left: -45px !important;
+}
+.breadcrumb-item.active
+{
+    color:#9db0c2 !important;
 }
 
 .app-header .nav-item button {
@@ -382,9 +387,6 @@ legend {
 .nav-tabs .nav-link
 {
     color:#9db0c2 !important;
-}
-.nav-link
-{
     padding: 0.5rem 2rem !important;
 }
 .nav-tabs .nav-link:hover {
@@ -454,7 +456,7 @@ legend {
 }
 .file-size-text {
     font-size: 0.75rem;
-    color: silver;
+    color:#c1ceda;
     padding: 5px 0px;
 }
 .file-url-box
@@ -523,7 +525,59 @@ legend {
 {
     color:#9db0c2;
 }
+.avatar-yellow
+{
+    background:#FFCB2C;
+    width:40px;
+    height:40px;
+    border-radius: 100%;
+}
+.contact-relation
+{
+    direction: ltr;
+    text-align: left;
+    color:#c1ceda;
+    font-size: 0.75rem;
+}
+.contact-relation i
+{
+    font-size:16px;
+    color:#FFCB2C;
+    padding-right: 5px;
+}
+.label-relation
+{
+    font-size: 1rem;
+}
+.description-relation
+{
+    color:#9db0c2;
+}
+.btn-white
+{
+    background: #FFFFFF !important;
+    border:1px solid #9db0c2  !important;
+    color: #9db0c2  !important;
+}
+.btn-cyan
+{
+    background: #4ec2c0  !important;
+    color: #FFF  !important;
+    border:1px solid #4ec2c0  !important;
+}
+.trash-detail
+{
+    font-size: 30px;
+    color:#9db0c2 !important;
+    cursor: pointer;
+}
+.action-detail
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 
+}
 /*
 a{
     color:#F8C31F !important;
