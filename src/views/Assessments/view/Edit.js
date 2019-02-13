@@ -47,20 +47,24 @@ class Edit extends Component {
     }
 
     async getById() {
-        let response = await get("ideas/optionsets/details/" + this.state.id, {});
+        let response = await get("ideas/assessments/details/" + this.state.id, {});
 
         //console.log(response)
 
-        let items = await get("ideas/optionsets/" + this.state.id + "/items", {});
+        let options = await get("ideas/assessments/" + this.state.id + "/options", {});
+        /*let items = await get("ideas/assessments/" + this.state.id + "/items", {});
 
-        console.log(items)
+        console.log(items);
+
+      await Promise.all(options.items.map(async (data) => {
+
+      }))*/
+
+        //console.log(options)
         this.setState({
             title: response.title,
             description: response.description,
             displayOrder: response.displayOrder,
-            isMultiSelect: response.isMultiSelect,
-            isRequired: response.isRequired,
-            items: items,
             loadData: true,
         })
     }
@@ -73,7 +77,7 @@ class Edit extends Component {
 
         console.log(payload);
 
-        let response = await put("ideas/optionsets/" + this.state.id, {
+        let response = await put("ideas/assessments/" + this.state.id, {
             title: payload.title,
             description: payload.description,
             displayOrder: payload.displayOrder,
@@ -85,7 +89,7 @@ class Edit extends Component {
 
             await Promise.all(payload.items.map(async (data) => {
                 if (data.id) {
-                    await put("ideas/optionsets/item/" + data.id, {
+                    await put("ideas/assessments/item/" + data.id, {
                         ideaOptionSetId: this.state.id,
                         title: data.title,
                         displayOrder: data.displayOrder,
@@ -93,7 +97,7 @@ class Edit extends Component {
                         isDisabled: data.isDisabled
                     });
                 } else {
-                    await post("ideas/optionsets/item", {
+                    await post("ideas/assessments/item", {
                         ideaOptionSetId: this.state.id,
                         title: data.title,
                         displayOrder: data.displayOrder,
@@ -141,7 +145,7 @@ class Edit extends Component {
 
         let response = '';
         if (id) {
-            response = await remove("ideas/optionsets/item/" + id);
+            response = await remove("ideas/assessments/item/" + id);
         }
 
 
@@ -198,228 +202,331 @@ class Edit extends Component {
                 <Row className="mt-4">
                     <Col xs="12">
 
-                        <Formik
-                            initialValues={{
-                                title: this.state.title,
-                                description: this.state.description,
-                                displayOrder: this.state.displayOrder,
-                                isMultiSelect: this.state.isMultiSelect,
-                                isRequired: this.state.isRequired,
-                                items: this.state.items
-                            }}
-                            validationSchema={Yup.object().shape({
+                      <Formik
+                        initialValues={{
+                          title: this.state.title,
+                          description: this.state.description,
+                          displayOrder: this.state.displayOrder,
+
+                          options: [
+                            {
+                              title: '',
+                              description: '',
+                              displayOrder: '',
+                              isMultiSelect: false,
+                              isRequired: false,
+                              items: [{
+                                title: '',
+                                displayOrder: '',
+                                weight: '',
+                                isDisabled: false
+                              }
+                              ]
+                            }
+                          ],
+                        }}
+                        validationSchema={Yup.object().shape({
+                          displayOrder: Yup.number()
+                            .required('تکمیل اولویت نمایش الزامی است')
+                            .typeError("مقدار وارد شده باید به صورت اعداد صحیح باشد."),
+                          options: Yup.array()
+                            .of(
+                              Yup.object().shape({
                                 displayOrder: Yup.number()
-                                    .required('تکمیل اولویت نمایش الزامی است')
-                                    .typeError("مقدار وارد شده باید به صورت اعداد صحیح باشد."),
+                                  .typeError("تکمیل اولویت الزامی و باید به صورت عددی باشد.")
+                                  .required('تکمیل اولویت نمایش الزامی است'),
                                 items: Yup.array()
-                                    .of(
-                                        Yup.object().shape({
-                                            displayOrder: Yup.number()
-                                                .typeError("تکمیل اولویت الزامی و باید به صورت عددی باشد.")
-                                                .required('تکمیل اولویت نمایش الزامی است'),
+                                  .of(
+                                    Yup.object().shape({
+                                      displayOrder: Yup.number()
+                                        .typeError("تکمیل اولویت الزامی و باید به صورت عددی باشد.")
+                                        .required('تکمیل اولویت نمایش الزامی است'),
+                                      weight: Yup.number()
+                                        .required('تکمیل وزن گزینه الزامی است')
+                                        .typeError("تکمیل وزن الزامی و باید به صورت عددی باشد."),
+                                    })
+                                  )
+                              }),
 
-                                            weight: Yup.number()
-                                                .required('تکمیل وزن آیتم الزامی است')
-                                                .typeError("تکمیل وزن الزامی و باید به صورت عددی باشد."),
-                                        })
-                                    )
-                                    .required('وارد کردن آیتم برای ارزیابی الزامی است.') // these constraints are shown if and only if inner constraints are satisfied
-                                    .min(2, 'وارد کردن حداقل 2 آیتم برای ارزیابی الزامی است.'),
-                            })}
-                            onSubmit={(values, {resetForm}) => {
-                                this.formSubmit(values, resetForm);
-                            }}>
-                            {({errors, touched, values}) => (
-                                <Form>
-                                    <Card className="p-4">
-                                        <CardBody>
-                                            <FormGroup row>
-                                                <label>عنوان ارزیابی</label>
-                                                <Input
-                                                    name="title"
-                                                    type="text"
-                                                    placeholder=""
-                                                    tag={Field}
-                                                    invalid={errors.title && touched.title}
-                                                />
+                            )
+                        })}
+                        onSubmit={(values, {resetForm}) => {
+                          this.formSubmit(values, resetForm);
+                        }}>
+                        {({errors, touched, values}) => (
+                          <Form>
+                            <Card className="p-4">
+                              <CardBody>
+                                <FormGroup row>
+                                  <label>عنوان ارزیابی</label>
+                                  <Input
+                                    name="title"
+                                    type="text"
+                                    placeholder=""
+                                    tag={Field}
+                                    invalid={errors.title && touched.title}
+                                  />
 
-                                                <FormFeedback>{errors.title}</FormFeedback>
-                                            </FormGroup>
-                                            <FormGroup row>
+                                  <FormFeedback>{errors.title}</FormFeedback>
+                                </FormGroup>
+                                <FormGroup row>
 
-                                                <label>توضیح ارزیابی</label>
-                                                <Input
-                                                    name="description"
-                                                    type="textarea"
-                                                    component="textarea"
-                                                    placeholder=""
-                                                    tag={Field}
-                                                    invalid={errors.description && touched.description}
-                                                />
+                                  <label>توضیح ارزیابی</label>
+                                  <Input
+                                    name="description"
+                                    type="textarea"
+                                    component="textarea"
+                                    placeholder=""
+                                    tag={Field}
+                                    invalid={errors.description && touched.description}
+                                  />
 
-                                                <FormFeedback>{errors.description}</FormFeedback>
-
-
-                                            </FormGroup>
-                                            <FormGroup row>
-                                                <label>اولویت نمایش</label>
-                                                <Input
-                                                    name="displayOrder"
-                                                    type="number"
-                                                    placeholder=""
-                                                    tag={Field}
-                                                    invalid={errors.displayOrder && touched.displayOrder}
-                                                />
-
-                                                <FormFeedback>{errors.displayOrder}</FormFeedback>
-                                            </FormGroup>
-                                            <FormGroup check className="mr-2 mt-3">
-                                                <Label check>
-                                                    <Input
-                                                        type="checkbox"
-                                                        name="isMultiSelect"
-                                                        defaultChecked={this.state.isMultiSelect}
-                                                        tag={Field}
-                                                    />
-                                                    چند انتخابی
-                                                </Label>
-                                            </FormGroup>
-                                            <FormGroup check className="mr-2 mt-3">
-                                                <Label check>
-                                                    <Input
-                                                        type="checkbox"
-                                                        name="isRequired"
-                                                        defaultChecked={this.state.isRequired}
-                                                        tag={Field}
-                                                    />
-                                                    اجباری
-                                                </Label>
-                                            </FormGroup>
+                                  <FormFeedback>{errors.description}</FormFeedback>
 
 
-                                        </CardBody>
-                                    </Card>
-                                    <FormGroup tag="fieldset">
-                                        <legend>آیتم های ارزیابی</legend>
-                                    </FormGroup>
-                                    {/*{
-                                        Object.keys(this.state.items).map((key) => {
-                                            return this.state.items[key]
-                                        })
-                                    }*/}
-                                    <FieldArray
-                                        name="items"
-                                        render={(arrayHelpers) => (
+                                </FormGroup>
+                                <FormGroup row>
+                                  <label>اولویت نمایش</label>
+                                  <Input
+                                    name="displayOrder"
+                                    type="number"
+                                    placeholder=""
+                                    tag={Field}
+                                    invalid={errors.displayOrder && touched.displayOrder}
+                                  />
+
+                                  <FormFeedback>{errors.displayOrder}</FormFeedback>
+                                </FormGroup>
+
+
+                              </CardBody>
+                            </Card>
+                            <FormGroup tag="fieldset">
+                              <legend>سوالات ارزیابی</legend>
+                            </FormGroup>
+                            <FieldArray
+                              name="options"
+                              render={(arrayOptions) => (
+                                <div>
+                                  {values.options.map((dataOptions, indexOptions) => (
+                                    <Card className="pr-4 pl-4 pt-0 pb-0" key={indexOptions}>
+                                      <CardBody>
+                                        <div className="remove-options">
+                                          <a onClick={() => arrayOptions.remove(indexOptions)} className="remove-options-icon">
+                                            <i className="fa fa-times"></i>
+                                          </a>
+                                        </div>
+                                        <FormGroup row>
+                                          <label>عنوان سوال</label>
+                                          <Input
+                                            name={`options[${indexOptions}].title`}
+                                            type="text"
+                                            placeholder=""
+                                            tag={Field}
+                                          />
+
+                                          <ErrorMessage
+                                            name={`options[${indexOptions}].title`}/>
+                                        </FormGroup>
+                                        <FormGroup row>
+
+                                          <label>توضیح سوال</label>
+                                          <Input
+                                            name={`options[${indexOptions}].description`}
+                                            type="textarea"
+                                            component="textarea"
+                                            placeholder=""
+                                            tag={Field}
+                                          />
+
+                                          <ErrorMessage
+                                            name={`options[${indexOptions}].description`}/>
+
+
+                                        </FormGroup>
+                                        <FormGroup row>
+                                          <label>اولویت نمایش</label>
+                                          <Input
+                                            name={`options[${indexOptions}].displayOrder`}
+                                            type="number"
+                                            placeholder=""
+                                            tag={Field}
+                                          />
+
+                                          <ErrorMessage
+                                            name={`options[${indexOptions}].displayOrder`}/>
+                                        </FormGroup>
+                                        <FormGroup check className="mr-2 mt-3">
+                                          <Label check>
+                                            <Input
+                                              type="checkbox"
+                                              name={`options[${indexOptions}].isMultiSelect`}
+                                              defaultChecked={false}
+                                              tag={Field}
+                                            />
+                                            چند انتخابی
+                                          </Label>
+                                        </FormGroup>
+                                        <FormGroup check className="mr-2 mt-3">
+                                          <Label check>
+                                            <Input
+                                              type="checkbox"
+                                              name={`options[${indexOptions}].isRequired`}
+                                              defaultChecked={false}
+                                              tag={Field}
+                                            />
+                                            اجباری
+                                          </Label>
+                                        </FormGroup>
+
+                                        <FieldArray
+                                          name={`options[${indexOptions}].items`}
+                                          render={(arrayHelpers) => (
                                             <div>
-                                                {values.items.map((data, index) => (
-                                                    <Card className="p-0 mb-2">
-                                                        <CardBody>
-                                                            <Row className="align-items-start">
-                                                                <Input
-                                                                    type="hidden"
-                                                                    name={`items[${index}].id`}
-                                                                    tag={Field}
-                                                                />
-                                                                <Col sm="4">
-                                                                    <Input
-                                                                        type="text"
-                                                                        tag={Field}
-                                                                        name={`items[${index}].title`}
-                                                                        placeholder="عنوان آیتم"
-                                                                    />
-                                                                </Col>
-                                                                <Col sm="3">
+                                              {values.options[indexOptions].items.map((data, index) => (
+                                                <Card
+                                                  className=" mt-4 mb-1 bg-light itemsBox"
+                                                  key={indexOptions+'-'+index}
+                                                >
+                                                  <CardBody>
+                                                    <Row className="align-items-start">
+                                                      <Col sm="2">
 
-                                                                    <Input
-                                                                        type="number"
-                                                                        name={`items[${index}].displayOrder`}
-                                                                        tag={Field}
-                                                                        placeholder="اولویت نمایش"
-                                                                        /*invalid={errors.displayOrder && touched.displayOrder}*/
-                                                                    />
-                                                                    <ErrorMessage
-                                                                        name={`items[${index}].displayOrder`}/>
+                                                        <Input
+                                                          type="number"
+                                                          name={`options[${indexOptions}].items[${index}].displayOrder`}
+                                                          tag={Field}
+                                                          placeholder="اولویت نمایش"
+                                                          /*invalid={errors.displayOrder && touched.displayOrder}*/
+                                                        />
+                                                        <ErrorMessage
+                                                          name={`options[${indexOptions}].items[${index}].displayOrder`}/>
 
-                                                                </Col>
-                                                                <Col sm="3">
-                                                                    <Input
-                                                                        type="number"
-                                                                        tag={Field}
-                                                                        name={`items[${index}].weight`}
-                                                                        placeholder="وزن آیتم"
-                                                                    />
-                                                                    <ErrorMessage
-                                                                        name={`items[${index}].weight`}/>
-                                                                </Col>
-                                                                <Col sm="1">
+                                                      </Col>
+                                                      <Col sm="5">
+                                                        <Input
+                                                          type="text"
+                                                          tag={Field}
+                                                          name={`options[${indexOptions}].items[${index}].title`}
+                                                          placeholder="عنوان گزینه"
+                                                        />
+                                                      </Col>
 
-                                                                    <FormGroup check className="p-2">
-                                                                        <Label check>
-                                                                            <Input
-                                                                                type="checkbox"
-                                                                                tag={Field}
-                                                                                name={`items[${index}].isDisabled`}
-                                                                                defaultChecked={data.isDisabled}
-                                                                            />
-                                                                            غیر فعال
-                                                                        </Label>
-                                                                    </FormGroup>
-                                                                </Col>
-                                                                <Col sm="1" className="remove-items">
+                                                      <Col sm="3">
+                                                        <Input
+                                                          type="number"
+                                                          tag={Field}
+                                                          name={`options[${indexOptions}].items[${index}].weight`}
+                                                          placeholder="وزن گزینه"
+                                                        />
+                                                        <ErrorMessage
+                                                          name={`options[${indexOptions}].items[${index}].weight`}/>
+                                                      </Col>
+                                                      <Col sm="1">
 
-                                                                    <i className="fa fa-times-circle-o"
-                                                                       onClick={() => this.confirmDelete(data.id, index, arrayHelpers)}>
+                                                        <FormGroup check
+                                                                   className="p-2">
+                                                          <Label check>
+                                                            <Input
+                                                              type="checkbox"
+                                                              tag={Field}
+                                                              name={`options[${indexOptions}].items[${index}].isDisabled`}
+                                                            />
+                                                            غیر فعال
+                                                          </Label>
+                                                        </FormGroup>
+                                                      </Col>
+                                                      <Col sm="1"
+                                                           className="remove-items">
 
-                                                                    </i>
-                                                                </Col>
-                                                            </Row>
-                                                        </CardBody>
-                                                    </Card>
+                                                        <i className="cui-trash"
+                                                           onClick={() => arrayHelpers.remove(index)}>
 
-                                                ))}
-                                                {typeof errors.items === 'string' ?
-                                                    <div className="invalid-item">{errors.items}</div> : null}
-                                                <Row className="mt-4 mb-4">
-                                                    <Col xs="12">
-                                                        <a className="btn btn-transparent btn-add"
-                                                           onClick={() => arrayHelpers.push({
-                                                               title: '',
-                                                               displayOrder: '',
-                                                               weight: '',
-                                                               isDisabled: false
-                                                           })}>
-                                                            <i className="fa fa-plus"></i> اضافه کردن آیتم جدید
-                                                        </a>
-                                                    </Col>
-                                                </Row>
+                                                        </i>
+
+
+                                                      </Col>
+                                                    </Row>
+                                                  </CardBody>
+                                                </Card>
+
+                                              ))}
+                                              {typeof errors.items === 'string' ?
+                                                <div
+                                                  className="invalid-item">{errors.items}</div> : null}
+                                              <Row className="mt-4 mb-4">
+                                                <Col xs="12" className="itemsBox">
+                                                  <a className="btn btn-transparent btn-add"
+                                                     onClick={() => arrayHelpers.push({
+                                                       displayOrder: '',
+                                                       title: '',
+                                                       weight: '',
+                                                       isDisabled: false
+                                                     })}>
+                                                    <i className="fa fa-plus"></i>&nbsp;
+                                                    اضافه کردن گزینه جدید
+                                                  </a>
+                                                </Col>
+                                              </Row>
 
                                             </div>
-                                        )}
-                                    />
+                                          )}
+                                        />
+                                      </CardBody>
+                                    </Card>
+                                  ))
+                                  }
+                                  <Row className="mt-4 mb-4">
+                                    <Col xs="12">
+                                      <a className="btn btn-transparent btn-add"
+                                         onClick={() => arrayOptions.push(
+                                           {
+                                             title: '',
+                                             description: '',
+                                             displayOrder: '',
+                                             isMultiSelect: false,
+                                             isRequired: false,
+                                             items: [{
+                                               title: '',
+                                               displayOrder: '',
+                                               weight: '',
+                                               isDisabled: false
+                                             }]
+                                           }
+                                         )}>
+                                        <i className="fa fa-plus"></i>&nbsp;
+                                        اضافه کردن سوال جدید
+                                      </a>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              )}
+                            />
 
-                                    {/* {let FriendArrayErrors = errors =>
+
+                            {/* {let FriendArrayErrors = errors =>
                                     typeof errors.friends === 'string' ? <div>{errors.friends}</div> : null;}*/}
 
-                                    <Row className="mt-4 mb-4 mr-1">
+                            <Row className="mt-4 mb-4 mr-1">
 
-                                        <Button color="warning" type="submit" disabled={this.state.btnDisabled}
-                                                className="px-4">
-                                            ثبت ویرایش ارزیابی
-                                        </Button>
-                                        {this.state.btnDisabled && <div className="loading-box">
-                                            <Loading/>
-                                            <span className="loading-box-text">
+                              <Button color="warning" type="submit" disabled={this.state.btnDisabled}
+                                      className="px-4">
+                                ثبت ارزیابی
+                              </Button>
+                              {this.state.btnDisabled && <div className="loading-box">
+                                <Loading/>
+                                <span className="loading-box-text">
                                                         در حال ارسال اطلاعات. لطفا منتظر بمانید...
                                                 </span>
 
-                                        </div>
-                                        }
+                              </div>
+                              }
 
 
-                                    </Row>
-                                </Form>
-                            )}
-                        </Formik>
+                            </Row>
+                          </Form>
+                        )}
+                      </Formik>
                     </Col>
                 </Row>
                 }
