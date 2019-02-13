@@ -66,11 +66,12 @@ class Detail extends Component {
                 selectedOptions: responseOption.items,
                 optionSetValue: optionSetValue,
                 categories: response.categories,
-                statusId:response.statusId
+                statusId: response.statusId
 
             }
         )
     }
+
     async getIdeaStatuses() {
         let response = await get("ideas/status", {
             pageNumber: 1,
@@ -94,11 +95,10 @@ class Detail extends Component {
         let relationTypeId = []
         for (let i = 0; i < response.items.length; i++) {
             let data = response.items[i];
-            let index=relationTypeId.indexOf(data.relationTypeId)
-            if(index==-1)
-            {
+            let index = relationTypeId.indexOf(data.relationTypeId)
+            if (index == -1) {
                 relationTypeId.push(data.relationTypeId)
-                index=relationTypeId.indexOf(data.relationTypeId)
+                index = relationTypeId.indexOf(data.relationTypeId)
             }
 
             if (ideaRelations[index] === undefined) {
@@ -152,16 +152,15 @@ class Detail extends Component {
                         <Row className="p-3 m-0">
                             <Col xs="12" md="10">
                                 {
-                                    this.state.loadData && this.state.ideaStatuses.map(data=>{
-                                        let className="btn-white"
-                                        if(data.id==this.state.statusId)
-                                        {
-                                            className="btn-cyan"
+                                    this.state.loadData && this.state.ideaStatuses.map(data => {
+                                        let className = "btn-white"
+                                        if (data.id == this.state.statusId) {
+                                            className = "btn-cyan"
                                         }
                                         //alert(className)
 
-                                        return(
-                                            <Button className={"btn ml-2 "+className} key={data.id}>
+                                        return (
+                                            <Button className={"btn ml-2 " + className} key={data.id}>
                                                 {data.name}
                                             </Button>
                                         )
@@ -169,7 +168,7 @@ class Detail extends Component {
                                 }
                             </Col>
                             <Col xs="12" md="2" className="action-detail">
-                                <a href={"#/ideas/edit/"+this.state.id} className="btn btn-white ml-4">ویرایش</a>
+                                <a href={"#/ideas/edit/" + this.state.id} className="btn btn-white ml-4">ویرایش</a>
                                 <a className="trash-detail"><i className="fa fa-trash"></i> </a>
                             </Col>
                         </Row>
@@ -329,11 +328,11 @@ class Detail extends Component {
                                                 <Row className="p-3 m-0 b-b-1">
                                                     <Col xs="12" className="label-relation">{data.title}</Col>
                                                 </Row>
-                                                {data.items.map(item=>{
+                                                {data.items.map(item => {
                                                     return (
                                                         <Row className="p-3 m-0 b-b-1" key={item.id}>
-                                                            <Col xs="12" md="3" >
-                                                                <div className="avatar-yellow float-right ml-2" ></div>
+                                                            <Col xs="12" md="3">
+                                                                <div className="avatar-yellow float-right ml-2"></div>
                                                                 <div className="float-right">
                                                                     <div>{item.fullName}</div>
                                                                     <div className="file-size-text">{item.email}</div>
@@ -346,14 +345,18 @@ class Detail extends Component {
 
                                                             </Col>
                                                             <Col xs="12" md="2">
+                                                                {item.telephone &&
                                                                 <div className="contact-relation mb-2">
                                                                     <i className="fa fa-phone"></i>
                                                                     {item.telephone}
                                                                 </div>
+                                                                }
+                                                                {item.mobile &&
                                                                 <div className="contact-relation mb-1">
                                                                     <i className="fa fa-mobile"></i>
                                                                     {item.mobile}
                                                                 </div>
+                                                                }
 
                                                             </Col>
                                                         </Row>

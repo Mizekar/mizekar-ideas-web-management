@@ -578,6 +578,33 @@ legend {
     justify-content: flex-end;
 
 }
+.itemsBox
+{
+    margin-right:-15px;
+    margin-left:-15px;
+}
+.remove-options
+{
+    width: 0;
+    height: 0;
+    border-top: 50px solid #d93b00;
+    border-right: 50px solid transparent;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.remove-options-icon
+{
+    color:#FFF !important;
+    cursor: pointer;
+    font-size: 20px;
+}
+.remove-options-icon i
+{
+    left: 22px;
+    top: -47px;
+    position: relative;
+}
 /*
 a{
     color:#F8C31F !important;
