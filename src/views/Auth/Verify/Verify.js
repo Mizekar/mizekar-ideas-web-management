@@ -30,7 +30,7 @@ class Verify extends Component {
                 resendToken: props.location.state.resendToken,
                 verifyToken: props.location.state.verifyToken,
                 phoneNumber: props.location.state.phoneNumber,
-                clientId: 'shop-mobile',
+                clientId: 'idea-web',
                 clientSecret: '00PcCMVwUGdb5weDo9FOOrYclGif7SJAFM3oXQGelhy4KQ5f8M3RMuTqeg',
                 grantType: 'phone_number_token'
             }
@@ -64,6 +64,7 @@ class Verify extends Component {
         }
         //console.log(payload)
         let response = await postSystem("connect/token", payload)
+        //console.log(response)
 
         this.props.setUser({
             apiToken: response.access_token,
