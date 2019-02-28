@@ -36,7 +36,8 @@ export async function upload(url,payload,callbackProgress,uploadId) {
               callbackProgress(Math.round(p.loaded * 100 / p.total),uploadId)
             },
             headers: {
-                "Content-Type": "multipart/form-data",
+                /*"Content-Type": "multipart/form-data",*/
+                "Content-Type": "application/json",
                 "cache-control": "no-cache",
                 Authorization: `Bearer ${token}`,
                 orgid: ORG_ID

@@ -33,7 +33,9 @@ class Edit extends Component {
     }
 
     async getById() {
-        let response = await get("ideas/relationTypes/" + this.state.id, {});
+        let response = await get("ideas/relationTypes/details/" + this.state.id, {});
+
+        console.log(response);
 
         this.setState({
             name: response.name,

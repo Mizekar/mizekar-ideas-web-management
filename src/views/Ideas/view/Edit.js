@@ -68,7 +68,8 @@ class Edit extends Component {
             relationTypes: [],
             relations: [],
             selectedRelationTypeId: [],
-            upload: []
+            upload: [],
+            mediaDescription:''
         };
 
     }
@@ -147,7 +148,7 @@ class Edit extends Component {
 
         })
 
-        this.progressUpload=this.progressUpload.bind(this)
+        this.progressUpload = this.progressUpload.bind(this)
     }
 
     async getCategories() {
@@ -370,7 +371,14 @@ class Edit extends Component {
         })
     }
 
-    async uploadMedia(file) {
+    async uploadMedia() {
+
+        let file = this.state.mediaFile;
+        let description = this.state.mediaDescription;
+
+        //console.log(file)
+
+
 
         let uploadArray = this.state.upload;
         let id = new Date().getTime();
@@ -390,29 +398,46 @@ class Edit extends Component {
         )
 
         //console.log(upload);
-        let data = new FormData();
-        data.append('formFile', file);
-        let response = await upload("ideas/" + this.state.id + "/Media/Upload", data, this.progressUpload,id)
+       /* let data = new FormData();
+        data.append('mediaFile', file);
+        data.append('description',description)*/
+
+       let data={
+           mediaFile:file,
+           description:description
+       }
+
+
+        //console.log(data.get('description'));
+        let response = await upload("ideas/" + this.state.id + "/Media/Upload", data, this.progressUpload, id)
 
         if (typeof response === 'string') {
             let response = await get("ideas/details/" + this.state.id, {});
 
             this.setState(
                 {
-                    upload: uploadArray.filter(item=>item.id!=id),
-                    media:response.media
+                    upload: uploadArray.filter(item => item.id != id),
+                    media: response.media,
+                    mediaFile: '',
+                    mediaDescription: ''
+                }
+            )
+        } else {
+            this.setState(
+                {
+                    upload: uploadArray.filter(item => item.id != id),
                 }
             )
         }
     }
 
-    progressUpload(percent,uploadId) {
+    progressUpload(percent, uploadId) {
         let upload = this.state.upload;
 
-        let index = upload.findIndex(function(c) {
+        let index = upload.findIndex(function (c) {
             return c.id == uploadId;
         });
-        upload[index].percent=percent;
+        upload[index].percent = percent;
 
         this.setState(
             {
@@ -1037,19 +1062,45 @@ class Edit extends Component {
                                             <TabPane tabId="3">
                                                 <Card>
                                                     <CardBody>
-                                                        <FormGroup row>
-                                                            <Col xs="12" className="m-0">
-                                                                <label>فایل مستندات</label>
-                                                                <Input
-                                                                    name="file"
-                                                                    type="file"
-                                                                    tag={Field}
-                                                                    onChange={(event) => {
-                                                                        this.uploadMedia(event.currentTarget.files[0])
-                                                                    }}
-                                                                />
-                                                            </Col>
+
+                                                        <FormGroup row className="m-2">
+                                                            <label>فایل مستندات</label>
+                                                            <Input
+                                                                name="file"
+                                                                type="file"
+                                                                onChange={(event) => {
+                                                                    this.setState({
+                                                                            mediaFile: event.currentTarget.files[0]
+                                                                        }
+                                                                    )
+                                                                }}
+                                                            />
                                                         </FormGroup>
+                                                        <FormGroup row className="m-2">
+                                                            <label>توضیحات مستندات</label>
+                                                            <Input
+                                                                name="mediaDescription"
+                                                                type="textarea"
+                                                                component="textarea"
+                                                                placeholder=""
+                                                                onChange={(event) => {
+                                                                    //console.log(event.target.value)
+                                                                    this.setState({
+                                                                        mediaDescription: event.target.value
+                                                                    })
+                                                                }}
+
+
+                                                            />
+                                                        </FormGroup>
+                                                        <FormGroup row className="m-2">
+                                                            <Button className="btn btn-info"
+                                                                    onClick={() => this.uploadMedia()}>
+                                                                <i className="fa fa-upload"></i>
+                                                                آپلود مستندات
+                                                            </Button>
+                                                        </FormGroup>
+
                                                     </CardBody>
                                                 </Card>
                                                 <MyUpload
