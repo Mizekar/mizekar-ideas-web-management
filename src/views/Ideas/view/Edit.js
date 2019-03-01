@@ -398,14 +398,14 @@ class Edit extends Component {
         )
 
         //console.log(upload);
-       /* let data = new FormData();
+        let data = new FormData();
         data.append('mediaFile', file);
-        data.append('description',description)*/
+        data.append('description',description)
 
-       let data={
+      /* let data={
            mediaFile:file,
            description:description
-       }
+       }*/
 
 
         //console.log(data.get('description'));
