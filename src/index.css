@@ -635,6 +635,11 @@ legend {
   top: -47px;
   position: relative;
 }
+.img-avatar-list
+{
+  height:35px;
+  border-radius: 100%;
+}
 
 /*
 a{

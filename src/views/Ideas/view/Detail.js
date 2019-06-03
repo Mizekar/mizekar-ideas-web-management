@@ -10,6 +10,7 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 import {get} from "../../../utils/apiMainRequest";
+import moment from 'moment-jalaali'
 
 
 class Detail extends Component {
@@ -26,6 +27,7 @@ class Detail extends Component {
     async componentWillMount() {
         this.getIdeaRelations();
         this.getIdeaStatuses();
+        this.getIdeaLikes();
         await this.getById();
 
     }
@@ -122,6 +124,20 @@ class Detail extends Component {
 
         this.setState({
             relations: ideaRelations,
+        })
+    }
+
+    async getIdeaLikes() {
+        let response = await get("social/likes/post/"+ this.state.id, {
+            pageNumber: 1,
+            pageSize: 1000
+        });
+
+        //console.log(response);
+
+        this.setState({
+            ideaLikesItems: response.items,
+            totalLikes:response.totalCount
         })
     }
 
@@ -371,6 +387,52 @@ class Detail extends Component {
                             }
                         </TabPane>
                         <TabPane tabId="5">
+                            <Row className="mt-4">
+
+                                {this.state.loadData && this.state.ideaLikesItems.length > 0 &&
+                                <Col xs="12">
+                                    <div className="mb-4">
+                                        {this.state.totalLikes} نفر این سوژه را پسندیدند.
+                                    </div>
+                                    {
+                                        this.state.ideaLikesItems.map((data) => {
+
+                                            //console.log(data.writer);
+
+
+                                            let create = moment(data.baseInfo.createdOn);
+                                            let date =new Date(data.baseInfo.createdOn);
+
+                                            let year=create.jYear();
+                                            let month=(create.jMonth() + 1)>=10?(create.jMonth() + 1):'0'+(create.jMonth() + 1);
+                                            let day=create.jDate()>=10?create.jDate():'0'+create.jDate();
+
+
+                                            return (
+                                                <Row className="row-list" key={data.writer.id}>
+                                                    <Col xs="12" sm="1" className="col-list">
+                                                        <img src={'../../assets/img/avatars/default.png'} className="img-avatar-list" alt=""/>
+                                                    </Col>
+                                                    <Col xs="12" sm="9" className="col-list">
+                                                        {data.writer.firstName+" "+data.writer.lastName}
+                                                    </Col>
+                                                    <Col xs="12" sm="1" className="col-list">
+                                                        {year+ "/" + month + "/" + day}
+
+                                                    </Col>
+                                                    <Col xs="12" sm="1" className="col-list">
+                                                        {
+                                                            date.getHours()+":"+date.getMinutes()
+                                                        }
+                                                    </Col>
+                                                </Row>
+                                            )
+                                        })
+                                    }
+                                </Col>
+                                }
+                            </Row>
+
                         </TabPane>
                         <TabPane tabId="6">
                         </TabPane>
