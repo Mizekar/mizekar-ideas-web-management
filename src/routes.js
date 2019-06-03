@@ -9,6 +9,7 @@ const IdeaOptionSets = React.lazy(() => import('./views/IdeaOptionSets/'));
 const RelationType = React.lazy(() => import('./views/RelationType/'));
 const Ideas = React.lazy(() => import('./views/Ideas/'));
 const Assessments = React.lazy(() => import('./views/Assessments/'));
+const Profile = React.lazy(() => import('./views/Profile/'));
 
 
 const routes = [
@@ -21,6 +22,7 @@ const routes = [
     {path: '/relationType/:act?/:id?', name: 'RelationType', component: RelationType },
     {path: '/ideas/:act?/:id?', name: 'Ideas', component: Ideas },
     {path: '/assessments/:act?/:id?', name: 'Assessments', component: Assessments },
+    {path: '/profile', name: 'Profile', component: Profile },
 ];
 
 export default routes;

@@ -640,6 +640,15 @@ legend {
   height:35px;
   border-radius: 100%;
 }
+.dropdown-item a,.dropdown-item a:hover
+{
+    color:#000;
+    text-decoration: none;
+}
+.line-height-25
+{
+  line-height: 30px;
+}
 
 /*
 a{

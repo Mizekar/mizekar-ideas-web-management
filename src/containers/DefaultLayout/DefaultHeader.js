@@ -61,10 +61,13 @@ class DefaultHeader extends Component {
                             <DropdownItem><i className="fa fa-key"></i> تغییر کلمه عبور</DropdownItem>
                             <DropdownItem><i className="fa fa-comments"></i> پیام ها<Badge
                                 color="warning">10</Badge></DropdownItem>*/}
+                            <DropdownItem>
+                                <Link to="/profile"><i className="fa fa-user-circle"></i> حساب کاربری</Link>
+
+                            </DropdownItem>
                             <DropdownItem onClick={e => this.props.onLogout(e)} >
                               <i className="fa fa-sign-out"></i>
                               خروج
-
                             </DropdownItem>
                         </DropdownMenu>
                     </AppHeaderDropdown>
