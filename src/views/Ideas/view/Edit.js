@@ -779,7 +779,7 @@ class Edit extends Component {
                                             <TabPane tabId="1">
                                                 <Card className="p-4">
                                                     <CardBody>
-                                                        <FormGroup row>
+                                                        <FormGroup>
                                                             <label>عنوان سوژه</label>
                                                             <Input
                                                                 name="subject"
@@ -791,7 +791,7 @@ class Edit extends Component {
 
                                                             <FormFeedback>{errors.title}</FormFeedback>
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup >
 
                                                             <label>خلاصه سوژه</label>
                                                             <Input
@@ -807,7 +807,7 @@ class Edit extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup >
 
                                                             <label>جزئیات سوژه</label>
                                                             <Input
@@ -823,7 +823,7 @@ class Edit extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup >
 
                                                             <label>دسته بندی</label>
                                                             <Select
@@ -843,30 +843,33 @@ class Edit extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup >
 
-                                                            <label>وضعیت سوژه</label>
-                                                            <Select
-                                                                name="statusId"
-                                                                value={this.state.selectedIdeaStatuses}
-                                                                isMulti={false}
-                                                                onChange={(selectedOption) => {
-                                                                    this.setState({selectedIdeaStatuses: selectedOption});
-                                                                    setFieldValue("statusId", selectedOption.value)
-                                                                }}
-                                                                options={this.state.ideaStatuses}
-                                                                tag={Field}
-                                                                placeholder="انتخاب کنید..."
-                                                                error={errors.statusId}
-                                                                touched={touched.statusId}
-                                                            />
-                                                            <div className="invalid-feedback show ">
-                                                                {errors.statusId}
-                                                            </div>
+                                                                <label>وضعیت سوژه</label>
+                                                                <Select
+                                                                    name="statusId"
+                                                                    value={this.state.selectedIdeaStatuses}
+                                                                    isMulti={false}
+                                                                    onChange={(selectedOption) => {
+                                                                        this.setState({selectedIdeaStatuses: selectedOption});
+                                                                        setFieldValue("statusId", selectedOption.value)
+                                                                    }}
+                                                                    options={this.state.ideaStatuses}
+                                                                    tag={Field}
+                                                                    placeholder="انتخاب کنید..."
+                                                                    error={errors.statusId}
+                                                                    touched={touched.statusId}
+                                                                />
+                                                                <div className="invalid-feedback show ">
+                                                                    {errors.statusId}
+                                                                </div>
+
+
+
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>فراخوان مرتبط</label>
                                                             <Select
@@ -884,7 +887,7 @@ class Edit extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>کشور</label>
                                                             <Select
@@ -903,7 +906,7 @@ class Edit extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>استان</label>
                                                             <Select
@@ -922,7 +925,7 @@ class Edit extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>شهرستان</label>
                                                             <Select
@@ -941,7 +944,7 @@ class Edit extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>شهر</label>
                                                             <Select
@@ -960,7 +963,7 @@ class Edit extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>روستا</label>
                                                             <Select
@@ -979,7 +982,7 @@ class Edit extends Component {
 
                                                         </FormGroup>
 
-                                                        <FormGroup check className="mr-2">
+                                                        <FormGroup check className="mr-4">
                                                             <Label check>
                                                                 <Input
                                                                     type="checkbox"
@@ -1001,7 +1004,7 @@ class Edit extends Component {
                                                         return (
                                                             <Card className="pr-5 pb-0 pt-4 pl-4" key={data.id}>
                                                                 <CardBody className="p-0">
-                                                                    <FormGroup row>
+                                                                    <FormGroup>
                                                                         <label>{data.title}</label>
                                                                         {
                                                                             items[data.id].map((item, index) => {
@@ -1063,7 +1066,7 @@ class Edit extends Component {
                                                 <Card>
                                                     <CardBody>
 
-                                                        <FormGroup row className="m-2">
+                                                        <FormGroup className="m-2">
                                                             <label>فایل مستندات</label>
                                                             <Input
                                                                 name="file"
@@ -1076,7 +1079,7 @@ class Edit extends Component {
                                                                 }}
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup row className="m-2">
+                                                        <FormGroup className="m-2">
                                                             <label>توضیحات مستندات</label>
                                                             <Input
                                                                 name="mediaDescription"
@@ -1093,7 +1096,7 @@ class Edit extends Component {
 
                                                             />
                                                         </FormGroup>
-                                                        <FormGroup row className="m-2">
+                                                        <FormGroup className="m-2">
                                                             <Button className="btn btn-info"
                                                                     onClick={() => this.uploadMedia()}>
                                                                 <i className="fa fa-upload"></i>
@@ -1127,7 +1130,7 @@ class Edit extends Component {
                                                                             name={`relations[${index}].id`}
                                                                             tag={Field}
                                                                         />
-                                                                        <FormGroup row>
+                                                                        <FormGroup>
 
                                                                             <label>نوع ارتباط</label>
                                                                             <Select
@@ -1148,7 +1151,7 @@ class Edit extends Component {
                                                                                 name={`relations[${index}].relationTypeId`}/>
 
                                                                         </FormGroup>
-                                                                        <FormGroup row>
+                                                                        <FormGroup>
                                                                             <label>اولویت نمایش</label>
                                                                             <Input
                                                                                 name={`relations[${index}].displayOrder`}
@@ -1159,7 +1162,7 @@ class Edit extends Component {
                                                                             <ErrorMessage
                                                                                 name={`relations[${index}].displayOrder`}/>
                                                                         </FormGroup>
-                                                                        <FormGroup row>
+                                                                        <FormGroup>
                                                                             <label>نام و نام
                                                                                 خانوادگی</label>
                                                                             <Input
@@ -1169,7 +1172,7 @@ class Edit extends Component {
                                                                                 tag={Field}
                                                                             />
                                                                         </FormGroup>
-                                                                        <FormGroup row>
+                                                                        <FormGroup>
                                                                             <label>تلفن ثابت</label>
                                                                             <Input
                                                                                 name={`relations[${index}].telephone`}
@@ -1178,7 +1181,7 @@ class Edit extends Component {
                                                                                 tag={Field}
                                                                             />
                                                                         </FormGroup>
-                                                                        <FormGroup row>
+                                                                        <FormGroup>
                                                                             <label>تلفن همراه</label>
                                                                             <Input
                                                                                 name={`relations[${index}].mobile`}
@@ -1187,7 +1190,7 @@ class Edit extends Component {
                                                                                 tag={Field}
                                                                             />
                                                                         </FormGroup>
-                                                                        <FormGroup row>
+                                                                        <FormGroup>
                                                                             <label>رایانامه
                                                                                 (ایمیل)</label>
                                                                             <Input
@@ -1197,7 +1200,7 @@ class Edit extends Component {
                                                                                 tag={Field}
                                                                             />
                                                                         </FormGroup>
-                                                                        <FormGroup row>
+                                                                        <FormGroup>
 
                                                                             <label>توضیحات</label>
                                                                             <Input

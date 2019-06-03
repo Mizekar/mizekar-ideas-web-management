@@ -410,7 +410,7 @@ class Add extends Component {
                                             <TabPane tabId="1">
                                                 <Card className="p-4">
                                                     <CardBody>
-                                                        <FormGroup row>
+                                                        <FormGroup>
                                                             <label>عنوان سوژه</label>
                                                             <Input
                                                                 name="subject"
@@ -422,7 +422,7 @@ class Add extends Component {
 
                                                             <FormFeedback>{errors.title}</FormFeedback>
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>خلاصه سوژه</label>
                                                             <Input
@@ -438,7 +438,7 @@ class Add extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>جزئیات سوژه</label>
                                                             <Input
@@ -454,7 +454,7 @@ class Add extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>دسته بندی</label>
                                                             <Select
@@ -474,7 +474,7 @@ class Add extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>وضعیت سوژه</label>
                                                             <Select
@@ -497,7 +497,7 @@ class Add extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>فراخوان مرتبط</label>
                                                             <Select
@@ -515,7 +515,7 @@ class Add extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>کشور</label>
                                                             <Select
@@ -534,7 +534,7 @@ class Add extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>استان</label>
                                                             <Select
@@ -553,7 +553,7 @@ class Add extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>شهرستان</label>
                                                             <Select
@@ -572,7 +572,7 @@ class Add extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>شهر</label>
                                                             <Select
@@ -591,7 +591,7 @@ class Add extends Component {
 
 
                                                         </FormGroup>
-                                                        <FormGroup row>
+                                                        <FormGroup>
 
                                                             <label>روستا</label>
                                                             <Select
@@ -610,7 +610,7 @@ class Add extends Component {
 
                                                         </FormGroup>
 
-                                                        <FormGroup check className="mr-2">
+                                                        <FormGroup check className="mr-4">
                                                             <Label check>
                                                                 <Input
                                                                     type="checkbox"
@@ -632,7 +632,7 @@ class Add extends Component {
                                                         return (
                                                             <Card className="pr-5 pb-0 pt-4 pl-4" key={data.id}>
                                                                 <CardBody className="p-0">
-                                                                    <FormGroup row>
+                                                                    <FormGroup>
                                                                         <label>{data.title}</label>
                                                                         {
                                                                             items[data.id].map((item, index) => {
