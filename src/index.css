@@ -649,6 +649,63 @@ legend {
 {
   line-height: 30px;
 }
+.activity-profile
+{
+  padding: 10px 0px;
+  margin:10px 0px;
+  border-bottom: 1px solid #eee;
+  border-top:1px solid #eee;
+}
+.activity-profile i
+{
+  font-size:15px;
+  color:#8ad4ee;
+}
+.activity-profile .num-activity
+{
+  font-size: 25px;
+  color: gray;
+}
+.activity-profile .text-activity
+{
+  font-size: 11px;
+  color:#8ad4ee;
+
+}
+.profile-img-btn
+{
+  background: rgba(0,0,0,0.5);
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height:50px;
+}
+.img-thumbnail span {
+  left:0;
+  text-align:center;
+  width:100%;
+  background:rgba(0,0,0,0.3);
+  bottom:0;
+  padding:5px 0;
+  position: absolute;
+  color:#fff;
+  font-size: 25px;
+}
+.img-thumbnail {
+  border-radius: 100%;
+  display:inline-block;
+  background: none !important;
+  border: none !important;
+
+}
+.img-thumbnail > div {
+  display:inline-block;
+  overflow: hidden;
+  border-radius:100%;
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+}
 
 /*
 a{
