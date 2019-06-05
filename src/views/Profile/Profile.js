@@ -28,11 +28,13 @@ export default class Profile extends Component {
         {value: 'Male', label: 'آقا'},
         {value: 'Unknown', label: 'نامشخص'},
       ],
-      id: ''
+      id: '',
+      loadingClass:'loading-hide'
 
     }
 
     this.handleClick = this.handleClick.bind(this);
+    this.progressUpload= this.progressUpload.bind(this);
 
 
   }
@@ -109,6 +111,13 @@ export default class Profile extends Component {
 
   async uploadProfilePicture(event)
   {
+    this.setState(
+      {
+        loadingClass: 'loading'
+      }
+    );
+
+
     let file=event.currentTarget.files[0]
 
     let data = new FormData();
@@ -120,26 +129,23 @@ export default class Profile extends Component {
 
     if (typeof response === 'string') {
       this.setState({
-        profileImage:response
+        profileImage:response,
+        loadingClass: 'loading-hide'
 
       })
+    }
+    else
+    {
+      this.setState(
+        {
+          loadingClass: 'loading-hide'
+        }
+      )
     }
     //alert('ok');
   }
 
   progressUpload(percent, uploadId) {
-   /* let upload = this.state.upload;
-
-    let index = upload.findIndex(function (c) {
-      return c.id == uploadId;
-    });
-    upload[index].percent = percent;
-
-    this.setState(
-      {
-        upload: upload
-      }
-    )*/
 
   }
 
@@ -176,9 +182,9 @@ export default class Profile extends Component {
                 <Row>
                   <Col xs="12">
                     <div className="img-thumbnail ">
-                      <div onClick={()=>this.handleClick()}>
+                      <div >
                         <img className="img-circle" src={this.state.profileImage} />
-                        <span ><i className="fa fa-camera"></i> </span>
+                        <span className="action-bar" onClick={()=>this.handleClick()}><i className="fa fa-camera"></i> </span>
                         <input
                           type="file"
                           id="file"
@@ -188,6 +194,9 @@ export default class Profile extends Component {
                           onChange={(event)=>this.uploadProfilePicture(event)}
 
                         />
+                        <span className={this.state.loadingClass} >
+                          <Loading color="#fff"/>
+                        </span>
                       </div>
                     </div>
 

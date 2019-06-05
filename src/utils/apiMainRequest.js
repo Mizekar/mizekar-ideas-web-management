@@ -46,7 +46,7 @@ export async function upload(url,payload,callbackProgress,uploadId) {
         return response.data;
 
     } catch (e) {
-        alert(e.message)
+        //alert(e.message)
         console.log(e)
     }
 }
