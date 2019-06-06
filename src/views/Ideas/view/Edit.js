@@ -1215,7 +1215,7 @@ class Edit extends Component {
                                                                         <Row className="mt-4">
                                                                             <Button color="danger"
                                                                                     type="button"
-                                                                                    className="px-4"
+
                                                                                     onClick={() => this.confirmDelete(data.id, index, arrayHelpers)}>
                                                                                 <i className="fa fa-trash-o"></i>&nbsp;
                                                                                 حذف ارتباط
@@ -1256,8 +1256,7 @@ class Edit extends Component {
 
 
                                     <Row className="mb-2 pr-3">
-                                        <Button color="warning" type="submit" disabled={this.state.btnDisabled}
-                                                className="px-4">
+                                        <Button color="warning" type="submit" disabled={this.state.btnDisabled}>
                                             ثبت ویرایش سوژه
                                         </Button>
                                         {this.state.btnDisabled && <div className="loading-box">

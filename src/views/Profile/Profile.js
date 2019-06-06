@@ -394,7 +394,7 @@ export default class Profile extends Component {
                         </Col>
                       </FormGroup>
                       <Row className="mt-4">
-                        <Button color="warning" type="submit" disabled={this.state.btnDisabled} className="px-4">
+                        <Button color="warning" type="submit" disabled={this.state.btnDisabled} >
                           ثبت
                         </Button>
                         {this.state.btnDisabled && <div className="loading-box">

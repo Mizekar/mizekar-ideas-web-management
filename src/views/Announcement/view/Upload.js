@@ -157,7 +157,7 @@ class Upload extends Component {
                                             <Row className="mt-4">
                                                 <Button color="warning" type="submit"
                                                         disabled={this.state.btnDisabled}
-                                                        className="px-4">
+                                                        >
                                                     آپلود فایل
                                                 </Button>
                                                 {this.state.btnDisabled && <div className="loading-box">
