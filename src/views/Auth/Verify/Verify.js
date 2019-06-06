@@ -11,7 +11,7 @@ import {
     Row
 } from 'reactstrap';
 
-import {postSystem} from "../../../utils/apiRequest"
+import {postSystem,putSystem} from "../../../utils/apiRequest"
 import {Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {connect} from "react-redux";
@@ -66,6 +66,15 @@ class Verify extends Component {
         let response = await postSystem("connect/token", payload)
         //console.log(response)
 
+      /*let response1=await postSystem("connect/token", {
+        refresh_token: response.refresh_token,
+        client_id: this.state.clientId,
+        client_secret: this.state.clientSecret,
+        grant_type: 'refresh_token'
+      });
+
+        console.log(response1)
+*/
         this.props.setUser({
             apiToken: response.access_token,
             tokenType: response.token_type,

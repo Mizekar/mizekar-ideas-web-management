@@ -14,7 +14,7 @@ export async function post(url, payload) {
 
 
     } catch (e) {
-        alert(e.message)
+        //alert(e.message)
         console.log(e)
     }
 }
@@ -31,7 +31,7 @@ export async function postSystem(url, payload) {
         return response.data;
 
     } catch (e) {
-        alert(e.message)
+        //alert(e.message)
 
         console.log(e)
     }

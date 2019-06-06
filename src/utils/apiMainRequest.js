@@ -22,7 +22,7 @@ export async function post(url,payload) {
         return response.data;
 
     } catch (e) {
-        alert(e.message)
+        //alert(e.message)
         console.log(e)
     }
 }
@@ -52,6 +52,7 @@ export async function upload(url,payload,callbackProgress,uploadId) {
 }
 
 export async function get(url, params) {
+
 
     try {
         let response = await axios.get(`${API_URL}/${url}`, {
@@ -85,7 +86,7 @@ export async function remove(url) {
         return response.data;
 
     } catch (e) {
-        alert(e.message)
+        //alert(e.message)
         console.log(e)
     }
 }
@@ -106,7 +107,19 @@ export async function put(url,payload) {
         return response.data;
 
     } catch (e) {
-        alert(e.message)
-        console.log(e)
+        //alert(e.message)
+        console.log(e);
+
+        if(e.status===401)
+        {
+          //logout();
+        }
     }
 }
+
+function logout() {
+  this.props.emptyUser()
+  this.props.history.push('/login')
+}
+
+

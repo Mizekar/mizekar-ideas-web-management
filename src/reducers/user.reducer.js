@@ -21,7 +21,7 @@ const user = (state = initialState, action = {}) => {
                     tokenType: info.tokenType,
                     refreshToken: info.refreshToken,
                     expiresIn: info.expiresIn,
-                    mobile: ''
+                    mobile: info.mobile
                 }
             )
             break;

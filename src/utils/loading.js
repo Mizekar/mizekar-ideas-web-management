@@ -1,6 +1,4 @@
 import React from 'react';
-import { css } from '@emotion/core';
-// First way to import
 import { HashLoader} from 'react-spinners';
 
 
