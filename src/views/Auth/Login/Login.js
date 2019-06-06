@@ -112,7 +112,7 @@ class Login extends Component {
                                                     </FormGroup>
                                                     <Row>
                                                         <Col xs="12">
-                                                            <Button color="warning" className="px-4">
+                                                            <Button color="warning">
                                                                 دریافت کد تایید
                                                             </Button>
                                                         </Col>

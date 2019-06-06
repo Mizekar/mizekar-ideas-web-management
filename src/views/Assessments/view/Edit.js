@@ -509,8 +509,7 @@ class Edit extends Component {
 
                             <Row className="mt-4 mb-4 mr-1">
 
-                              <Button color="warning" type="submit" disabled={this.state.btnDisabled}
-                                      className="px-4">
+                              <Button color="warning" type="submit" disabled={this.state.btnDisabled}>
                                 ثبت ارزیابی
                               </Button>
                               {this.state.btnDisabled && <div className="loading-box">

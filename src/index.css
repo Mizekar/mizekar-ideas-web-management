@@ -738,6 +738,14 @@ legend {
   z-index: 13;
   padding-top:48%
 }
+.ml-auto, .mx-auto
+{
+  margin-left:0px !important
+}
+.px-4
+{
+  padding: 0.375rem 0.75rem!important;
+}
 /*
 a{
     color:#F8C31F !important;

@@ -125,7 +125,7 @@ class Verify extends Component {
                                                     </Row>
                                                     <Row>
                                                         <Col xs="12">
-                                                            <Button type="submit" color="warning" className="px-4">
+                                                            <Button type="submit" color="warning">
                                                                 تایید و ورود
                                                             </Button>
                                                         </Col>

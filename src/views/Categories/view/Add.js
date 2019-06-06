@@ -157,7 +157,7 @@ class Add extends Component {
                                                 </Label>
                                             </FormGroup>
                                             <Row className="mt-4">
-                                                <Button color="warning" type="submit" disabled={this.state.btnDisabled} className="px-4">
+                                                <Button color="warning" type="submit" disabled={this.state.btnDisabled} >
                                                     ثبت دسته بندی
                                                 </Button>
                                                 {this.state.btnDisabled && <div className="loading-box">
