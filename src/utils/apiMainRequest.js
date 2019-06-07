@@ -1,9 +1,14 @@
 import axios from "axios";
 import qs from "qs";
-import {API_URL, ORG_ID} from "../actions/action.constance";
+import {API_URL, ORG_ID, DOMAIN_NAME} from "../actions/action.constance";
+
 let main=JSON.parse(localStorage.getItem('persist:root'))
 let user=JSON.parse(main.user)
-const token=user.apiToken
+let token=user.apiToken;
+const refToken=user.refreshToken
+const mobile=user.mobile
+const dashboard=main.dashboard
+const _persist=main._persist
 
 
 export async function post(url,payload) {
@@ -24,6 +29,14 @@ export async function post(url,payload) {
     } catch (e) {
         //alert(e.message)
         console.log(e)
+      if(e.status===401)
+      {
+        await refreshToken();
+
+        await post(url,payload)
+
+        //logout();
+      }
     }
 }
 
@@ -48,10 +61,17 @@ export async function upload(url,payload,callbackProgress,uploadId) {
     } catch (e) {
         //alert(e.message)
         console.log(e)
+      if(e.status===401)
+      {
+        await refreshToken();
+        await upload(url,payload,callbackProgress,uploadId)
+        //logout();
+      }
     }
 }
 
 export async function get(url, params) {
+
 
 
     try {
@@ -64,11 +84,19 @@ export async function get(url, params) {
                 orgid: ORG_ID
             }
         });
+        //alert(response.status);
         return response.data;
 
     } catch (e) {
-        //alert(e.message)
+        //alert(e.code)
         console.log(e)
+      if(e.message==="Request failed with status code 401")
+      {
+        await refreshToken();
+        await get(url, params)
+
+        //logout();
+      }
     }
 }
 
@@ -88,6 +116,13 @@ export async function remove(url) {
     } catch (e) {
         //alert(e.message)
         console.log(e)
+      if(e.status===401)
+      {
+        await refreshToken();
+        await remove(url)
+
+        //logout();
+      }
     }
 }
 
@@ -112,14 +147,53 @@ export async function put(url,payload) {
 
         if(e.status===401)
         {
+          await refreshToken();
+          await put(url,payload)
+
           //logout();
         }
     }
 }
 
-function logout() {
-  this.props.emptyUser()
-  this.props.history.push('/login')
-}
+async function refreshToken() {
 
+  let url="connect/token";
+
+  let payload={
+    refresh_token: refToken,
+    client_id: 'idea-web',
+    client_secret: '00PcCMVwUGdb5weDo9FOOrYclGif7SJAFM3oXQGelhy4KQ5f8M3RMuTqeg',
+    grant_type: 'refresh_token'
+  }
+
+  try {
+    let response = await axios.post(`${DOMAIN_NAME}/${url}`, qs.stringify(payload), {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "cache-control": "no-cache"
+      }
+    });
+    let data=response.data;
+    token=data.access_token
+
+    let main={
+
+        apiToken: data.access_token,
+        tokenType: data.token_type,
+        refreshToken: data.refresh_token,
+        expiresIn: data.expires_in,
+        mobile: mobile
+    }
+    //console.log(main);
+    let userMain={user:JSON.stringify(main),dashboard:dashboard,_persist:_persist}
+    let root=JSON.stringify(userMain)
+
+    localStorage.setItem('persist:root',root)
+
+
+
+  } catch (e) {
+    console.log(e)
+  }
+}
 

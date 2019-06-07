@@ -73,8 +73,8 @@ class Verify extends Component {
         grant_type: 'refresh_token'
       });
 
-        console.log(response1)
-*/
+        console.log(response1)*/
+
         this.props.setUser({
             apiToken: response.access_token,
             tokenType: response.token_type,
