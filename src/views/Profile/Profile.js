@@ -5,7 +5,6 @@ import {
   CardBody,
   Col, FormFeedback,
   FormGroup, Input,
-  Label,
   Row
 } from "reactstrap";
 import * as Yup from "yup";
@@ -14,9 +13,12 @@ import Select from 'react-select';
 import {get, post, put, upload,remove} from "../../utils/apiMainRequest";
 import ModalAlert from "../../utils/modalAlert";
 import Loading from "../../utils/loading";
+import {setUser} from "../../actions/action.user";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
 
 
-export default class Profile extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props);
 
@@ -103,6 +105,17 @@ export default class Profile extends Component {
         bio:payload.bio
       })
 
+      this.props.setUser({
+        apiToken: this.props.user.apiToken,
+        tokenType: this.props.user.tokenType,
+        refreshToken: this.props.user.refreshToken,
+        expiresIn: this.props.user.expiresIn,
+        mobile: this.props.user.mobile,
+        firstName:payload.firstName,
+        lastName: payload.lastName,
+        profileImage: this.props.user.profileImage
+      });
+
     }
 
   }
@@ -140,6 +153,17 @@ export default class Profile extends Component {
         loadingClass: 'loading-hide'
 
       })
+
+      this.props.setUser({
+        apiToken: this.props.user.apiToken,
+        tokenType: this.props.user.tokenType,
+        refreshToken: this.props.user.refreshToken,
+        expiresIn: this.props.user.expiresIn,
+        mobile: this.props.user.mobile,
+        firstName:this.props.user.firstName,
+        lastName: this.props.user.lastName,
+        profileImage: response
+      });
     }
     else
     {
@@ -431,3 +455,21 @@ export default class Profile extends Component {
   }
 
 }
+
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setUser: (info) => {
+      dispatch(setUser(info));
+    }
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Profile));

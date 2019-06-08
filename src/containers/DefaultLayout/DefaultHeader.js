@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {
   Badge,
-  Button,
   UncontrolledDropdown,
   DropdownItem,
   DropdownMenu,
@@ -13,9 +12,12 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-import {AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
+import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler} from '@coreui/react';
 import logo from '../../assets/img/brand/logo.png'
 import miniLogo from '../../assets/img/brand/miniLogo.png'
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
+import {setUser} from "../../actions/action.user";
 
 const propTypes = {
   children: PropTypes.node,
@@ -24,6 +26,14 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
+
+  constructor(props)
+  {
+    super(props);
+
+    //console.log(this.props.user)
+
+  }
   render() {
 
     // eslint-disable-next-line
@@ -59,12 +69,12 @@ class DefaultHeader extends Component {
                         <Button onClick={e => this.props.onLogout(e)} className="btn-header">خروج</Button>
                     </NavItem>*/}
           <NavItem className="d-md-down-none">
-            <div className="user-name">مدیریت سوژه</div>
+            <div className="user-name">{this.props.user.firstName+" "+this.props.user.lastName}</div>
           </NavItem>
           <AppHeaderDropdown direction="down">
             <UncontrolledDropdown>
               <DropdownToggle nav>
-                <img src={'../../assets/img/avatars/default.png'} className="img-avatar" alt=""/>
+                <img src={this.props.user.profileImage?this.props.user.profileImage:'../../assets/img/avatars/default.png'} className="img-avatar" alt=""/>
               </DropdownToggle>
               <DropdownMenu left style={{left: 0}}>
                 {/*<DropdownItem header tag="div" className="text-center">حساب کاربری</DropdownItem>
@@ -72,8 +82,8 @@ class DefaultHeader extends Component {
                             <DropdownItem><i className="fa fa-key"></i> تغییر کلمه عبور</DropdownItem>
                             <DropdownItem><i className="fa fa-comments"></i> پیام ها<Badge
                                 color="warning">10</Badge></DropdownItem>*/}
-                <DropdownItem>
-                  <Link to="/profile"><i className="fa fa-user-circle"></i> حساب کاربری</Link>
+                <DropdownItem onClick={()=>this.props.history.push("/profile")}>
+                <i className="fa fa-user-circle"></i> حساب کاربری
 
                 </DropdownItem>
                 <DropdownItem onClick={e => this.props.onLogout(e)}>
@@ -94,4 +104,21 @@ class DefaultHeader extends Component {
 DefaultHeader.propTypes = propTypes;
 DefaultHeader.defaultProps = defaultProps;
 
-export default DefaultHeader;
+//export default DefaultHeader;
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setUser: (info) => {
+      dispatch(setUser(info));
+    }
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DefaultHeader));

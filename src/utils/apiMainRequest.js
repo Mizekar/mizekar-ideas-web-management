@@ -6,9 +6,9 @@ let main=JSON.parse(localStorage.getItem('persist:root'))
 let user=JSON.parse(main.user)
 let token=user.apiToken;
 let refToken=user.refreshToken
-const mobile=user.mobile
-const dashboard=main.dashboard
-const _persist=main._persist
+let mobile=user.mobile
+let dashboard=main.dashboard
+let _persist=main._persist
 
 
 export async function post(url,payload) {
@@ -183,7 +183,11 @@ async function refreshToken() {
         tokenType: data.token_type,
         refreshToken: data.refresh_token,
         expiresIn: data.expires_in,
-        mobile: mobile
+        mobile: mobile,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        profileImage: user.profileImage
+
     }
     //console.log(main);
     let userMain={user:JSON.stringify(main),dashboard:dashboard,_persist:_persist}
