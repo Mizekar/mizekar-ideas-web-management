@@ -494,6 +494,8 @@ class Edit extends Component {
             btnDisabled: true
         })
 
+
+
         let optionSets = this.state.optionSets;
         let errorOptionSets = this.state.errorOptionSets;
         let errorRequired = false;
@@ -703,11 +705,11 @@ class Edit extends Component {
                                 categories: this.state.categoriesValue,
                                 statusId: this.state.statusId,
                                 announcementId: this.state.announcementId,
-                                countryId: '',
-                                stateId: '',
-                                provinceId: '',
-                                cityId: '',
-                                villageId: '',
+                                countryId: this.state.countryId,
+                                stateId: this.state.stateId,
+                                provinceId: this.state.provinceId,
+                                cityId: this.state.cityId,
+                                villageId: this.state.villageId,
                                 isPublished: this.state.isPublished,
                                 relations: this.state.relations
                             }}
