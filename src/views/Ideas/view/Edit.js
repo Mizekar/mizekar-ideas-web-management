@@ -800,7 +800,7 @@ class Edit extends Component {
                                                                 name="summary"
                                                                 type="textarea"
                                                                 component="textarea"
-                                                                placeholder=""
+                                                                placeholder="خلاصه ای در مورد سوژه وارد کنید..."
                                                                 tag={Field}
                                                                 invalid={errors.description && touched.description}
                                                             />
@@ -816,7 +816,8 @@ class Edit extends Component {
                                                                 name="details"
                                                                 type="textarea"
                                                                 component="textarea"
-                                                                placeholder=""
+                                                                rows={10}
+                                                                placeholder="جزئیاتی در مورد سوژه وارد کنید..."
                                                                 tag={Field}
                                                                 invalid={errors.description && touched.description}
                                                             />

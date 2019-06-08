@@ -28,6 +28,7 @@ class Detail extends Component {
         this.getIdeaRelations();
         this.getIdeaStatuses();
         this.getIdeaLikes();
+        this.getIdeaComments();
         await this.getById();
 
     }
@@ -138,6 +139,19 @@ class Detail extends Component {
         this.setState({
             ideaLikesItems: response.items,
             totalLikes:response.totalCount
+        })
+    }
+    async getIdeaComments() {
+        let response = await get("social/comments/post/"+ this.state.id, {
+            pageNumber: 1,
+            pageSize: 1000
+        });
+
+        //console.log(response);
+
+        this.setState({
+            ideaCommentsItems: response.items,
+            totalComments:response.totalCount
         })
     }
 

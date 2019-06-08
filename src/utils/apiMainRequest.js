@@ -29,7 +29,7 @@ export async function post(url,payload) {
     } catch (e) {
         //alert(e.message)
         console.log(e)
-      if(e.status===401)
+        if(e.message==="Request failed with status code 401")
       {
         await refreshToken();
 
@@ -61,7 +61,7 @@ export async function upload(url,payload,callbackProgress,uploadId) {
     } catch (e) {
         //alert(e.message)
         console.log(e)
-      if(e.status===401)
+        if(e.message==="Request failed with status code 401")
       {
         await refreshToken();
           return await upload(url,payload,callbackProgress,uploadId)
@@ -116,7 +116,7 @@ export async function remove(url) {
     } catch (e) {
         //alert(e.message)
         console.log(e)
-      if(e.status===401)
+        if(e.message==="Request failed with status code 401")
       {
         await refreshToken();
           return await remove(url)
@@ -145,10 +145,10 @@ export async function put(url,payload) {
         //alert(e.message)
         console.log(e);
 
-        if(e.status===401)
+        if(e.message==="Request failed with status code 401")
         {
           await refreshToken();
-            return await put(url,payload)
+          return await put(url,payload)
 
           //logout();
         }
