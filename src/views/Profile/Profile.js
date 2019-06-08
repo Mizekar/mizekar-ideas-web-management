@@ -11,7 +11,7 @@ import {
 import * as Yup from "yup";
 import {Field, Form, Formik} from "formik";
 import Select from 'react-select';
-import {get, post, put, upload} from "../../utils/apiMainRequest";
+import {get, post, put, upload,remove} from "../../utils/apiMainRequest";
 import ModalAlert from "../../utils/modalAlert";
 import Loading from "../../utils/loading";
 
@@ -84,6 +84,7 @@ export default class Profile extends Component {
       btnDisabled: true
     })
     let response = null;
+
     if (this.state.id) {
       response = await put("accounts/profiles/" + this.state.id, payload);
     } else {
@@ -116,6 +117,12 @@ export default class Profile extends Component {
         loadingClass: 'loading'
       }
     );
+    //alert(this.state.profileImage)
+
+    if(this.state.profileImage!=="../../assets/img/avatars/default.png")
+    {
+      //remove("accounts/profiles/me/photo");
+    }
 
 
     let file=event.currentTarget.files[0]

@@ -5,7 +5,7 @@ import {API_URL, ORG_ID, DOMAIN_NAME} from "../actions/action.constance";
 let main=JSON.parse(localStorage.getItem('persist:root'))
 let user=JSON.parse(main.user)
 let token=user.apiToken;
-const refToken=user.refreshToken
+let refToken=user.refreshToken
 const mobile=user.mobile
 const dashboard=main.dashboard
 const _persist=main._persist
@@ -33,7 +33,7 @@ export async function post(url,payload) {
       {
         await refreshToken();
 
-        await post(url,payload)
+        return await post(url,payload)
 
         //logout();
       }
@@ -64,7 +64,7 @@ export async function upload(url,payload,callbackProgress,uploadId) {
       if(e.status===401)
       {
         await refreshToken();
-        await upload(url,payload,callbackProgress,uploadId)
+          return await upload(url,payload,callbackProgress,uploadId)
         //logout();
       }
     }
@@ -93,7 +93,7 @@ export async function get(url, params) {
       if(e.message==="Request failed with status code 401")
       {
         await refreshToken();
-        await get(url, params)
+          return await get(url, params)
 
         //logout();
       }
@@ -119,7 +119,7 @@ export async function remove(url) {
       if(e.status===401)
       {
         await refreshToken();
-        await remove(url)
+          return await remove(url)
 
         //logout();
       }
@@ -148,7 +148,7 @@ export async function put(url,payload) {
         if(e.status===401)
         {
           await refreshToken();
-          await put(url,payload)
+            return await put(url,payload)
 
           //logout();
         }
@@ -175,6 +175,7 @@ async function refreshToken() {
     });
     let data=response.data;
     token=data.access_token
+    refToken=data.refresh_token
 
     let main={
 
