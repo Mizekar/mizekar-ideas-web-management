@@ -9,7 +9,7 @@ import {
     Row, TabContent, TabPane
 } from "reactstrap";
 import classnames from "classnames";
-import {get} from "../../../utils/apiMainRequest";
+import {get,post} from "../../../utils/apiMainRequest";
 import moment from 'moment-jalaali'
 
 
@@ -29,6 +29,7 @@ class Detail extends Component {
         this.getIdeaStatuses();
         this.getIdeaLikes();
         this.getIdeaComments();
+
         await this.getById();
 
     }
@@ -58,7 +59,7 @@ class Detail extends Component {
             );
         }
 
-        console.log(response)
+        //console.log(response)
 
         this.setState(
             {
@@ -198,7 +199,7 @@ class Detail extends Component {
                                 }
                             </Col>
                             <Col xs="12" md="2" className="action-detail">
-                                <a href={"#/ideas/edit/" + this.state.id} className="btn btn-white ml-4">ویرایش</a>
+                                <a href={"#/ideas/edit/" + this.state.id} className="btn btn-white mr-4">ویرایش</a>
                                 <a className="trash-detail"><i className="fa fa-trash"></i> </a>
                             </Col>
                         </Row>
@@ -265,7 +266,7 @@ class Detail extends Component {
                                     this.toggle('6');
                                 }}
                             >
-                                نظرات
+                                نظرات ({this.state.totalComments})
                             </NavLink>
                         </NavItem>
                     </Nav>
