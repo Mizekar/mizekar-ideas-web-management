@@ -134,9 +134,19 @@ h1 {
 h1.list-title {
   font-size: 1.2rem !important;
   padding-left: 15px;
-  border-left: 1px solid #ccc;
+  /*border-left: 1px solid #ccc;*/
   margin-left: 15px;
   margin-bottom: 0px;
+}
+h5.num-record {
+  color:silver;
+  font-size: 11px;
+  padding-top: 10px;
+}
+.mlm-auto
+{
+  margin-left: 0px;
+  margin-right: auto;
 }
 
 .form-check-input {
