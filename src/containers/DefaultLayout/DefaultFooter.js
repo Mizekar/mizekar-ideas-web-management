@@ -15,7 +15,7 @@ class DefaultFooter extends Component {
 
     return (
       <React.Fragment>
-        <span>کلیه حقوق متعلق به وب سایت <a href=""> سوژه </a>می باشد </span>
+        <span>کلیه حقوق متعلق به وب سایت <a  href="https://ideas.mizekar.com/"> سوژه </a>می باشد </span>
         {/*<span className="mr-auto">&copy; 2018</span>*/}
       </React.Fragment>
     );

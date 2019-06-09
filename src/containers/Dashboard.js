@@ -4,7 +4,7 @@ import {
   getUsers 
 } from "../actions/action.dashboard"; 
 
-import Dashboard from "../views/Dashboard/Dashboard"
+import Dashboard from "../components/Dashboard/Dashboard"
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {

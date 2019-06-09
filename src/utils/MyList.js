@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Col, Row} from "reactstrap";
 //import moment from "moment-jalaali";
 

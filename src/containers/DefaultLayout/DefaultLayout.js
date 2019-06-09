@@ -19,7 +19,6 @@ import navigation from '../../_nav';
 import routes from '../../routes';
 import {setUser,emptyUser} from "../../actions/action.user";
 import {connect} from "react-redux";
-import {get, postMain} from "../../utils/apiRequest"
 
 const DefaultAside = React.lazy(() => import('./DefaultAside'));
 const DefaultFooter = React.lazy(() => import('./DefaultFooter'));

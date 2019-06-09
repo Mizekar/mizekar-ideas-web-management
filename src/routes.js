@@ -1,15 +1,15 @@
 import React from 'react';
 //import DefaultLayout from './containers/DefaultLayout';
 
-const Dashboard = React.lazy(() => import('./views/Dashboard'));
-const Categories = React.lazy(() => import('./views/Categories/'));
-const IdeaStatuses = React.lazy(() => import('./views/IdeaStatuses/'));
-const Announcement = React.lazy(() => import('./views/Announcement/'));
-const IdeaOptionSets = React.lazy(() => import('./views/IdeaOptionSets/'));
-const RelationType = React.lazy(() => import('./views/RelationType/'));
-const Ideas = React.lazy(() => import('./views/Ideas/'));
-const Assessments = React.lazy(() => import('./views/Assessments/'));
-const Profile = React.lazy(() => import('./views/Profile/'));
+const Dashboard = React.lazy(() => import('./components/Dashboard'));
+const Categories = React.lazy(() => import('./components/Categories/'));
+const IdeaStatuses = React.lazy(() => import('./components/IdeaStatuses/'));
+const Announcement = React.lazy(() => import('./components/Announcement/'));
+const IdeaOptionSets = React.lazy(() => import('./components/IdeaOptionSets/'));
+const RelationType = React.lazy(() => import('./components/RelationType/'));
+const Ideas = React.lazy(() => import('./components/Ideas/'));
+const Assessments = React.lazy(() => import('./components/Assessments/'));
+const Profile = React.lazy(() => import('./components/Profile/'));
 
 
 const routes = [

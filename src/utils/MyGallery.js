@@ -22,11 +22,11 @@ export default class MyGallery extends React.Component {
     }
 
     fileTypeViewer(data) {
-        if (data.mimeType == 'image/jpeg' || data.mimeType == 'image/jpg' || data.mimeType == 'image/png' || data.mimeType == 'image/gif') {
+        if (data.mimeType === 'image/jpeg' || data.mimeType === 'image/jpg' || data.mimeType === 'image/png' || data.mimeType === 'image/gif') {
             return (
                 <img src={data.fileUrl} className="file-url-box-img"/>
             )
-        } else if (data.mimeType == 'video/mp4') {
+        } else if (data.mimeType === 'video/mp4') {
             return (
                 <ReactPlayer
                     url={data.fileUrl}
@@ -34,7 +34,7 @@ export default class MyGallery extends React.Component {
                     controls={true}
                 />
             )
-        } else if (data.mimeType == 'audio/mpeg') {
+        } else if (data.mimeType === 'audio/mpeg') {
             return (
                 <ReactPlayer
                     url={data.fileUrl}
@@ -43,34 +43,34 @@ export default class MyGallery extends React.Component {
                 />
             )
         }
-        else if (data.mimeType == 'application/zip' || data.mimeType == 'application/x-rar-compressed') {
+        else if (data.mimeType === 'application/zip' || data.mimeType === 'application/x-rar-compressed') {
             return (
                 <div className="file-url-box-application pdf">
                     <i className="fa fa-file-zip-o"></i>
                 </div>
             )
         }
-        else if (data.mimeType == 'application/pdf') {
+        else if (data.mimeType === 'application/pdf') {
             return (
                 <div className="file-url-box-application pdf">
                     <i className="fa fa-file-pdf-o"></i>
                 </div>
             )
         }
-        else if (data.mimeType == 'application/vnd.ms-excel' || data.mimeType=="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+        else if (data.mimeType === 'application/vnd.ms-excel' || data.mimeType==="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
             return (
                 <div className="file-url-box-application excel">
                     <i className="fa fa-file-excel-o"></i>
                 </div>
             )
-        } else if (data.mimeType == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || data.mimeType=='application/msword') {
+        } else if (data.mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || data.mimeType==='application/msword') {
             return (
                 <div className="file-url-box-application word">
                     <i className="fa fa-file-word-o"></i>
                 </div>
             )
         }
-        else if (data.mimeType == 'aapplication/vnd.ms-powerpoint' || data.mimeType=="application/vnd.openxmlformats-officedocument.presentationml.presentation") {
+        else if (data.mimeType === 'aapplication/vnd.ms-powerpoint' || data.mimeType==="application/vnd.openxmlformats-officedocument.presentationml.presentation") {
             return (
                 <div className="file-url-box-application powerpoint">
                     <i className="fa fa-file-powerpoint-o"></i>

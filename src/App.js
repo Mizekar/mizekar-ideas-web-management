@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {HashRouter, Route, Switch} from 'react-router-dom';
+import {BrowserRouter, HashRouter, Route, Switch} from 'react-router-dom';
 // import { renderRoutes } from 'react-router-config';
 import Loadable from 'react-loadable';
 import './App.scss';
@@ -17,11 +17,11 @@ const DefaultLayout = Loadable({
 
 // Pages
 const Login = Loadable({
-    loader: () => import('./views/Auth/Login'),
+    loader: () => import('./components/Auth/Login'),
     loading
 });
 const Verify = Loadable({
-    loader: () => import('./views/Auth/Verify'),
+    loader: () => import('./components/Auth/Verify'),
     loading
 });
 
@@ -41,13 +41,13 @@ class App extends Component {
 
     render() {
         return (
-            <HashRouter>
+            <BrowserRouter>
                 <Switch>
                     <Route path="/login" name="Login" component={Login}/>
                     <Route path="/verify" name="Verify" component={Verify}/>
                     <Route exact={false} path="/" name="Home" component={DefaultLayout}/>
                 </Switch>
-            </HashRouter>
+            </BrowserRouter>
         );
     }
 }
