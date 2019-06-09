@@ -14,7 +14,7 @@ import {
     Row
 } from 'reactstrap';
 
-import {post} from "../../../utils/apiRequest"
+import {checkLogin} from "../../../api/login"
 import * as Yup from "yup";
 import {Field, Form, Formik} from "formik";
 import {setUser} from "../../../actions/action.user";
@@ -26,29 +26,38 @@ class Login extends Component {
     constructor(props) {
         super(props);
 
-        if(this.props.user.apiToken!=='')
-        {
+        if (this.props.user.apiToken !== '') {
             this.props.history.push('/dashboard')
         }
 
 
     }
+    componentDidCatch(error, info) {
+       //console.log(error)
+    }
 
     async checkLogin(params) {
 
         let mobile = "98" + params.mobile
-        let response = await post("auth/phone", {phone: mobile})
 
-        //console.log(response);
 
-        this.props.history.push({
-            pathname: '/verify',
-            state: {
-                resendToken: response.resend_token,
-                verifyToken: response.verify_token,
-                phoneNumber: mobile
-            }
-        })
+        let response = await checkLogin({phone: mobile})
+
+        if(response.status===202)
+        {
+            let data=response.data
+
+            this.props.history.push({
+                pathname: '/verify',
+                state: {
+                    resendToken: data.resend_token,
+                    verifyToken: data.verify_token,
+                    phoneNumber: mobile
+                }
+            })
+        }
+
+
 
 
     }
@@ -133,6 +142,7 @@ class Login extends Component {
         );
     }
 }
+
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         setUser: (info) => {

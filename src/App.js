@@ -24,6 +24,10 @@ const Verify = Loadable({
     loader: () => import('./components/Auth/Verify'),
     loading
 });
+const Register = Loadable({
+    loader: () => import('./components/Auth/Register'),
+    loading
+});
 
 class App extends Component {
 
@@ -45,6 +49,7 @@ class App extends Component {
                 <Switch>
                     <Route path="/login" name="Login" component={Login}/>
                     <Route path="/verify" name="Verify" component={Verify}/>
+                    <Route path="/register" name="Register" component={Register}/>
                     <Route exact={false} path="/" name="Home" component={DefaultLayout}/>
                 </Switch>
             </BrowserRouter>

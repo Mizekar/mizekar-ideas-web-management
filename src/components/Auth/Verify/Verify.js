@@ -11,7 +11,8 @@ import {
   Row
 } from 'reactstrap';
 
-import {postSystem} from "../../../utils/apiRequest"
+import {checkToken} from "../../../api/verify"
+import {getMyProfile} from "../../../api/profile"
 import {Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {connect} from "react-redux";
@@ -23,9 +24,6 @@ class Verify extends Component {
 
   constructor(props) {
     super(props);
-
-
-
 
     if (props.location.state !== undefined) {
       this.state = {
@@ -48,9 +46,6 @@ class Verify extends Component {
   }
 
   componentDidMount() {
-    // console.log('ok')
-    //console.log(localStorage.getItem('apiToken'))
-    //console.log(this.props.user.apiToken)
   }
 
   async checkVerifyCode(params) {
@@ -61,50 +56,47 @@ class Verify extends Component {
       client_secret: this.state.clientSecret,
       phone_number: this.state.phoneNumber,
       verification_token: params.verifyCode,
-
-
     }
-    //console.log(payload)
-    let response = await postSystem("connect/token", payload)
 
-    if (response.access_token !== "") {
+    let response = await checkToken(payload)
 
-      this.props.setUser({
-        apiToken: response.access_token,
-        tokenType: response.token_type,
-        refreshToken: response.refresh_token,
-        expiresIn: response.expires_in,
-        mobile: this.state.phoneNumber
-      });
-      /*let responseProfile = await get("accounts/profiles/me");
+    if (response.status=== 200) {
 
-      if (responseProfile !== undefined) {
-        this.props.setUser({
-          apiToken: response.access_token,
-          tokenType: response.token_type,
-          refreshToken: response.refresh_token,
-          expiresIn: response.expires_in,
-          mobile: this.state.phoneNumber,
-          firstName: responseProfile.firstName,
-          lastName: responseProfile.lastName,
-          profileImage: responseProfile.profileImage
-        });
+      let data=response.data;
+      let responseProfile = await getMyProfile(data.access_token);
 
-        this.props.history.push("/dashboard")
-      }
-      else
+
+      if(responseProfile.status==200)
       {
-
+        let dataProfile=responseProfile.data;
+        this.props.setUser({
+          apiToken: data.access_token,
+          tokenType: data.token_type,
+          refreshToken: data.refresh_token,
+          expiresIn: data.expires_in,
+          mobile: this.state.phoneNumber,
+          firstName:dataProfile.firstName,
+          lastName:dataProfile.lastName,
+          profileImage:dataProfile.profileImage,
+        });
         this.props.history.push("/dashboard")
+
       }
-      */
+      else if(responseProfile.status==404)
+      {
+        this.props.history.push({
+          pathname: '/register',
+          state: {
+            apiToken: data.access_token,
+            tokenType: data.token_type,
+            refreshToken: data.refresh_token,
+            expiresIn: data.expires_in,
+            mobile: this.state.phoneNumber,
+          }
+        })
+      }
+
     }
-
-
-
-
-
-
   }
 
   render() {

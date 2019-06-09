@@ -25,12 +25,6 @@ const user = (state = initialState, action = {}) => {
                     refreshToken: info.refreshToken,
                     expiresIn: info.expiresIn,
                     mobile: info.mobile,
-                }
-            )
-            break;
-        case userAction.SET_PROFILE:
-            return (
-                {
                     firstName: info.firstName,
                     lastName: info.lastName,
                     profileImage: info.profileImage

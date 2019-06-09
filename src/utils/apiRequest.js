@@ -8,10 +8,7 @@ export async function post(url, payload) {
 
     try {
         let response = await axios.post(`${API_URL_ROOT}/${url}`, payload);
-
-
         return response.data;
-
 
     } catch (e) {
         //alert(e.message)
