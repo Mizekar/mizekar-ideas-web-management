@@ -15,10 +15,9 @@ import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
 //import {DatePicker, DateTimePicker, DateRangePicker, DateTimeRangePicker} from "react-advance-jalaali-datepicker";
 
-//import moment from 'moment-jalaali'
-
+import moment from 'moment-jalaali'
 import DatePicker from 'react-datepicker2';
-import 'react-datepicker2/dist/react-datepicker2.min.css';
+//import 'react-datepicker2/dist/react-datepicker2.min.css';
 
 class Add extends Component {
     constructor(props) {

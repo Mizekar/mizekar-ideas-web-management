@@ -15,7 +15,7 @@ import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
 
 import DatePicker from 'react-datepicker2';
-import 'react-datepicker2/dist/react-datepicker2.min.css';
+//import 'react-datepicker2/dist/react-datepicker2.min.css';
 import moment from 'moment-jalaali'
 
 class Edit extends Component {
