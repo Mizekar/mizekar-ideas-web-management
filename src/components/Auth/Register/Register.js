@@ -1,188 +1,194 @@
 import React, {Component} from 'react';
 import {
-  Alert,
-  Button,
-  Card,
-  CardBody,
-  CardGroup,
-  Col,
-  Container, FormFeedback, FormGroup,
-  Input,
-  Row
+    Alert,
+    Button,
+    Card,
+    CardBody,
+    CardGroup,
+    Col,
+    Container, FormFeedback, FormGroup,
+    Input,
+    Row
 } from 'reactstrap';
 
-import {checkToken} from "../../../api/verify"
-import {getMyProfile} from "../../../api/profile"
+import {createProfile} from "../../../api/profile"
 import {Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
 import {setUser} from "../../../actions/action.user";
+import Select from 'react-select';
 
 
 class Register extends Component {
 
-  constructor(props) {
-    super(props);
-
-    if (props.location.state !== undefined) {
-      this.state = {
-        resendToken: props.location.state.resendToken,
-        verifyToken: props.location.state.verifyToken,
-        phoneNumber: props.location.state.phoneNumber,
-        clientId: 'idea-web',
-        clientSecret: '00PcCMVwUGdb5weDo9FOOrYclGif7SJAFM3oXQGelhy4KQ5f8M3RMuTqeg',
-        grantType: 'phone_number_token'
-      }
-    } else {
-      this.state = {
-        verifyToken: ''
-      }
-      this.props.history.push('/login');
-    }
-
-    this.checkRegisterCode = this.checkRegisterCode.bind(this)
-
-  }
-
-  componentDidMount() {
-  }
-
-  async checkRegisterCode(params) {
-
-    let payload = {
-      grant_type: this.state.grantType,
-      client_id: this.state.clientId,
-      client_secret: this.state.clientSecret,
-      phone_number: this.state.phoneNumber,
-      verification_token: params.verifyCode,
-    }
-
-    let response = await checkToken(payload)
-
-    if (response.status=== 200) {
-
-      let data=response.data;
-      let responseProfile = await getMyProfile(data.access_token);
+    constructor(props) {
+        super(props);
 
 
-      if(responseProfile.status==200)
-      {
-        let dataProfile=responseProfile.data;
-        this.props.setUser({
-          apiToken: data.access_token,
-          tokenType: data.token_type,
-          refreshToken: data.refresh_token,
-          expiresIn: data.expires_in,
-          mobile: this.state.phoneNumber,
-          firstName:dataProfile.firstName,
-          lastName:dataProfile.lastName,
-          profileImage:dataProfile.profileImage,
-        });
-        this.props.history.push("/dashboard")
+        if (props.location.state !== undefined) {
+            this.state = {
+                apiToken: props.location.state.apiToken,
+                tokenType: props.location.state.tokenType,
+                refreshToken: props.location.state.refreshToken,
+                expiresIn: props.location.state.expiresIn,
+                mobile: props.location.state.mobile,
+            }
+        } else {
+            this.props.history.push('/login');
+        }
 
-      }
-      else if(responseProfile.status==404)
-      {
-        this.props.history.push({
-          pathname: '/register',
-          state: {
-            apiToken: data.access_token,
-            tokenType: data.token_type,
-            refreshToken: data.refresh_token,
-            expiresIn: data.expires_in,
-            mobile: this.state.phoneNumber,
-          }
-        })
-      }
+        this.saveProfileInfo = this.saveProfileInfo.bind(this)
 
     }
-  }
 
-  render() {
-    return (
-        <div className="app flex-row align-items-center">
-          <Container>
-            <Row className="justify-content-center">
-              <Col md="5">
-                <CardGroup>
-                  <Card className="p-4">
-                    <CardBody>
-                      <h1>احراز هویت کاربر</h1>
-                      <p className="text-muted">لطفا کد تایید ارسال شده را وارد کنید.</p>
+    componentDidMount() {
+    }
 
-                      <Formik
-                          initialValues={{
-                            verifyCode: '',
-                          }}
-                          validationSchema={Yup.object().shape({
-                            verifyCode: Yup.string()
-                                .required('تکمیل کد تایید الزامی است.'),
-                          })}
-                          onSubmit={values => {
-                            this.checkRegisterCode(values)
-                          }}>
-                        {({errors, touched}) => (
-                            <Form>
-                              <FormGroup row>
-                                <Col md="12">
-                                  <Input
-                                      name="verifyCode"
-                                      type="text"
-                                      placeholder="کد تایید را وارد کنید"
-                                      style={{textAlign: 'center'}}
-                                      tag={Field}
-                                      invalid={errors.verifyCode && touched.verifyCode}
-                                  />
-                                  <FormFeedback>{errors.verifyCode}</FormFeedback>
-                                </Col>
+    async saveProfileInfo(payload) {
 
-                              </FormGroup>
-                              <Row>
-                                <Col xs="12">
-                                  <Alert color="info">
-                                    کد تایید احراز هویت : {this.state.verifyToken}
-                                  </Alert>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col xs="12">
-                                  <Button type="submit" color="warning">
-                                    تایید و ورود
-                                  </Button>
-                                </Col>
-                              </Row>
+        payload.mobile=this.state.mobile;
+        //console.log(this.state)
+        let response = await createProfile(payload,this.state.apiToken);
+        if (response.status === 200) {
 
+            let data = response.data;
 
-                            </Form>
-                        )}
-                      </Formik>
+            this.props.setUser({
+                apiToken: this.state.apiToken,
+                tokenType: this.state.tokenType,
+                refreshToken: this.state.refresh_token,
+                expiresIn: this.state.expiresIn,
+                mobile: this.state.mobile,
+                firstName: payload.firstName,
+                lastName: payload.lastName,
+                profileImage: '',
+            });
+            this.props.history.push("/dashboard")
 
-                    </CardBody>
-                  </Card>
-                </CardGroup>
-              </Col>
-            </Row>
-          </Container>
-        </div>
+        }
+    }
 
-    );
-  }
+    render() {
+        const genders= [
+            {value: 'Female', label: 'خانم'},
+            {value: 'Male', label: 'آقا'},
+            {value: 'Unknown', label: 'نامشخص'},
+        ];
+        return (
+            <div className="app flex-row align-items-center">
+                <Container>
+                    <Row className="justify-content-center">
+                        <Col md="5">
+                            <CardGroup>
+                                <Card className="p-4">
+                                    <CardBody>
+                                        <h1>تکمیل اطلاعات کاربری</h1>
+                                        <p className="text-muted">لطفا اطلاعات کاربری خود را تکمیل کنید.</p>
+
+                                        <Formik
+                                            initialValues={{
+                                                firstName: '',
+                                                lastName: '',
+                                                gender: ''
+                                            }}
+                                            validationSchema={Yup.object().shape({
+                                                firstName: Yup.string()
+                                                    .required('تکمیل نام الزامی است.'),
+                                                lastName: Yup.string()
+                                                    .required('تکمیل نام خانوادگی الزامی است.'),
+                                                gender: Yup.string()
+                                                    .required('انتخاب  جنسیت الزامی است.'),
+                                            })}
+                                            onSubmit={values => {
+                                                this.saveProfileInfo(values)
+                                            }}>
+                                            {({errors, touched,setFieldValue}) => (
+                                                <Form>
+                                                    <FormGroup row>
+                                                        <Col md="12">
+                                                            <label>نام</label>
+                                                            <Input
+                                                                name="firstName"
+                                                                type="text"
+                                                                tag={Field}
+                                                                invalid={errors.firstName && touched.firstName}
+                                                            />
+                                                            <FormFeedback>{errors.firstName}</FormFeedback>
+                                                        </Col>
+
+                                                    </FormGroup>
+                                                    <FormGroup row>
+                                                        <Col md="12">
+                                                            <label>نام خانوادگی</label>
+                                                            <Input
+                                                                name="lastName"
+                                                                type="text"
+                                                                tag={Field}
+                                                                invalid={errors.lastName && touched.lastName}
+                                                            />
+                                                            <FormFeedback>{errors.lastName}</FormFeedback>
+                                                        </Col>
+
+                                                    </FormGroup>
+                                                    <FormGroup row>
+                                                        <Col xs="12" md="12">
+                                                            <label>جنسیت</label>
+                                                            <Select
+                                                                name="gender"
+                                                                value={this.state.selectedGender}
+                                                                isMulti={false}
+                                                                onChange={(selectedOption) => {
+                                                                    this.setState({selectedGender: selectedOption});
+                                                                    setFieldValue("gender", selectedOption.value);
+                                                                }}
+                                                                options={genders}
+                                                                tag={Field}
+                                                                placeholder="انتخاب کنید..."
+                                                                error={errors.gender}
+                                                                touched={touched.gender}
+                                                            />
+                                                            <div className="invalid-feedback show ">
+                                                                {errors.gender}
+                                                            </div>
+                                                        </Col>
+
+                                                    </FormGroup>
+                                                    <Row>
+                                                        <Col xs="12">
+                                                            <Button type="submit" color="warning">
+                                                                ثبت نام
+                                                            </Button>
+                                                        </Col>
+                                                    </Row>
+                                                </Form>
+                                            )}
+                                        </Formik>
+                                    </CardBody>
+                                </Card>
+                            </CardGroup>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
+
+        );
+    }
 }
 
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    setUser: (info) => {
-      dispatch(setUser(info));
-    }
-  };
+    return {
+        setUser: (info) => {
+            dispatch(setUser(info));
+        }
+    };
 };
 
 const mapStateToProps = state => {
-  return {
-    user: state.user
-  };
+    return {
+        user: state.user
+    };
 };
 
 
