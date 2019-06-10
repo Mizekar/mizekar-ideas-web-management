@@ -756,6 +756,10 @@ legend {
 {
   padding: 0.375rem 0.75rem!important;
 }
+.text-cyan
+{
+  color:#4ec2c0;
+}
 /*
 a{
     color:#F8C31F !important;

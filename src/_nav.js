@@ -20,6 +20,7 @@ export default {
             url: '/announcement',
             icon: 'fa fa-bullhorn',
         },
+
         {
             name: 'ویژگی سوژه ها',
             url: '/ideaOptionSets',

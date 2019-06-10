@@ -39,6 +39,7 @@ class Categories extends Component {
         switch (act) {
             case '':
                 return (
+
                     <List/>
                 );
                 break;

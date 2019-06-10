@@ -3,7 +3,8 @@ import {Breadcrumb, BreadcrumbItem, Button, Col, Row} from "reactstrap";
 import {get, remove} from "../../../utils/apiMainRequest";
 import Loading from "../../../utils/loading";
 import {confirmAlert} from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css' // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'
+import {Link} from "react-router-dom"; // Import
 
 
 export default class List extends Component {
@@ -35,7 +36,7 @@ export default class List extends Component {
       pageNumber: this.state.pageNumber,
       pageSize: this.state.pageSize
     });
-    console.log(response)
+    //console.log(response)
 
     let totalCount = response.totalCount;
     let pageSize = response.pageSize;
@@ -117,11 +118,11 @@ export default class List extends Component {
                 <h5 className="num-record">{this.state.totalCount}  دسته بندی</h5>
               </div>
 
-              <a href="#/categories/add" className="mlm-auto btn btn-primary">
+              <Link to="/categories/add" className="mlm-auto btn btn-primary">
                 <i className="fa fa-plus"></i>
                 &nbsp;
                 اضافه کردن دسته بندی جدید
-              </a>
+              </Link>
             </div>
 
           </Col>
@@ -140,7 +141,9 @@ export default class List extends Component {
                 return (
                   <Row className="row-list" key={data.id}>
                     <Col xs="12" sm="6" className="col-list">{data.name}</Col>
-                    <Col xs="12" sm="2" className="col-list">{data.displayOrder}</Col>
+                    <Col xs="12" sm="2" className="col-list">
+                      تعداد سوژه : <span className="text-cyan pl-1">{data.ideasCount}</span>
+                    </Col>
                     <Col xs="12" sm="2" className="col-list">
                       {data.isPublished &&
                       <Button className="btn btn-square btn-outline-success disabled" disabled="">منتشر شده</Button>
@@ -150,10 +153,10 @@ export default class List extends Component {
                       }
                     </Col>
                     <Col xs="12" sm="2" className="col-list flex-row-reverse">
-                      <Button className="btn-square btn btn-primary ml-2"
-                              href={"#/categories/edit/" + data.id}>
+                      <Link className="btn-square btn btn-secondary ml-2"
+                              to={"/categories/edit/" + data.id}>
                         <i className="fa fa-pencil"></i>
-                      </Button>
+                      </Link>
                       <Button
                         className="btn-square btn btn-danger ml-1"
                         onClick={() => this.confirmDelete(data.id)}
