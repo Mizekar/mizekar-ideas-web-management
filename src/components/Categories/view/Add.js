@@ -13,7 +13,11 @@ import * as Yup from "yup";
 import { post} from "../../../utils/apiMainRequest";
 import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
+import { setUser} from "../../../actions/action.user";
+import {connect} from "react-redux";
+
+import {getCategories} from "../../../api/categories"
 
 class Add extends Component {
     constructor(props) {
@@ -145,7 +149,7 @@ class Add extends Component {
 
                                                 <FormFeedback>{errors.displayOrder}</FormFeedback>
                                             </FormGroup>
-                                            <FormGroup check>
+                                            <FormGroup check className="ml-2">
                                                 <Label check>
                                                     <Input
                                                         type="checkbox"
@@ -187,4 +191,19 @@ class Add extends Component {
 
 }
 
-export default Add;
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        setUser: (info) => {
+            dispatch(setUser(info));
+        }
+    };
+};
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    };
+};
+
+
+export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(Add));

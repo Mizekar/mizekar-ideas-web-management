@@ -4,10 +4,14 @@ import {get, remove} from "../../../utils/apiMainRequest";
 import Loading from "../../../utils/loading";
 import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'
-import {Link} from "react-router-dom"; // Import
+import {Link,withRouter} from "react-router-dom"; // Import
+
+import { setUser} from "../../../actions/action.user";
+import {connect} from "react-redux";
+import {getCategories} from "../../../api/categories"
 
 
-export default class List extends Component {
+class List extends Component {
   constructor(props) {
     super(props);
 
@@ -32,31 +36,41 @@ export default class List extends Component {
       }
     )
 
-    let response = await get("ideas/Categories", {
+    let response = await getCategories({
       pageNumber: this.state.pageNumber,
       pageSize: this.state.pageSize
-    });
-    //console.log(response)
+    },this.props.user.apiToken);
 
-    let totalCount = response.totalCount;
-    let pageSize = response.pageSize;
-    let pageNumber = response.pageNumber;
 
-    if (response.items.length > 0) {
-      this.setState((prevState) => ({
-        items: prevState.items.concat(response.items),
-        pageNumber: prevState.pageNumber + 1,
-        totalCount:totalCount
-      }))
+
+    if(response.status==200)
+    {
+      let data=response.data;
+      let totalCount = data.totalCount;
+      let pageSize = data.pageSize;
+      let pageNumber = data.pageNumber;
+
+      if (data.items.length > 0) {
+        this.setState((prevState) => ({
+          items: prevState.items.concat(data.items),
+          pageNumber: prevState.pageNumber + 1,
+          totalCount:totalCount
+        }))
+      }
+      if (pageNumber * pageSize >= totalCount) {
+        this.setState(
+            {
+              loadMore: false
+            }
+        )
+
+      }
     }
-    if (pageNumber * pageSize >= totalCount) {
-      this.setState(
-        {
-          loadMore: false
-        }
-      )
+    else if(response.status==401)
+    {
 
     }
+
     this.setState(
       {
         loading: false
@@ -140,19 +154,19 @@ export default class List extends Component {
               this.state.items.map((data) => {
                 return (
                   <Row className="row-list" key={data.id}>
-                    <Col xs="12" sm="6" className="col-list">{data.name}</Col>
-                    <Col xs="12" sm="2" className="col-list">
+                    <Col xs="12" sm="8" className="col-list">{data.name}</Col>
+                    <Col xs="12" sm="3" className="col-list">
                       تعداد سوژه : <span className="text-cyan pl-1">{data.ideasCount}</span>
                     </Col>
-                    <Col xs="12" sm="2" className="col-list">
+                    {/*<Col xs="12" sm="2" className="col-list">
                       {data.isPublished &&
                       <Button className="btn btn-square btn-outline-success disabled" disabled="">منتشر شده</Button>
                       }
                       {!data.isPublished &&
                       <Button className="btn btn-square btn-outline-secondary disabled" disabled="">عدم انتشار</Button>
                       }
-                    </Col>
-                    <Col xs="12" sm="2" className="col-list flex-row-reverse">
+                    </Col>*/}
+                    <Col xs="12" sm="1" className="col-list flex-row-reverse">
                       <Link className="btn-square btn btn-secondary ml-2"
                               to={"/categories/edit/" + data.id}>
                         <i className="fa fa-pencil"></i>
@@ -202,3 +216,19 @@ export default class List extends Component {
   }
 
 }
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setUser: (info) => {
+      dispatch(setUser(info));
+    }
+  };
+};
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+
+export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(List));

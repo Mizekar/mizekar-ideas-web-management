@@ -172,7 +172,7 @@ class Edit extends Component {
 
                                                 <FormFeedback>{errors.displayOrder}</FormFeedback>
                                             </FormGroup>
-                                            <FormGroup check>
+                                            <FormGroup check className="ml-2">
                                                 <Label check>
                                                     <Input
                                                         type="checkbox"

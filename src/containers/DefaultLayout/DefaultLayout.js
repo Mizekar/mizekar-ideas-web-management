@@ -43,21 +43,6 @@ class DefaultLayout extends Component {
        //this.getCategories();
     }
 
- /*   async getCategories()
-    {
-        let response1=await postMain("v1/ideas/Categories", {
-            "displayOrder": 0,
-            "name": "string",
-            "description": "string",
-            "isPublished": true
-
-        },this.props.user.apiToken)
-
-        console.log(response1)
-        let response = await get("v1/ideas/Categories", this.props.user.apiToken)
-
-        console.log(response)
-    }*/
 
     signOut(e) {
         e.preventDefault()
