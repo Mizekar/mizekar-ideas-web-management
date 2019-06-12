@@ -61,7 +61,7 @@ class Edit extends Component {
 
       }))*/
 
-        //console.log(options)
+        console.log(options)
         this.setState({
             title: response.title,
             description: response.description,
