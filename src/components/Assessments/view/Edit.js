@@ -14,6 +14,7 @@ import {get, post, put, remove} from "../../../utils/apiMainRequest";
 import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
 import {confirmAlert} from "react-confirm-alert";
+import {Link} from "react-router-dom";
 
 const ErrorMessage = ({name}) => (
     <Field
@@ -165,8 +166,8 @@ class Edit extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
-                            <BreadcrumbItem tag="a" href="#/assessments">ارزیابی ها</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/assessments">ارزیابی ها</Link></BreadcrumbItem>
                             <BreadcrumbItem active>ویرایش کردن ارزیابی جدید</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -175,12 +176,12 @@ class Edit extends Component {
                 <Row>
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
-                            <h1 className="list-title">ویرایش کردن ارزیابی</h1>
-                            <a href="#/assessments">
+                            <h1 className="list-title">اضافه کردن ارزیابی جدید</h1>
+                            <Link to="/assessments" className="mlm-auto btn btn-primary">
                                 <i className="fa fa-list"></i>
                                 &nbsp;
                                 لیست ارزیابی ها
-                            </a>
+                            </Link>
                         </div>
 
                     </Col>

@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import {post} from "../../../utils/apiMainRequest";
 import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
+import {Link} from "react-router-dom";
 
 const ErrorMessage = ({name}) => (
     <Field
@@ -132,8 +133,8 @@ class Add extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
-                            <BreadcrumbItem tag="a" href="#/assessments">ارزیابی ها</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/assessments">ارزیابی ها</Link></BreadcrumbItem>
                             <BreadcrumbItem active>اضافه کردن ارزیابی جدید</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -143,11 +144,11 @@ class Add extends Component {
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
                             <h1 className="list-title">اضافه کردن ارزیابی جدید</h1>
-                            <a href="#/assessments">
+                            <Link to="/assessments" className="mlm-auto btn btn-primary">
                                 <i className="fa fa-list"></i>
                                 &nbsp;
                                 لیست ارزیابی ها
-                            </a>
+                            </Link>
                         </div>
 
                     </Col>
