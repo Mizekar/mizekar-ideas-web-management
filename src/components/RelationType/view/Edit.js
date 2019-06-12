@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import {get, put} from "../../../utils/apiMainRequest";
 import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
+import {Link} from "react-router-dom";
 
 class Edit extends Component {
     constructor(props) {
@@ -79,8 +80,8 @@ class Edit extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
-                            <BreadcrumbItem tag="a" href="#/relationType">انواع رابطه ها</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/relationType">انواع رابطه ها</Link></BreadcrumbItem>
                             <BreadcrumbItem active>ویرایش کردن نوع رابطه</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -90,11 +91,11 @@ class Edit extends Component {
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
                             <h1 className="list-title">ویرایش کردن نوع رابطه</h1>
-                            <a href="#/relationType">
+                            <Link to="/relationType" className="mlm-auto btn btn-primary">
                                 <i className="fa fa-list"></i>
                                 &nbsp;
                                 لیست انواع رابطه ها
-                            </a>
+                            </Link>
                         </div>
 
                     </Col>
