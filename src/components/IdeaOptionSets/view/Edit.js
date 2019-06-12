@@ -14,6 +14,7 @@ import {get, post, put, remove} from "../../../utils/apiMainRequest";
 import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
 import {confirmAlert} from "react-confirm-alert";
+import {Link} from "react-router-dom";
 
 const ErrorMessage = ({name}) => (
     <Field
@@ -161,8 +162,8 @@ class Edit extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
-                            <BreadcrumbItem tag="a" href="#/ideaOptionSets">ویژگی سوژه ها</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/ideaOptionSets">ویژگی سوژه ها</Link></BreadcrumbItem>
                             <BreadcrumbItem active>ویرایش کردن ویژگی جدید</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -172,11 +173,11 @@ class Edit extends Component {
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
                             <h1 className="list-title">ویرایش کردن ویژگی</h1>
-                            <a href="#/ideaOptionSets">
+                            <Link to="/ideaOptionSets"  className="mlm-auto btn btn-primary">
                                 <i className="fa fa-list"></i>
                                 &nbsp;
                                 لیست ویژگی سوژه ها
-                            </a>
+                            </Link>
                         </div>
 
                     </Col>
@@ -273,7 +274,7 @@ class Edit extends Component {
 
                                                 <FormFeedback>{errors.displayOrder}</FormFeedback>
                                             </FormGroup>
-                                            <FormGroup check className="mr-2 mt-3">
+                                            <FormGroup check className="ml-2 mt-3">
                                                 <Label check>
                                                     <Input
                                                         type="checkbox"
@@ -284,7 +285,7 @@ class Edit extends Component {
                                                     چند انتخابی
                                                 </Label>
                                             </FormGroup>
-                                            <FormGroup check className="mr-2 mt-3">
+                                            <FormGroup check className="ml-2 mt-3">
                                                 <Label check>
                                                     <Input
                                                         type="checkbox"
