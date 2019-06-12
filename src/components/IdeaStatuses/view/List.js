@@ -3,7 +3,8 @@ import {Breadcrumb, BreadcrumbItem, Button, Col, Row} from "reactstrap";
 import {get, remove} from "../../../utils/apiMainRequest";
 import Loading from "../../../utils/loading";
 import {confirmAlert} from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css' // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'
+import {Link} from "react-router-dom"; // Import
 
 
 export default class List extends Component {
@@ -35,19 +36,20 @@ export default class List extends Component {
             pageNumber: this.state.pageNumber,
             pageSize: this.state.pageSize
         });
-        //console.log(response)
+        console.log(response)
 
-        let totalCount=response.totalCount;
-        let pageSize=response.pageSize;
-        let pageNumber=response.pageNumber;
+        let totalCount = response.totalCount;
+        let pageSize = response.pageSize;
+        let pageNumber = response.pageNumber;
 
         if (response.items.length > 0) {
             this.setState((prevState) => ({
                 items: prevState.items.concat(response.items),
-                pageNumber: prevState.pageNumber + 1
+                pageNumber: prevState.pageNumber + 1,
+                totalCount:totalCount
             }))
         }
-        if(pageNumber*pageSize>=totalCount){
+        if (pageNumber * pageSize >= totalCount) {
             this.setState(
                 {
                     loadMore: false
@@ -102,7 +104,7 @@ export default class List extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
                             <BreadcrumbItem active>وضعیت سوژه ها</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -111,12 +113,16 @@ export default class List extends Component {
                 <Row>
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
-                            <h1 className="list-title">وضعیت سوژه ها</h1>
-                            <a href="#/ideaStatuses/add">
-                                <i className="fa fa-plus-square"></i>
+                            <div>
+                                <h1 className="list-title">وضعیت سوژه ها</h1>
+                                <h5 className="num-record">{this.state.totalCount} وضعیت</h5>
+                            </div>
+
+                            <Link to="/ideaStatuses/add" className="mlm-auto btn btn-primary">
+                                <i className="fa fa-plus"></i>
                                 &nbsp;
                                 اضافه کردن وضعیت جدید
-                            </a>
+                            </Link>
                         </div>
 
                     </Col>
@@ -124,43 +130,48 @@ export default class List extends Component {
                 <Row className="mt-4">
                     {this.state.items.length > 0 &&
                     <Col xs="12">
-                        <Row className="row-list-header">
+                       {/* <Row className="row-list-header">
                             <Col xs="12" sm="5" className="col-list">عنوان وضعیت</Col>
                             <Col xs="12" sm="1" className="col-list">رنگ</Col>
                             <Col xs="12" sm="2" className="col-list">اولویت نمایش</Col>
                             <Col xs="12" sm="2" className="col-list">وضعیت انتشار</Col>
                             <Col xs="12" sm="2" className="col-list">عملیات</Col>
-                        </Row>
+                        </Row>*/}
                         {
                             this.state.items.map((data) => {
-                                let hexColorStyle={
-                                    background:data.hexColor
+                                let hexColorStyle = {
+                                    background: data.hexColor
                                 }
                                 return (
                                     <Row className="row-list" key={data.id}>
-                                        <Col xs="12" sm="5" className="col-list">{data.name}</Col>
+                                        <Col xs="12" sm="6" className="col-list">{data.name}</Col>
+                                        <Col xs="12" sm="2" className="col-list">
+                                            تعداد سوژه : <span className="text-cyan pl-1">{data.ideasCount}</span>
+                                        </Col>
                                         <Col xs="12" sm="1" className="col-list">
                                             <div className="circle-color" style={hexColorStyle}></div>
                                         </Col>
-                                        <Col xs="12" sm="2" className="col-list">{data.displayOrder}</Col>
+                                       {/* <Col xs="12" sm="2" className="col-list">{data.displayOrder}</Col>*/}
                                         <Col xs="12" sm="2" className="col-list">
                                             {data.isPublished &&
-                                            <Button className="btn btn-square btn-outline-success disabled" disabled="">منتشر شده</Button>
+                                            <Button className="btn btn-square btn-outline-success disabled" disabled="">منتشر
+                                                شده</Button>
                                             }
                                             {!data.isPublished &&
-                                            <Button className="btn btn-square btn-outline-secondary disabled" disabled="">عدم انتشار</Button>
+                                            <Button className="btn btn-square btn-outline-secondary disabled"
+                                                    disabled="">عدم انتشار</Button>
                                             }
                                         </Col>
-                                        <Col xs="12" sm="2" className="col-list">
-                                            <Button className="btn-square btn btn-info ml-2"
-                                                    href={"#/ideaStatuses/edit/" + data.id}>
-                                                <i className="fa fa-pencil"></i> ویرایش
+                                        <Col xs="12" sm="1" className="col-list">
+                                            <Button className="btn btn-secondary ml-2"
+                                                    href={"/ideaStatuses/edit/" + data.id}>
+                                                <i className="fa fa-pencil"></i>
                                             </Button>
                                             <Button
-                                                className="btn-square btn btn-danger ml-1"
+                                                className="btn btn-danger ml-1"
                                                 onClick={() => this.confirmDelete(data.id)}
                                             >
-                                                <i className="fa fa-trash"></i> حذف
+                                                <i className="fa fa-trash"></i>
                                             </Button>
                                         </Col>
                                     </Row>

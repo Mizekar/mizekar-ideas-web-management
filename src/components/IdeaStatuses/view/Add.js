@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import { post} from "../../../utils/apiMainRequest";
 import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
+import {Link} from "react-router-dom";
 
 class Add extends Component {
     constructor(props) {
@@ -61,8 +62,8 @@ class Add extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
-                            <BreadcrumbItem tag="a" href="#/ideaStatuses">وضعیت سوژه ها</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/ideaStatuses">وضعیت سوژه ها</Link></BreadcrumbItem>
                             <BreadcrumbItem active>اضافه کردن وضعیت جدید</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -72,11 +73,11 @@ class Add extends Component {
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
                             <h1 className="list-title">اضافه کردن وضعیت جدید</h1>
-                            <a href="#/ideaStatuses">
+                            <Link to="/ideaStatuses" className="mlm-auto btn btn-primary">
                                 <i className="fa fa-list"></i>
                                 &nbsp;
                                 لیست وضعیت سوژه ها
-                            </a>
+                            </Link>
                         </div>
 
                     </Col>
