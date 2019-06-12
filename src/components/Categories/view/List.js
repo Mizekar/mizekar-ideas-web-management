@@ -118,7 +118,7 @@ class List extends Component {
         <Row className="default-breadcrumb">
           <Col xs="12">
             <Breadcrumb>
-              <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
+              <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
               <BreadcrumbItem active>دسته بندی ها</BreadcrumbItem>
             </Breadcrumb>
           </Col>
@@ -167,12 +167,12 @@ class List extends Component {
                       }
                     </Col>*/}
                     <Col xs="12" sm="1" className="col-list flex-row-reverse">
-                      <Link className="btn-square btn btn-secondary ml-2"
+                      <Link className="btn btn-secondary ml-2"
                               to={"/categories/edit/" + data.id}>
                         <i className="fa fa-pencil"></i>
                       </Link>
                       <Button
-                        className="btn-square btn btn-danger ml-1"
+                        className="btn btn-danger ml-1"
                         onClick={() => this.confirmDelete(data.id)}
                       >
                         <i className="fa fa-trash"></i>

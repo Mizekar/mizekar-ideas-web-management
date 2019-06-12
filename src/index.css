@@ -760,6 +760,22 @@ legend {
 {
   color:#4ec2c0;
 }
+.img-list
+{
+  width: 85px;
+  height:40px;
+  border-radius: 5px;
+  margin-left:20px;
+  background-color: #FFCB2C;
+}
+.default-img
+{
+  width: 85px;
+  height:40px;
+  border-radius: 5px;
+  margin-left:20px;
+  background-color: #FFCB2C;
+}
 /*
 a{
     color:#F8C31F !important;

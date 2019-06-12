@@ -17,6 +17,7 @@ import Loading from "../../../utils/loading";
 
 import moment from 'moment-jalaali'
 import DatePicker from 'react-datepicker2';
+import {Link} from "react-router-dom";
 //import 'react-datepicker2/dist/react-datepicker2.min.css';
 
 class Add extends Component {
@@ -70,8 +71,8 @@ class Add extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
-                            <BreadcrumbItem tag="a" href="#/announcement">فراخوان ها</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/announcement">فراخوان ها</Link></BreadcrumbItem>
                             <BreadcrumbItem active>اضافه کردن فراخوان جدید</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -81,11 +82,11 @@ class Add extends Component {
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
                             <h1 className="list-title">اضافه کردن فراخوان جدید</h1>
-                            <a href="#/announcement">
+                            <Link to="/announcement" className="mlm-auto btn btn-primary">
                                 <i className="fa fa-list"></i>
                                 &nbsp;
                                 لیست فراخوان ها
-                            </a>
+                            </Link>
                         </div>
 
                     </Col>
@@ -142,7 +143,7 @@ class Add extends Component {
 
                                             </FormGroup>
                                             <FormGroup row>
-                                                <Col xs="12" md="6" className="pr-0">
+                                                <Col xs="12" md="6" className="pr-1">
                                                     <label>تاریخ شروع</label>
                                                     <div className="divDatePicker">
                                                         <DatePicker
@@ -154,7 +155,7 @@ class Add extends Component {
                                                         />
                                                     </div>
                                                 </Col>
-                                                <Col xs="12" md="6" className="pl-0">
+                                                <Col xs="12" md="6" className="pl-1">
                                                     <label>تاریخ پایان</label>
                                                     <div className="divDatePicker">
                                                         <DatePicker
@@ -171,7 +172,7 @@ class Add extends Component {
                                                 <FormFeedback>{errors.name}</FormFeedback>
                                             </FormGroup>
 
-                                            <FormGroup check className="mr-2 mb-3">
+                                            <FormGroup check className="ml-2 mb-3">
                                                 <Label check>
                                                     <Input
                                                         type="checkbox"
@@ -183,7 +184,7 @@ class Add extends Component {
                                                     فراخوان ویژه
                                                 </Label>
                                             </FormGroup>
-                                            <FormGroup check className="mr-2">
+                                            <FormGroup check className="ml-2">
                                                 <Label check>
                                                     <Input
                                                         type="checkbox"

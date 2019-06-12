@@ -6,6 +6,7 @@ import MyList from "../../../utils/MyList";
 import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import
 import moment from 'moment-jalaali'
+import {Link} from "react-router-dom";
 
 
 
@@ -38,7 +39,7 @@ export default class List extends Component {
             pageNumber: this.state.pageNumber,
             pageSize: this.state.pageSize
         });
-        //console.log(response)
+        console.log(response)
 
         let totalCount = response.totalCount;
         let pageSize = response.pageSize;
@@ -47,7 +48,8 @@ export default class List extends Component {
         if (response.items.length > 0) {
             this.setState((prevState) => ({
                 items: prevState.items.concat(response.items),
-                pageNumber: prevState.pageNumber + 1
+                pageNumber: prevState.pageNumber + 1,
+                totalCount:totalCount
             }))
         }
         if (pageNumber * pageSize >= totalCount) {
@@ -105,7 +107,7 @@ export default class List extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
                             <BreadcrumbItem active>فراخوان ها</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -114,12 +116,15 @@ export default class List extends Component {
                 <Row>
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
-                            <h1 className="list-title">فراخوان ها</h1>
-                            <a href="#/announcement/add">
-                                <i className="fa fa-plus-square"></i>
+                            <div>
+                                <h1 className="list-title">فراخوان ها</h1>
+                                <h5 className="num-record">{this.state.totalCount} فراخوان</h5>
+                            </div>
+                            <Link to="/announcement/add" className="mlm-auto btn btn-primary">
+                                <i className="fa fa-plus"></i>
                                 &nbsp;
                                 اضافه کردن فراخوان جدید
-                            </a>
+                            </Link>
                         </div>
 
                     </Col>
@@ -164,14 +169,14 @@ export default class List extends Component {
 
                     {this.state.items.length > 0 &&
                     <Col xs="12">
-                        <Row className="row-list-header">
+                      {/*  <Row className="row-list-header">
                             <Col xs="12" sm="4" className="col-list">عنوان فراخوان</Col>
                             <Col xs="12" sm="1" className="col-list">تاریخ شروع</Col>
                             <Col xs="12" sm="1" className="col-list">تاریخ پایان</Col>
                             <Col xs="12" sm="2" className="col-list">وضعیت انتشار</Col>
                             <Col xs="12" sm="1" className="col-list">ویژه</Col>
                             <Col xs="12" sm="3" className="col-list">عملیات</Col>
-                        </Row>
+                        </Row>*/}
                         {
                             this.state.items.map((data) => {
                                 let start = moment(data.startDate)
@@ -179,12 +184,16 @@ export default class List extends Component {
 
                                 return (
                                     <Row className="row-list" key={data.id}>
-                                        <Col xs="12" sm="4" className="col-list">{data.title}</Col>
+                                        <Col xs="12" sm="5" className="col-list">
+                                            {data.mediaUrl &&<img src={data.mediaUrl} className="img-list"/>}
+                                            {!data.mediaUrl &&<div className="default-img"></div>}
+                                            {data.title}
+                                        </Col>
                                         <Col xs="12" sm="1"
                                              className="col-list">{(start.jYear() + "-" + (start.jMonth() + 1) + "-" + start.jDate())}</Col>
                                         <Col xs="12" sm="1"
                                              className="col-list">{(end.jYear() + "-" + (end.jMonth() + 1) + "-" + end.jDate())}</Col>
-                                        <Col xs="12" sm="2" className="col-list">
+                                        {/*<Col xs="12" sm="2" className="col-list">
                                             {data.isPublished &&
                                             <Button className="btn btn-square btn-outline-success " disabled={true}>منتشر
                                                 شده</Button>
@@ -193,29 +202,33 @@ export default class List extends Component {
                                             <Button className="btn btn-square btn-outline-secondary " disabled={true}>عدم
                                                 انتشار</Button>
                                             }
+                                        </Col>*/}
+                                        <Col xs="12" sm="2" className="col-list">
+                                            تعداد سوژه : <span className="text-cyan pl-1">{data.ideasCount}</span>
                                         </Col>
                                         <Col xs="12" sm="1" className="col-list">
                                             {data.isSpecial &&
-                                            <i className="fa fa-star goldenrod"></i>
+                                            <span>فراخوان ویژه</span>
+
                                             }
                                             {!data.isSpecial &&
-                                            <i className="fa fa-star-o"></i>
+                                            <span>فراخوان عادی</span>
                                             }
                                         </Col>
-                                        <Col xs="12" sm="3" className="col-list">
-                                            <Button className="btn-square btn btn-info ml-2"
-                                                    href={"#/announcement/edit/" + data.id}>
-                                                <i className="fa fa-pencil"></i> ویرایش
-                                            </Button>
-                                            <Button className="btn-square btn btn-primary ml-2"
-                                                    href={"#/announcement/upload/" + data.id}>
-                                                <i className="fa fa-picture-o"></i> آپلود تصویر
-                                            </Button>
+                                        <Col xs="12" sm="2" className="col-list">
+                                            <Link className="btn btn-secondary ml-2"
+                                                    to={"/announcement/edit/" + data.id}>
+                                                <i className="fa fa-pencil"></i>
+                                            </Link>
+                                            <Link className="btn btn-info ml-2"
+                                                    to={"/announcement/upload/" + data.id}>
+                                                <i className="fa fa-picture-o"></i>
+                                            </Link>
                                             <Button
-                                                className="btn-square btn btn-danger ml-1"
+                                                className="btn btn-danger ml-1"
                                                 onClick={() => this.confirmDelete(data.id)}
                                             >
-                                                <i className="fa fa-trash"></i> حذف
+                                                <i className="fa fa-trash"></i>
                                             </Button>
                                         </Col>
                                     </Row>

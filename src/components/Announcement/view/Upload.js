@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import {get, upload} from "../../../utils/apiMainRequest";
 import ModalAlert from "../../../utils/modalAlert";
 import Loading from "../../../utils/loading";
+import {Link} from "react-router-dom";
 
 
 class Upload extends Component {
@@ -55,7 +56,7 @@ class Upload extends Component {
         let data = new FormData();
         data.append('formFile', payload.file);
 
-        let response = await upload("ideas/Announcements/"+this.state.id+"/upload/", data);
+        let response = await upload("ideas/Announcements/"+this.state.id+"/upload/", data,"","");
 
         console.log(response)
 
@@ -82,8 +83,8 @@ class Upload extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
-                            <BreadcrumbItem tag="a" href="#/announcement">فراخوان ها</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/announcement">فراخوان ها</Link></BreadcrumbItem>
                             <BreadcrumbItem active>آپلود تصویر فراخوان</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -93,11 +94,11 @@ class Upload extends Component {
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
                             <h1 className="list-title">آپلود تصویر فراخوان</h1>
-                            <a href="#/announcement">
+                            <Link to="/announcement" className="mlm-auto btn btn-primary">
                                 <i className="fa fa-list"></i>
                                 &nbsp;
                                 لیست فراخوان ها
-                            </a>
+                            </Link>
                         </div>
 
                     </Col>
