@@ -56,7 +56,7 @@ class Upload extends Component {
         let data = new FormData();
         data.append('formFile', payload.file);
 
-        let response = await upload("ideas/Announcements/"+this.state.id+"/upload/", data,"","");
+        let response = await upload("ideas/Announcements/"+this.state.id+"/upload/", data,this.progressUpload,1);
 
         console.log(response)
 
@@ -71,6 +71,9 @@ class Upload extends Component {
 
         }
 
+
+    }
+    progressUpload(percent, uploadId) {
 
     }
 
