@@ -776,6 +776,14 @@ legend {
   margin-left:20px;
   background-color: #FFCB2C;
 }
+.alert-position
+{
+  position: absolute !important;
+  bottom:40px !important;
+  left:40px !important;
+  z-index: 100;
+
+}
 /*
 a{
     color:#F8C31F !important;

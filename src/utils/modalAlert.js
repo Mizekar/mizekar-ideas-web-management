@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, ModalHeader, ModalBody} from 'reactstrap';
+import {Modal, ModalHeader, ModalBody, Alert} from 'reactstrap';
 
 export default class ModalAlert extends React.Component {
     constructor(props) {
@@ -12,20 +12,25 @@ export default class ModalAlert extends React.Component {
             type: props.type
         };
 
+      this.onDismiss = this.onDismiss.bind(this);
+
     }
 
     componentDidMount() {
         setTimeout(() => {
-            this.setState({
-                modal: false
+        this.setState({
+          modal: false
 
-            })
-        }, 2000)
+        })
+      }, 2000)
 
 
     }
+  onDismiss() {
+    this.setState({ modal: false });
+  }
 
-    render() {
+    /*render() {
         return (
 
             <Modal isOpen={this.state.modal} >
@@ -40,5 +45,13 @@ export default class ModalAlert extends React.Component {
             </Modal>
 
         );
+    }*/
+
+    render() {
+      return(
+        <Alert color={this.state.type} isOpen={this.state.modal} toggle={this.onDismiss} className="alert-position">
+          {this.state.message}
+        </Alert>
+      )
     }
 }

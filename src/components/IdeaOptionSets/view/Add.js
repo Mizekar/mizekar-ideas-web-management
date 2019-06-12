@@ -111,7 +111,7 @@ class Add extends Component {
 
         return (
 
-            <div className="animated fadeIn">
+            <div className="animated fadeIn position-relative">
                 {this.state.message}
 
                 <Row className="default-breadcrumb">
