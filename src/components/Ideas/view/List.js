@@ -3,7 +3,8 @@ import {Breadcrumb, BreadcrumbItem, Button, Col, Row} from "reactstrap";
 import {get, remove} from "../../../utils/apiMainRequest";
 import Loading from "../../../utils/loading";
 import {confirmAlert} from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css' // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'
+import {Link} from "react-router-dom"; // Import
 
 
 
@@ -46,7 +47,8 @@ export default class List extends Component {
         if (response.items.length > 0) {
             this.setState((prevState) => ({
                 items: prevState.items.concat(response.items),
-                pageNumber: prevState.pageNumber + 1
+                pageNumber: prevState.pageNumber + 1,
+                totalCount:totalCount
             }))
         }
         if (pageNumber * pageSize >= totalCount) {
@@ -104,7 +106,7 @@ export default class List extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
                             <BreadcrumbItem active>سوژه ها</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -113,13 +115,18 @@ export default class List extends Component {
                 <Row>
                     <Col xs="12">
                         <div className="d-flex flex-row align-items-center">
-                            <h1 className="list-title">سوژه ها</h1>
-                            <a href="#/ideas/add">
-                                <i className="fa fa-plus-square"></i>
+                            <div>
+                                <h1 className="list-title">سوژه ها</h1>
+                                <h5 className="num-record">{this.state.totalCount} سوژه</h5>
+                            </div>
+
+                            <Link to="/ideas/add" className="mlm-auto btn btn-primary">
+                                <i className="fa fa-plus"></i>
                                 &nbsp;
                                 اضافه کردن سوژه جدید
-                            </a>
+                            </Link>
                         </div>
+
 
                     </Col>
                 </Row>
@@ -140,7 +147,7 @@ export default class List extends Component {
 
                                 return (
                                     <Row className="row-list" key={data.id}>
-                                        <Col xs="12" sm="7" className="col-list">{data.subject}</Col>
+                                        <Col xs="12" sm="8" className="col-list">{data.subject}</Col>
                                         <Col xs="12" sm="2" className="col-list">
                                             {data.isPublished &&
                                             <Button className="btn btn-square btn-outline-success " disabled={true}>منتشر
@@ -151,20 +158,20 @@ export default class List extends Component {
                                                 انتشار</Button>
                                             }
                                         </Col>
-                                        <Col xs="12" sm="3" className="col-list">
-                                            <Button className="btn-square btn btn-light ml-2"
-                                                    href={"#/ideas/detail/" + data.id}>
-                                                <i className="fa fa-list-alt"></i> جزئیات
+                                        <Col xs="12" sm="2" className="col-list">
+                                            <Button className=" btn btn-light ml-2"
+                                                    href={"/ideas/detail/" + data.id}>
+                                                <i className="fa fa-list-alt"></i>
                                             </Button>
-                                            <Button className="btn-square btn btn-info ml-2"
-                                                    href={"#/ideas/edit/" + data.id}>
-                                                <i className="fa fa-pencil"></i> ویرایش
+                                            <Button className=" btn btn-info ml-2"
+                                                    href={"/ideas/edit/" + data.id}>
+                                                <i className="fa fa-pencil"></i>
                                             </Button>
                                             <Button
-                                                className="btn-square btn btn-danger ml-1"
+                                                className=" btn btn-danger ml-1"
                                                 onClick={() => this.confirmDelete(data.id)}
                                             >
-                                                <i className="fa fa-trash"></i> حذف
+                                                <i className="fa fa-trash"></i>
                                             </Button>
                                         </Col>
                                     </Row>

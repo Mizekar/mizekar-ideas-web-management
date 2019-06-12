@@ -20,6 +20,7 @@ import Select from 'react-select';
 import {confirmAlert} from "react-confirm-alert";
 import MyGallery from "../../../utils/MyGallery";
 import MyUpload from "../../../utils/MyUpload";
+import {Link} from "react-router-dom";
 
 
 const ErrorMessage = ({name}) => (
@@ -661,8 +662,8 @@ class Edit extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
-                            <BreadcrumbItem tag="a" href="#/ideas">سوژه ها</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/ideas">سوژه ها</Link></BreadcrumbItem>
                             <BreadcrumbItem active>ویرایش کردن سوژه</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
@@ -670,13 +671,14 @@ class Edit extends Component {
 
                 <Row>
                     <Col xs="12">
+
                         <div className="d-flex flex-row align-items-center">
                             <h1 className="list-title">ویرایش کردن سوژه</h1>
-                            <a href="#/ideas">
+                            <Link to="/ideas"  className="mlm-auto btn btn-primary">
                                 <i className="fa fa-list"></i>
                                 &nbsp;
                                 لیست سوژه ها
-                            </a>
+                            </Link>
                         </div>
 
                     </Col>

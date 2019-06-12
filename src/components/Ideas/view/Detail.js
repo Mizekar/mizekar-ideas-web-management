@@ -11,6 +11,7 @@ import {
 import classnames from "classnames";
 import {get,post} from "../../../utils/apiMainRequest";
 import moment from 'moment-jalaali'
+import {Link} from "react-router-dom";
 
 
 class Detail extends Component {
@@ -172,8 +173,8 @@ class Detail extends Component {
                 <Row className="default-breadcrumb">
                     <Col xs="12">
                         <Breadcrumb>
-                            <BreadcrumbItem tag="a" href="#">خانه</BreadcrumbItem>
-                            <BreadcrumbItem tag="a" href="#/ideas">سوژه ها</BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/">خانه</Link></BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/ideas">سوژه ها</Link></BreadcrumbItem>
                             <BreadcrumbItem active>جزئیات سوژه</BreadcrumbItem>
                         </Breadcrumb>
                     </Col>
