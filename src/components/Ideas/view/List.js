@@ -4,9 +4,8 @@ import {get, remove} from "../../../utils/apiMainRequest";
 import Loading from "../../../utils/loading";
 import {confirmAlert} from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'
-import {Link} from "react-router-dom"; // Import
-
-
+import {Link} from "react-router-dom";
+import moment from "moment-jalaali"; // Import
 
 
 export default class List extends Component {
@@ -38,7 +37,7 @@ export default class List extends Component {
             pageNumber: this.state.pageNumber,
             pageSize: this.state.pageSize
         });
-        //console.log(response.items)
+        console.log(response)
 
         let totalCount = response.totalCount;
         let pageSize = response.pageSize;
@@ -48,7 +47,7 @@ export default class List extends Component {
             this.setState((prevState) => ({
                 items: prevState.items.concat(response.items),
                 pageNumber: prevState.pageNumber + 1,
-                totalCount:totalCount
+                totalCount: totalCount
             }))
         }
         if (pageNumber * pageSize >= totalCount) {
@@ -145,28 +144,60 @@ export default class List extends Component {
                         {
                             this.state.items.map((data) => {
 
+                                let create = moment(data.baseInfo.createdOn);
+                                let date = new Date(data.baseInfo.createdOn);
+
+                                let year = create.jYear();
+                                let month = (create.jMonth() + 1) >= 10 ? (create.jMonth() + 1) : '0' + (create.jMonth() + 1);
+                                let day = create.jDate() >= 10 ? create.jDate() : '0' + create.jDate();
+
                                 return (
                                     <Row className="row-list" key={data.id}>
-                                        <Col xs="12" sm="8" className="col-list">{data.subject}</Col>
-                                        <Col xs="12" sm="2" className="col-list">
-                                            {data.isPublished &&
-                                            <Button className="btn btn-square btn-outline-success " disabled={true}>منتشر
-                                                شده</Button>
-                                            }
-                                            {!data.isPublished &&
-                                            <Button className="btn btn-square btn-outline-secondary " disabled={true}>عدم
-                                                انتشار</Button>
-                                            }
+                                        <Col xs="12" sm="5" className="col-list">
+                                            <div>
+                                                {data.mediaUrl && <img src={data.mediaUrl} className="img-list"/>}
+                                                {!data.mediaUrl && <div className="default-img"></div>}
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    {data.subject}
+                                                </div>
+                                                <div className="d-flex text-description">
+                                                    <div>{data.baseInfo.createdBy.firstName + " " + data.baseInfo.createdBy.lastName}</div>
+                                                    <div className="pl-3">  {year + "/" + month + "/" + day}</div>
+                                                    <div className="pl-3">
+                                                        {
+                                                            date.getHours() + ":" + date.getMinutes()
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </Col>
+                                        <Col xs="12" sm="3" className="col-list">
+                                            فراخوان : <span className="text-cyan pl-1">{data.announcement.title}</span>
                                         </Col>
                                         <Col xs="12" sm="2" className="col-list">
-                                            <Button className=" btn btn-light ml-2"
-                                                    href={"/ideas/detail/" + data.id}>
+
+                                            <Button className="btn btn-square btn-outline-success " disabled={true}>
+                                                {data.status.name}
+                                            </Button>
+
+                                        </Col>
+                                        <Col xs="12" sm="2" className="col-list">
+                                            <Link className=" btn btn-success ml-2"
+                                                  to={"/ideas/detail/" + data.id}>
                                                 <i className="fa fa-list-alt"></i>
-                                            </Button>
-                                            <Button className=" btn btn-info ml-2"
-                                                    href={"/ideas/edit/" + data.id}>
+                                            </Link>
+                                            <Link className=" btn btn-secondary ml-2"
+                                                  to={"/ideas/edit/" + data.id}>
                                                 <i className="fa fa-pencil"></i>
-                                            </Button>
+                                            </Link>
+                                            <Link className="btn btn-info ml-2"
+                                                  to={"/ideas/upload/" + data.id}>
+                                                <i className="fa fa-picture-o"></i>
+                                            </Link>
                                             <Button
                                                 className=" btn btn-danger ml-1"
                                                 onClick={() => this.confirmDelete(data.id)}

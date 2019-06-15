@@ -9,9 +9,10 @@ import {
     Row, TabContent, TabPane
 } from "reactstrap";
 import classnames from "classnames";
-import {get,post} from "../../../utils/apiMainRequest";
+import {get, post} from "../../../utils/apiMainRequest";
 import moment from 'moment-jalaali'
 import {Link} from "react-router-dom";
+import ReactPlayer from "../../../utils/MyGallery";
 
 
 class Detail extends Component {
@@ -60,7 +61,7 @@ class Detail extends Component {
             );
         }
 
-        //console.log(response)
+        console.log(response)
 
         this.setState(
             {
@@ -71,7 +72,9 @@ class Detail extends Component {
                 selectedOptions: responseOption.items,
                 optionSetValue: optionSetValue,
                 categories: response.categories,
-                statusId: response.statusId
+                statusId: response.statusId,
+                announcement: response.announcement.title,
+                media: response.media
 
             }
         )
@@ -131,7 +134,7 @@ class Detail extends Component {
     }
 
     async getIdeaLikes() {
-        let response = await get("social/likes/post/"+ this.state.id, {
+        let response = await get("social/likes/post/" + this.state.id, {
             pageNumber: 1,
             pageSize: 1000
         });
@@ -140,11 +143,12 @@ class Detail extends Component {
 
         this.setState({
             ideaLikesItems: response.items,
-            totalLikes:response.totalCount
+            totalLikes: response.totalCount
         })
     }
+
     async getIdeaComments() {
-        let response = await get("social/comments/post/"+ this.state.id, {
+        let response = await get("social/comments/post/" + this.state.id, {
             pageNumber: 1,
             pageSize: 1000
         });
@@ -153,7 +157,7 @@ class Detail extends Component {
 
         this.setState({
             ideaCommentsItems: response.items,
-            totalComments:response.totalCount
+            totalComments: response.totalCount
         })
     }
 
@@ -162,6 +166,70 @@ class Detail extends Component {
             this.setState({
                 activeTab: tab
             });
+        }
+    }
+    fileTypeViewer(data) {
+        if (data.mimeType === 'image/jpeg' || data.mimeType === 'image/jpg' || data.mimeType === 'image/png' || data.mimeType === 'image/gif') {
+            return (
+                <img src={data.fileUrl} className="file-url-box-img-detail"/>
+            )
+        } else if (data.mimeType === 'video/mp4') {
+            return (
+                <ReactPlayer
+                    url={data.fileUrl}
+                    className="file-url-box-img"
+                    controls={true}
+                />
+            )
+        } else if (data.mimeType === 'audio/mpeg') {
+            return (
+                <ReactPlayer
+                    url={data.fileUrl}
+                    className="file-url-box-img"
+                    controls={true}
+                />
+            )
+        }
+        else if (data.mimeType === 'application/zip' || data.mimeType === 'application/x-rar-compressed') {
+            return (
+                <div className="file-url-box-application pdf">
+                    <i className="fa fa-file-zip-o"></i>
+                </div>
+            )
+        }
+        else if (data.mimeType === 'application/pdf') {
+            return (
+                <div className="file-url-box-application pdf">
+                    <i className="fa fa-file-pdf-o"></i>
+                </div>
+            )
+        }
+        else if (data.mimeType === 'application/vnd.ms-excel' || data.mimeType==="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+            return (
+                <div className="file-url-box-application excel">
+                    <i className="fa fa-file-excel-o"></i>
+                </div>
+            )
+        } else if (data.mimeType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || data.mimeType==='application/msword') {
+            return (
+                <div className="file-url-box-application word">
+                    <i className="fa fa-file-word-o"></i>
+                </div>
+            )
+        }
+        else if (data.mimeType === 'aapplication/vnd.ms-powerpoint' || data.mimeType==="application/vnd.openxmlformats-officedocument.presentationml.presentation") {
+            return (
+                <div className="file-url-box-application powerpoint">
+                    <i className="fa fa-file-powerpoint-o"></i>
+                </div>
+            )
+        }
+        else {
+            return (
+                <div className="file-url-box-application">
+                    <i className="fa fa-file-o"></i>
+                </div>
+            )
         }
     }
 
@@ -350,6 +418,32 @@ class Detail extends Component {
                             </Card>
                         </TabPane>
                         <TabPane tabId="3">
+                            {
+                                this.state.loadData && this.state.media.map((data) => {
+                                    return (
+                                        <Card>
+                                            <CardBody>
+                                                <Row>
+                                                    <Col xs={12} sm={2}>
+                                                        {this.fileTypeViewer(data)}
+                                                    </Col>
+                                                    <Col xs={12} sm={10} className="file-description">
+
+                                                        <div>
+                                                            {data.description}
+                                                        </div>
+                                                        <a href={data.fileUrl} className="btn btn-info text-white ml-1"><i
+                                                            className="fa fa-download"></i> دانلود</a>
+
+                                                    </Col>
+
+                                                </Row>
+                                            </CardBody>
+                                        </Card>
+                                    )
+                                })
+                            }
+
                         </TabPane>
                         <TabPane tabId="4">
                             {
@@ -364,8 +458,8 @@ class Detail extends Component {
                                                     return (
                                                         <Row className="p-3 m-0 b-b-1" key={item.id}>
                                                             <Col xs="12" md="3">
-                                                                <div className="avatar-yellow float-right ml-2"></div>
-                                                                <div className="float-right">
+                                                                <div className="avatar-yellow float-left mr-2"></div>
+                                                                <div className="float-left">
                                                                     <div>{item.fullName}</div>
                                                                     <div className="file-size-text">{item.email}</div>
                                                                 </div>
@@ -417,28 +511,29 @@ class Detail extends Component {
 
 
                                             let create = moment(data.baseInfo.createdOn);
-                                            let date =new Date(data.baseInfo.createdOn);
+                                            let date = new Date(data.baseInfo.createdOn);
 
-                                            let year=create.jYear();
-                                            let month=(create.jMonth() + 1)>=10?(create.jMonth() + 1):'0'+(create.jMonth() + 1);
-                                            let day=create.jDate()>=10?create.jDate():'0'+create.jDate();
+                                            let year = create.jYear();
+                                            let month = (create.jMonth() + 1) >= 10 ? (create.jMonth() + 1) : '0' + (create.jMonth() + 1);
+                                            let day = create.jDate() >= 10 ? create.jDate() : '0' + create.jDate();
 
 
                                             return (
                                                 <Row className="row-list" key={data.writer.id}>
                                                     <Col xs="12" sm="1" className="col-list">
-                                                        <img src={'../../assets/img/avatars/default.png'} className="img-avatar-list" alt=""/>
+                                                        <img src={'../../assets/img/avatars/default.png'}
+                                                             className="img-avatar-list" alt=""/>
                                                     </Col>
                                                     <Col xs="12" sm="9" className="col-list">
-                                                        {data.writer.firstName+" "+data.writer.lastName}
+                                                        {data.writer.firstName + " " + data.writer.lastName}
                                                     </Col>
                                                     <Col xs="12" sm="1" className="col-list">
-                                                        {year+ "/" + month + "/" + day}
+                                                        {year + "/" + month + "/" + day}
 
                                                     </Col>
                                                     <Col xs="12" sm="1" className="col-list">
                                                         {
-                                                            date.getHours()+":"+date.getMinutes()
+                                                            date.getHours() + ":" + date.getMinutes()
                                                         }
                                                     </Col>
                                                 </Row>

@@ -4,6 +4,7 @@ import List from './view/List'
 import Add from './view/Add'
 import Edit from './view/Edit'
 import Detail from './view/Detail'
+import Upload from './view/Upload';
 
 export default class Ideas extends Component {
     constructor(props) {
@@ -54,6 +55,10 @@ export default class Ideas extends Component {
             case 'detail':
                 return (
                     <Detail id={id}/>
+                )
+            case 'upload':
+                return (
+                    <Upload id={id}/>
                 )
 
         }

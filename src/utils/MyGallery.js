@@ -108,7 +108,7 @@ export default class MyGallery extends React.Component {
                                                     this.state.onRemove(data.id)
                                                 }} className="btn btn-danger text-white"><i
                                                     className="fa fa-trash"></i> حذف </a>
-                                                <a href={data.fileUrl} className="btn btn-info text-white mr-1"><i
+                                                <a href={data.fileUrl} className="btn btn-info text-white ml-1"><i
                                                     className="fa fa-download"></i> دانلود</a>
                                             </div>
                                         }
