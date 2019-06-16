@@ -176,12 +176,12 @@ export default class List extends Component {
 
                                         </Col>
                                         <Col xs="12" sm="3" className="col-list">
-                                            فراخوان : <span className="text-cyan pl-1">{data.announcement.title}</span>
+                                            فراخوان : <span className="text-cyan pl-1">{data.announcement!==null?data.announcement.title:'---'}</span>
                                         </Col>
                                         <Col xs="12" sm="2" className="col-list">
 
                                             <Button className="btn btn-square btn-outline-success " disabled={true}>
-                                                {data.status.name}
+                                                {data.status!==null?data.status.name:''}
                                             </Button>
 
                                         </Col>
