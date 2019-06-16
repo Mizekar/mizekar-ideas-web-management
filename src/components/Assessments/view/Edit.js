@@ -159,7 +159,7 @@ class Edit extends Component {
 
 
       this.setState({
-        message: <ModalAlert type="success" message="ثبت ویرایش دسته بندی با موفقیت انجام شد."
+        message: <ModalAlert type="success" message="ثبت ویرایش ارزیابی با موفقیت انجام شد."
                              title="هشدار سیستم"
                              icon="fa fa-check-square-o"/>,
         btnDisabled: false
