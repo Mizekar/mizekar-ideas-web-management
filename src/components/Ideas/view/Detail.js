@@ -61,7 +61,7 @@ class Detail extends Component {
             );
         }
 
-        console.log(response)
+        //console.log(response)
 
         this.setState(
             {
@@ -73,7 +73,7 @@ class Detail extends Component {
                 optionSetValue: optionSetValue,
                 categories: response.categories,
                 statusId: response.statusId,
-                announcement: response.announcement.title,
+                announcement: response.announcement,
                 media: response.media
 
             }
