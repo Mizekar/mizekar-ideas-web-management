@@ -375,7 +375,7 @@ class Detail extends Component {
                                 <CardBody className="p-0">
                                     <Row className="p-3 m-0 b-b-1">
                                         <Col xs="12" sm="2" md="1" className="label-detail">فراخوان :</Col>
-                                        <Col xs="12" sm="10" md="11">{this.state.announcement}</Col>
+                                        <Col xs="12" sm="10" md="11">{this.state.announcement!=null?this.state.announcement.title:'---'}</Col>
                                     </Row>
                                 </CardBody>
 
