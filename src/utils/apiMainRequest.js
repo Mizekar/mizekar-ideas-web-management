@@ -2,17 +2,16 @@ import axios from "axios";
 import qs from "qs";
 import {API_URL, ORG_ID, DOMAIN_NAME} from "../actions/action.constance";
 
-let main=JSON.parse(localStorage.getItem('persist:root'))
-let user=JSON.parse(main.user)
-let token=user.apiToken;
-let refToken=user.refreshToken
-let mobile=user.mobile
-let dashboard=main.dashboard
-let _persist=main._persist
+let main = JSON.parse(localStorage.getItem('persist:root'))
+let user = JSON.parse(main.user)
+let token = user.apiToken;
+let refToken = user.refreshToken
+let mobile = user.mobile
+let dashboard = main.dashboard
+let _persist = main._persist
 
 
-export async function post(url,payload) {
-
+export async function post(url, payload) {
 
 
     try {
@@ -29,24 +28,23 @@ export async function post(url,payload) {
     } catch (e) {
         //alert(e.message)
         console.log(e)
-        if(e.message==="Request failed with status code 401")
-      {
-        await refreshToken();
+        if (e.message === "Request failed with status code 401") {
+            await refreshToken();
 
-        return await post(url,payload)
+            return await post(url, payload)
 
-        //logout();
-      }
+            //logout();
+        }
     }
 }
 
-export async function upload(url,payload,callbackProgress,uploadId) {
+export async function upload(url, payload, callbackProgress, uploadId) {
 
     try {
         let response = await axios.post(`${API_URL}/${url}`, payload, {
             onUploadProgress: (p) => {
-              //console.log( Math.round(p.loaded * 100 / p.total));
-              callbackProgress(Math.round(p.loaded * 100 / p.total),uploadId)
+                //console.log( Math.round(p.loaded * 100 / p.total));
+                callbackProgress(Math.round(p.loaded * 100 / p.total), uploadId)
             },
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -61,17 +59,15 @@ export async function upload(url,payload,callbackProgress,uploadId) {
     } catch (e) {
         //alert(e.message)
         console.log(e)
-        if(e.message==="Request failed with status code 401")
-      {
-        await refreshToken();
-          return await upload(url,payload,callbackProgress,uploadId)
-        //logout();
-      }
+        if (e.message === "Request failed with status code 401") {
+            await refreshToken();
+            return await upload(url, payload, callbackProgress, uploadId)
+            //logout();
+        }
     }
 }
 
 export async function get(url, params) {
-
 
 
     try {
@@ -90,13 +86,12 @@ export async function get(url, params) {
     } catch (e) {
         //alert(e.code)
         console.log(e)
-      if(e.message==="Request failed with status code 401")
-      {
-        await refreshToken();
-          return await get(url, params)
+        if (e.message === "Request failed with status code 401") {
+            await refreshToken();
+            return await get(url, params)
 
-        //logout();
-      }
+            //logout();
+        }
     }
 }
 
@@ -116,18 +111,16 @@ export async function remove(url) {
     } catch (e) {
         //alert(e.message)
         console.log(e)
-        if(e.message==="Request failed with status code 401")
-      {
-        await refreshToken();
-          return await remove(url)
+        if (e.message === "Request failed with status code 401") {
+            await refreshToken();
+            return await remove(url)
 
-        //logout();
-      }
+            //logout();
+        }
     }
 }
 
-export async function put(url,payload) {
-
+export async function put(url, payload) {
 
 
     try {
@@ -145,60 +138,58 @@ export async function put(url,payload) {
         //alert(e.message)
         console.log(e);
 
-        if(e.message==="Request failed with status code 401")
-        {
-          await refreshToken();
-          return await put(url,payload)
+        if (e.message === "Request failed with status code 401") {
+            await refreshToken();
+            return await put(url, payload)
 
-          //logout();
+            //logout();
         }
     }
 }
 
 async function refreshToken() {
 
-  let url="connect/token";
+    let url = "connect/token";
 
-  let payload={
-    refresh_token: refToken,
-    client_id: 'idea-web',
-    client_secret: '00PcCMVwUGdb5weDo9FOOrYclGif7SJAFM3oXQGelhy4KQ5f8M3RMuTqeg',
-    grant_type: 'refresh_token'
-  }
-
-  try {
-    let response = await axios.post(`${DOMAIN_NAME}/${url}`, qs.stringify(payload), {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "cache-control": "no-cache"
-      }
-    });
-    let data=response.data;
-    token=data.access_token
-    refToken=data.refresh_token
-
-    let main={
-
-        apiToken: data.access_token,
-        tokenType: data.token_type,
-        refreshToken: data.refresh_token,
-        expiresIn: data.expires_in,
-        mobile: mobile,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        profileImage: user.profileImage
-
+    let payload = {
+        refresh_token: refToken,
+        client_id: 'idea-web',
+        client_secret: '00PcCMVwUGdb5weDo9FOOrYclGif7SJAFM3oXQGelhy4KQ5f8M3RMuTqeg',
+        grant_type: 'refresh_token'
     }
-    //console.log(main);
-    let userMain={user:JSON.stringify(main),dashboard:dashboard,_persist:_persist}
-    let root=JSON.stringify(userMain)
 
-    localStorage.setItem('persist:root',root)
+    try {
+        let response = await axios.post(`${DOMAIN_NAME}/${url}`, qs.stringify(payload), {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "cache-control": "no-cache"
+            }
+        });
+        let data = response.data;
+        token = data.access_token
+        refToken = data.refresh_token
+
+        let main = {
+
+            apiToken: data.access_token,
+            tokenType: data.token_type,
+            refreshToken: data.refresh_token,
+            expiresIn: data.expires_in,
+            mobile: mobile,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            profileImage: user.profileImage
+
+        }
+        //console.log(main);
+        let userMain = {user: JSON.stringify(main), dashboard: dashboard, _persist: _persist}
+        let root = JSON.stringify(userMain)
+
+        localStorage.setItem('persist:root', root)
 
 
-
-  } catch (e) {
-    console.log(e)
-  }
+    } catch (e) {
+        console.log(e)
+    }
 }
 
