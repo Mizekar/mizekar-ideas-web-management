@@ -1007,7 +1007,7 @@ class Edit extends Component {
 
                                                     this.state.optionSets.map((data) => {
                                                         return (
-                                                            <Card className="pr-5 pb-0 pt-4 pl-4" key={data.id}>
+                                                            <Card className="pl-4 pb-0 pt-4 " key={data.id}>
                                                                 <CardBody className="p-0">
                                                                     <FormGroup>
                                                                         <label>{data.title}</label>

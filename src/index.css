@@ -864,6 +864,10 @@ special-idea .author img, .box-item .author img {
   padding-right: 40px;
   padding-top: 10px;
 }
+.bg-eee
+{
+  background: #F5F5F5 !important;
+}
 /*
 a{
     color:#F8C31F !important;

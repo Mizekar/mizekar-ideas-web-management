@@ -23,7 +23,8 @@ class Detail extends Component {
       id: props.id,
       activeTab: '1',
       loadData: false,
-      ideaCommentsItems: []
+      ideaCommentsItems: [],
+      ideaAssessmentsItems:[]
     }
   }
 
@@ -32,7 +33,7 @@ class Detail extends Component {
     this.getIdeaStatuses();
     this.getIdeaLikes();
     this.getIdeaComments();
-
+    this.getIdeaAssessments();
     await this.getById();
 
   }
@@ -160,6 +161,20 @@ class Detail extends Component {
       ideaCommentsItems: response.items,
       totalComments: response.totalCount
     })
+  }
+  async getIdeaAssessments()
+  {
+    let response = await get("ideas/assessments/result/idea/" + this.state.id, {
+      pageNumber: 1,
+      pageSize: 1000
+    });
+
+    this.setState({
+      ideaAssessmentsItems: response.items,
+      totalAssessments: response.totalCount
+    })
+    console.log(response);
+
   }
 
   toggle(tab) {
@@ -333,6 +348,16 @@ class Detail extends Component {
                 }}
               >
                 نظرات ({this.state.totalComments})
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({active: this.state.activeTab === '7'})}
+                onClick={() => {
+                  this.toggle('7');
+                }}
+              >
+                ارزیابی ها
               </NavLink>
             </NavItem>
           </Nav>
@@ -622,6 +647,43 @@ class Detail extends Component {
 
                     </Card>
 
+                  )
+                })
+              }
+
+            </TabPane>
+            <TabPane tabId="7">
+              <Link to={"/ideas/assessment/"+this.state.id} className="mlm-auto btn btn-primary mb-3">
+                <i className="fa fa-plus"></i>
+                &nbsp;
+                ثبت ارزیابی جدید
+              </Link>
+              {
+                this.state.ideaAssessmentsItems.map((data) => {
+                  let create = moment(data.baseInfo.createdOn);
+
+
+                  let year = create.jYear();
+                  let month = (create.jMonth() + 1) >= 10 ? (create.jMonth() + 1) : '0' + (create.jMonth() + 1);
+                  let day = create.jDate() >= 10 ? create.jDate() : '0' + create.jDate();
+                  return (
+                    <Row className="row-list" key={data.id}>
+                      <Col xs="12" sm="8" className="col-list">{data.ideaAssessment}</Col>
+                      <Col xs="12" sm="1" className="col-list">{data.score}</Col>
+                      <Col xs="12" sm="2" className="col-list"> {year + "/" + month + "/" + day}</Col>
+                      <Col xs="12" sm="1" className="col-list">
+                        <Link className="btn btn-secondary ml-2"
+                              to={"/assessments/edit/" + data.id}>
+                          <i className="fa fa-pencil"></i>
+                        </Link>
+                        <Button
+                          className=" btn btn-danger ml-1"
+                          onClick={() => this.confirmDelete(data.id)}
+                        >
+                          <i className="fa fa-trash"></i>
+                        </Button>
+                      </Col>
+                    </Row>
                   )
                 })
               }

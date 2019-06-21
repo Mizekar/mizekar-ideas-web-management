@@ -5,6 +5,7 @@ import Add from './view/Add'
 import Edit from './view/Edit'
 import Detail from './view/Detail'
 import Upload from './view/Upload';
+import Assessment from "./view/Assessment";
 
 export default class Ideas extends Component {
     constructor(props) {
@@ -60,6 +61,10 @@ export default class Ideas extends Component {
                 return (
                     <Upload id={id}/>
                 )
+          case 'assessment':
+            return (
+              <Assessment id={id}/>
+            )
 
         }
 
