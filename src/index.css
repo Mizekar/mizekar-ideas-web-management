@@ -799,6 +799,71 @@ legend {
   font-size: 12px;
   color:#9EB1C2
 }
+
+.comment-text
+{
+  color:#555;
+  padding-right: 40px;
+  padding-top: 5px;
+}
+.date-comment {
+  color: #BFC4D3;
+  text-align: right;
+
+
+}
+.sub-comment
+{
+  padding-right: 30px;
+  padding-top: 5px;
+
+}
+
+.box-item .author {
+  margin: 10px 0px;
+  display: flex;
+  align-items: center;
+}
+
+.box-item .avatar-yellow {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+
+.box-item .short {
+  font-size: 13px;
+  color: #000;
+  border-right: 2px solid #C1CEDA;
+  padding-right: 15px;
+  line-height: 25px;
+  margin-top: 10px;
+}
+
+.box-item h5 {
+  font-size: 13px;
+  margin-right: 10px;
+  margin-bottom:0px;
+  color: #444;
+}
+special-idea .author img, .box-item .author img {
+
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 100%;
+
+}
+.ideas-title-2 {
+
+  font-size: 15px !important;
+  margin: 0px !important;
+
+}
+.action-comment
+{
+  padding-right: 40px;
+  padding-top: 10px;
+}
 /*
 a{
     color:#F8C31F !important;
