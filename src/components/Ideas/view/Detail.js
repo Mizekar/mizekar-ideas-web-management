@@ -9,10 +9,11 @@ import {
   Row, TabContent, TabPane
 } from "reactstrap";
 import classnames from "classnames";
-import {get, post} from "../../../utils/apiMainRequest";
+import {get, post, remove} from "../../../utils/apiMainRequest";
 import moment from 'moment-jalaali'
 import {Link} from "react-router-dom";
 import ReactPlayer from "../../../utils/MyGallery";
+import {confirmAlert} from "react-confirm-alert";
 
 
 class Detail extends Component {
@@ -168,12 +169,47 @@ class Detail extends Component {
       pageNumber: 1,
       pageSize: 1000
     });
+    console.log(response)
 
     this.setState({
       ideaAssessmentsItems: response.items,
       totalAssessments: response.totalCount
     })
-    console.log(response);
+
+  }
+  confirmDelete(assessmentId,byUser) {
+    confirmAlert({
+      customUI: ({onClose}) => {
+        return (
+          <div className='confirm-box'>
+            <h4>تایید حذف!</h4>
+            <p>آیا نسبت به حذف این ارزیابی مطمئنید؟</p>
+            <Button className="btn btn-square btn-primary ml-2" onClick={onClose}>نه</Button>
+            <Button className="btn btn-square btn-info ml-2" onClick={() => {
+              this.handleDeleteAssessment(assessmentId,byUser)
+              onClose()
+            }}>بله ارزیابی را حذف کن!
+            </Button>
+          </div>
+        )
+      }
+    })
+  }
+  async handleDeleteAssessment(assessmentId,byUser) {
+    let response = await remove("ideas/assessments/do/",{
+      ideaId:this.state.id,
+      assessmentId:assessmentId,
+      byUser:byUser
+    });
+
+
+
+   /* if (typeof response === 'string') {
+      this.setState((prevState) => ({
+        items: prevState.items.filter((item) => item.id !== id),
+      }))
+    }
+*/
 
   }
 
@@ -678,7 +714,7 @@ class Detail extends Component {
                         </Link>
                         <Button
                           className=" btn btn-danger ml-1"
-                          onClick={() => this.confirmDelete(data.id)}
+                          onClick={() => this.confirmDelete(data.ideaAssessmentId,data.baseInfo.createdById)}
                         >
                           <i className="fa fa-trash"></i>
                         </Button>
