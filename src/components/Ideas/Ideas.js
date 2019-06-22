@@ -15,6 +15,8 @@ export default class Ideas extends Component {
 
         //alert(params.act)
 
+
+
         this.state = {
             act: params.act !== undefined ? params.act : '',
             id: params.id !== undefined ? params.id : ''
@@ -63,7 +65,7 @@ export default class Ideas extends Component {
                 )
           case 'assessment':
             return (
-              <Assessment id={id}/>
+              <Assessment id={id} history={this.props.history}/>
             )
 
         }

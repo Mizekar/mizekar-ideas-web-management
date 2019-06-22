@@ -23,10 +23,14 @@ class Assessment extends Component {
       optionSetValue: [],
 
     }
+    //console.log(props)
+
   }
 
   componentDidMount() {
     this.getAssessments()
+    //this.props.history.push("/ideas/detail/"+this.state.id)
+
   }
 
   async getAssessments() {
@@ -178,7 +182,7 @@ class Assessment extends Component {
       })
 
       reset()
-      this.props.history.pop()
+      this.props.history.push("/ideas/detail/"+this.state.id)
 
     }
   }
