@@ -868,6 +868,59 @@ special-idea .author img, .box-item .author img {
 {
   background: #F5F5F5 !important;
 }
+.stat-box
+{
+  border: none !important;
+  border-radius: 3px !important;
+  min-height: 100px;
+  padding: 30px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.08);
+}
+.bg-white
+{
+  background: #fff;
+}
+.bg-yellow
+{
+  background: #FFCB2C;
+}
+.color-white
+{
+  color: #FFF;
+}
+.color-yellow
+{
+  color: #FFCB2C;
+}
+.color-cyan
+{
+  color:#4EC2C1;
+}
+color-light
+{
+  color:#C2CEDA !important;
+}
+.stat-box i
+{
+  font-size: 60px;
+}
+.stat-box .title
+{
+  display: block;
+  text-align: right;
+  padding-right: 30px;
+  width:100%
+}
+.stat-box .stat-num
+{
+  font-size: 26px;
+
+}
+.stat-box .stat-comment
+{
+  font-size: 20px;
+  color:#000;
+}
 /*
 a{
     color:#F8C31F !important;
