@@ -123,7 +123,7 @@ class Dashboard extends Component {
                   <div className="stat-box bg-yellow d-flex align-items-center">
                     <i className="fa fa-database"></i>
                     <div className="title">
-                      <div className="stat-num color-white">{commonStatistics.mediaSizeKb} کیلوبایت</div>
+                      <div className="stat-num color-white">{commonStatistics.mediaSizeKb}Kb</div>
                       <div className="stat-title">فضای اشغال شده</div>
                     </div>
                   </div>
