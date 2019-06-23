@@ -17,7 +17,8 @@ class Dashboard extends Component {
             commonStatistics: {},
             ideasStatistics: [],
             ideasStatisticsLoading: true,
-            ideasStatisticsPeriod: "Last30Days"
+            ideasStatisticsPeriod: "Last30Days",
+            assessmentResults: "Last30Days"
         }
 
     }
@@ -43,7 +44,7 @@ class Dashboard extends Component {
             timePeriod: this.state.ideasStatisticsPeriod
         })
 
-        console.log(response)
+        //console.log(response)
         let label = [];
         let data = [];
         for (let i = 0; i < response.length; i++) {
@@ -134,7 +135,11 @@ class Dashboard extends Component {
     }
 
     async assessmentResults() {
+        let response = await get("ideas/statistics/assessments/results/"+this.state.assessmentResultsPeriod,{
+            timePeriod: this.state.assessmentResultsPeriod
+        })
 
+        console.log(response)
     }
 
     async profilesStatistics() {
