@@ -921,6 +921,17 @@ color-light
   font-size: 20px;
   color:#000;
 }
+.chartjs-tooltip .tooltip-body-item-color
+{
+  margin-left:0.875rem !important;
+  margin-right: 0px !important;
+}
+.btn-group > .btn:not(:first-child), .btn-group > .btn-group:not(:first-child)
+{
+  margin-right: -1px !important;
+  margin-left:0px !important
+
+}
 /*
 a{
     color:#F8C31F !important;
