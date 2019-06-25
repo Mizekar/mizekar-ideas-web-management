@@ -215,6 +215,22 @@ class Detail extends Component {
 
 
     }
+    async editAssessment(assessmentId, byUser)
+    {
+        let response = await get("ideas/assessments/result/details", {
+            ideaId: this.state.id,
+            assessmentId:assessmentId,
+            creatorId: byUser
+        });
+
+        this.props.history.push({
+            pathname: '/ideas/assessment/'+this.state.id,
+            state: {
+                data: response
+            }
+        })
+
+    }
 
     toggle(tab) {
         if (this.state.activeTab !== tab) {
@@ -731,10 +747,12 @@ class Detail extends Component {
                                                 امتیاز : <span className="text-cyan pl-1"> {data.score}</span>
                                                </Col>
                                             <Col xs="12" sm="1" className="col-list">
-                                                <Link className="btn btn-secondary ml-2"
-                                                      to={"/assessments/edit/" + data.id}>
+                                                <Button
+                                                    className="btn btn-secondary ml-2"
+                                                    onClick={() => this.editAssessment(data.ideaAssessmentId, data.baseInfo.createdById)}
+                                                     >
                                                     <i className="fa fa-pencil"></i>
-                                                </Link>
+                                                </Button>
                                                 <Button
                                                     className=" btn btn-danger ml-1"
                                                     onClick={() => this.confirmDelete(data.ideaAssessmentId, data.baseInfo.createdById,index)}

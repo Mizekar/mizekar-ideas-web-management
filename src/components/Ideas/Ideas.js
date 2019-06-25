@@ -57,7 +57,7 @@ export default class Ideas extends Component {
                 )
             case 'detail':
                 return (
-                    <Detail id={id}/>
+                    <Detail id={id} history={this.props.history}/>
                 )
             case 'upload':
                 return (
@@ -65,7 +65,7 @@ export default class Ideas extends Component {
                 )
           case 'assessment':
             return (
-              <Assessment id={id} history={this.props.history}/>
+              <Assessment id={id} history={this.props.history} location={this.props.location}/>
             )
 
         }
