@@ -296,7 +296,7 @@ class Profile extends Component {
                     gender: this.state.gender,
                     bio: this.state.bio,
                     tel: this.state.tel,
-                    mobile: this.state.tel,
+                    mobile: this.state.mobile,
                     email: this.state.email
                   }}
                   validationSchema={Yup.object().shape({
