@@ -614,7 +614,7 @@ class Add extends Component {
 
                             </FormGroup>
 
-                            <FormGroup check className="mr-4">
+                            <FormGroup check className="ml-4">
                               <Label check>
                                 <Input
                                   type="checkbox"
@@ -634,7 +634,7 @@ class Add extends Component {
 
                           this.state.optionSets.map((data) => {
                             return (
-                              <Card className="pr-5 pb-0 pt-4 pl-4" key={data.id}>
+                              <Card className="p-4 pb-0" key={data.id}>
                                 <CardBody className="p-0">
                                   <FormGroup>
                                     <label>{data.title}</label>
@@ -696,7 +696,7 @@ class Add extends Component {
                   </div>
 
 
-                  <Row className="mb-2 pr-3">
+                  <Row className="mb-2 pl-3">
                     <Button color="warning" type="submit" disabled={this.state.btnDisabled}
                     >
                       ثبت سوژه
